@@ -1,0 +1,59 @@
+
+Running 21 tests using 1 worker
+
+
+
+[1/21] .tmp-proof/maintenance/generated/api.spec.mjs:28:1 › health.ok.positive
+[2/21] .tmp-proof/maintenance/generated/api.spec.mjs:43:1 › tickets.create.positive
+[3/21] .tmp-proof/maintenance/generated/api.spec.mjs:61:1 › tickets.create.accepted-empty-body
+[4/21] .tmp-proof/maintenance/generated/api.spec.mjs:76:1 › tickets.create.invalid-title-type
+[5/21] .tmp-proof/maintenance/generated/api.spec.mjs:91:1 › tickets.create.invalid-priority
+[6/21] .tmp-proof/maintenance/generated/api.spec.mjs:106:1 › tickets.create.invalid-priority-missing
+[7/21] .tmp-proof/maintenance/generated/api.spec.mjs:121:1 › tickets.create.invalid-body-type
+[8/21] .tmp-proof/maintenance/generated/api.spec.mjs:136:1 › tickets.create.boundary-title-min
+[9/21] .tmp-proof/maintenance/generated/api.spec.mjs:151:1 › tickets.create.boundary-title-empty
+[10/21] .tmp-proof/maintenance/generated/api.spec.mjs:166:1 › tickets.create.boundary-title-max
+  1) .tmp-proof/maintenance/generated/api.spec.mjs:166:1 › tickets.create.boundary-title-max ───────
+
+    Error: tickets.create.boundary-title-max status
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 201
+    Received: 400
+
+      172 |     const response = await api.post("/tickets", {"failOnStatusCode":false,"data":{"title":"TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT","priority":"normal","body":"edge"}});
+      173 |     const responseBody = await response.json();
+    > 174 |     expect(response.status(), "tickets.create.boundary-title-max status").toBe(201);
+          |                                                                           ^
+      175 |     expect(responseBody, "tickets.create.boundary-title-max bodyMatch").toMatchObject({"title":"TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT","status":"open"});
+      176 |   }
+      177 | });
+        at /workspace/poc/code-first-service-tests/.tmp-proof/maintenance/generated/api.spec.mjs:174:75
+
+    Error Context: .tmp-proof/maintenance/output/api-tickets-create-boundary-title-max/error-context.md
+
+    Error Context: .tmp-proof/maintenance/output/api-tickets-create-boundary-title-max/error-context.md
+
+
+
+
+[11/21] .tmp-proof/maintenance/generated/api.spec.mjs:181:1 › tickets.create.boundary-title-over-max
+[12/21] .tmp-proof/maintenance/generated/api.spec.mjs:196:1 › tickets.create.boundary-body-max
+[13/21] .tmp-proof/maintenance/generated/api.spec.mjs:211:1 › tickets.create.boundary-body-over-max
+[14/21] .tmp-proof/maintenance/generated/api.spec.mjs:226:1 › tickets.read.unauthorized-missing
+[15/21] .tmp-proof/maintenance/generated/api.spec.mjs:241:1 › tickets.read.unauthorized-wrong-token
+[16/21] .tmp-proof/maintenance/generated/api.spec.mjs:256:1 › tickets.read.positive
+[17/21] .tmp-proof/maintenance/generated/api.spec.mjs:278:1 › tickets.read.not-found
+[18/21] .tmp-proof/maintenance/generated/api.spec.mjs:293:1 › tickets.update.unauthorized
+[19/21] .tmp-proof/maintenance/generated/api.spec.mjs:308:1 › tickets.update.invalid-status
+[20/21] .tmp-proof/maintenance/generated/api.spec.mjs:323:1 › tickets.update.positive
+[21/21] .tmp-proof/maintenance/generated/api.spec.mjs:345:1 › tickets.update.not-found
+  1 failed
+    .tmp-proof/maintenance/generated/api.spec.mjs:166:1 › tickets.create.boundary-title-max ────────
+  20 passed (1.2s)
+
+(node:4423) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4435) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

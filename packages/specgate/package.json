@@ -1,0 +1,13 @@
+{
+  "name": "@qe-atlas/specgate",
+  "version": "0.1.0-rc.1",
+  "private": true,
+  "type": "module",
+  "description": "Local code-first Express change review gate. No OpenAPI required.",
+  "bin": { "specgate": "bin/specgate.mjs" },
+  "files": ["bin/", "src/", "README.md", "SECURITY.md", "NOTICE.md"],
+  "engines": { "node": ">=22 <25" },
+  "scripts": { "test": "node --test test/*.test.mjs", "test:runtime": "node --test test/runtime.test.mjs" },
+  "bundleDependencies": ["acorn"],
+  "dependencies": { "acorn": "8.19.0" }
+}

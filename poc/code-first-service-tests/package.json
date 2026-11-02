@@ -1,0 +1,19 @@
+{
+  "name": "qe-atlas-code-first-service-tests-poc",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "generate": "node scripts/generate.mjs",
+    "test:generated": "node scripts/run-generated.mjs",
+    "prove:defect": "node scripts/prove-seeded-defect.mjs",
+    "prove:maintenance": "node scripts/prove-maintenance.mjs"
+  },
+  "dependencies": {
+    "acorn": "8.14.1",
+    "express": "4.22.3"
+  }
+}

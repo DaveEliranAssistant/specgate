@@ -1,0 +1,11 @@
+{
+  "description": "Behavior defect seeded only in a temporary copy. The baseline and generated expectations stay on HTTP 201.",
+  "edits": [
+    {
+      "file": "fixture/ticket-desk/service.mjs",
+      "find": "res.status(201).json(ticket);",
+      "replace": "res.status(200).json(ticket);",
+      "expectCount": 1
+    }
+  ]
+}

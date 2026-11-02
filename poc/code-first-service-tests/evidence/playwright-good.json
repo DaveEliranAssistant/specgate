@@ -1,0 +1,97 @@
+{
+  "playwrightStatus": 0,
+  "playwrightStats": {
+    "startTime": "2026-10-31T20:49:20.548Z",
+    "duration": 708.519,
+    "expected": 21,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "tests": [
+    {
+      "title": "health.ok.positive",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.create.positive",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.create.accepted-empty-body",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.create.invalid-title-type",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.create.invalid-priority",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.create.invalid-priority-missing",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.create.invalid-body-type",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.create.boundary-title-min",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.create.boundary-title-empty",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.create.boundary-title-max",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.create.boundary-title-over-max",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.create.boundary-body-max",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.create.boundary-body-over-max",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.read.unauthorized-missing",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.read.unauthorized-wrong-token",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.read.positive",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.read.not-found",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.update.unauthorized",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.update.invalid-status",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.update.positive",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.update.not-found",
+      "status": "passed"
+    }
+  ]
+}

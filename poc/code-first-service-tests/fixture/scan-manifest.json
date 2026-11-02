@@ -1,0 +1,10 @@
+{
+  "synthetic": true,
+  "service": "synthetic-ticket-desk",
+  "supportedSubset": "express-literal-routes-v1",
+  "files": [
+    "fixture/ticket-desk/service.mjs",
+    "fixture/ticket-desk/store.mjs",
+    "fixture/ticket-desk/unsupported.mjs"
+  ]
+}

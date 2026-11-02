@@ -1,0 +1,442 @@
+{
+  "schemaVersion": "1.0.0",
+  "synthetic": true,
+  "service": "synthetic-ticket-desk",
+  "oracle": "Assertions in this file are the reviewed behavior baseline. Discovery must not overwrite them.",
+  "baseUrlPolicy": "http://127.0.0.1 only",
+  "auth": {
+    "header": "Authorization",
+    "scheme": "Bearer",
+    "syntheticCredential": "synthetic-token",
+    "implementationConstant": "BEARER_TOKEN"
+  },
+  "defaultFixtures": {
+    "store": "empty",
+    "credentialSource": "baseline",
+    "network": "127.0.0.1"
+  },
+  "cases": [
+    {
+      "id": "health.ok.positive",
+      "classification": "approved_requirement",
+      "kind": "positive",
+      "intent": "The public health probe reports ok.",
+      "preconditions": ["no authorization header"],
+      "actions": [
+        { "id": "probe", "method": "GET", "path": "/health", "auth": false }
+      ],
+      "extractions": [],
+      "assertions": [
+        { "action": "probe", "status": 200 },
+        { "action": "probe", "bodyEquals": { "ok": true } }
+      ],
+      "cleanup": [{ "action": "reset-store" }]
+    },
+    {
+      "id": "tickets.create.positive",
+      "classification": "approved_requirement",
+      "kind": "positive",
+      "intent": "A valid title, priority, and body creates an open ticket.",
+      "preconditions": ["store is empty", "create does not require authorization"],
+      "actions": [
+        {
+          "id": "create",
+          "method": "POST",
+          "path": "/tickets",
+          "auth": false,
+          "body": { "title": "Printer jam", "priority": "normal", "body": "Paper stuck" }
+        }
+      ],
+      "extractions": [{ "name": "ticketId", "action": "create", "path": "id" }],
+      "assertions": [
+        { "action": "create", "status": 201 },
+        { "action": "create", "bodyField": { "path": "id", "type": "non_empty_string" } },
+        {
+          "action": "create",
+          "bodyMatch": {
+            "title": { "$echo": "create.title" },
+            "priority": "normal",
+            "body": "Paper stuck",
+            "status": "open"
+          }
+        }
+      ],
+      "cleanup": [{ "action": "reset-store" }]
+    },
+    {
+      "id": "tickets.create.accepted-empty-body",
+      "classification": "accepted_regression_behavior",
+      "kind": "positive",
+      "intent": "Omitting the optional body is stored as an empty string. This is a reviewed acceptance, not a value read from the store.",
+      "preconditions": ["store is empty"],
+      "actions": [
+        {
+          "id": "create",
+          "method": "POST",
+          "path": "/tickets",
+          "auth": false,
+          "body": { "title": "Printer jam", "priority": "low" }
+        }
+      ],
+      "extractions": [],
+      "assertions": [
+        { "action": "create", "status": 201 },
+        { "action": "create", "bodyMatch": { "title": "Printer jam", "priority": "low", "body": "", "status": "open" } }
+      ],
+      "cleanup": [{ "action": "reset-store" }]
+    },
+    {
+      "id": "tickets.create.invalid-title-type",
+      "classification": "approved_requirement",
+      "kind": "invalid_input",
+      "intent": "A non-string title is rejected.",
+      "preconditions": ["store is empty"],
+      "constraint": { "field": "title", "kind": "type", "expectedType": "string", "expect": "rejection" },
+      "actions": [
+        { "id": "create", "method": "POST", "path": "/tickets", "auth": false, "body": { "title": 12, "priority": "normal" } }
+      ],
+      "extractions": [],
+      "assertions": [
+        { "action": "create", "status": 400 },
+        { "action": "create", "bodyEquals": { "error": "title_type" } }
+      ],
+      "cleanup": [{ "action": "reset-store" }]
+    },
+    {
+      "id": "tickets.create.invalid-priority",
+      "classification": "approved_requirement",
+      "kind": "invalid_input",
+      "intent": "A priority outside low, normal, and high is rejected.",
+      "preconditions": ["title is a non-empty string within the approved length"],
+      "constraint": { "field": "priority", "kind": "enum", "value": "urgent", "expect": "rejection" },
+      "actions": [
+        { "id": "create", "method": "POST", "path": "/tickets", "auth": false, "body": { "title": "Valid", "priority": "urgent" } }
+      ],
+      "extractions": [],
+      "assertions": [
+        { "action": "create", "status": 400 },
+        { "action": "create", "bodyEquals": { "error": "priority_enum" } }
+      ],
+      "cleanup": [{ "action": "reset-store" }]
+    },
+    {
+      "id": "tickets.create.invalid-priority-missing",
+      "classification": "approved_requirement",
+      "kind": "invalid_input",
+      "intent": "A missing priority is rejected.",
+      "preconditions": ["title is valid"],
+      "constraint": { "field": "priority", "kind": "enum", "value": null, "missing": true, "expect": "rejection" },
+      "actions": [
+        { "id": "create", "method": "POST", "path": "/tickets", "auth": false, "body": { "title": "Valid title" } }
+      ],
+      "extractions": [],
+      "assertions": [
+        { "action": "create", "status": 400 },
+        { "action": "create", "bodyEquals": { "error": "priority_enum" } }
+      ],
+      "cleanup": [{ "action": "reset-store" }]
+    },
+    {
+      "id": "tickets.create.invalid-body-type",
+      "classification": "approved_requirement",
+      "kind": "invalid_input",
+      "intent": "A non-string body is rejected.",
+      "preconditions": ["title and priority are valid"],
+      "constraint": { "field": "body", "kind": "type", "expectedType": "string", "expect": "rejection" },
+      "actions": [
+        { "id": "create", "method": "POST", "path": "/tickets", "auth": false, "body": { "title": "Valid", "priority": "normal", "body": 5 } }
+      ],
+      "extractions": [],
+      "assertions": [
+        { "action": "create", "status": 400 },
+        { "action": "create", "bodyEquals": { "error": "body_length" } }
+      ],
+      "cleanup": [{ "action": "reset-store" }]
+    },
+    {
+      "id": "tickets.create.boundary-title-min",
+      "classification": "approved_requirement",
+      "kind": "boundary",
+      "intent": "A one-character title is the shortest accepted title.",
+      "preconditions": ["priority and body are valid"],
+      "boundary": { "field": "title", "length": 1, "relation": "min_inclusive", "expect": "success", "approvedMin": 1 },
+      "actions": [
+        {
+          "id": "create",
+          "method": "POST",
+          "path": "/tickets",
+          "auth": false,
+          "body": { "title": { "$repeat": { "char": "T", "count": 1 } }, "priority": "normal", "body": "edge" }
+        }
+      ],
+      "extractions": [],
+      "assertions": [
+        { "action": "create", "status": 201 },
+        { "action": "create", "bodyMatch": { "title": { "$echo": "create.title" }, "status": "open" } }
+      ],
+      "cleanup": [{ "action": "reset-store" }]
+    },
+    {
+      "id": "tickets.create.boundary-title-empty",
+      "classification": "approved_requirement",
+      "kind": "boundary",
+      "intent": "An empty title is rejected.",
+      "preconditions": ["priority is valid"],
+      "boundary": { "field": "title", "length": 0, "relation": "below_min", "expect": "rejection", "approvedMin": 1 },
+      "actions": [
+        {
+          "id": "create",
+          "method": "POST",
+          "path": "/tickets",
+          "auth": false,
+          "body": { "title": { "$repeat": { "char": "T", "count": 0 } }, "priority": "normal" }
+        }
+      ],
+      "extractions": [],
+      "assertions": [
+        { "action": "create", "status": 400 },
+        { "action": "create", "bodyEquals": { "error": "title_length" } }
+      ],
+      "cleanup": [{ "action": "reset-store" }]
+    },
+    {
+      "id": "tickets.create.boundary-title-max",
+      "classification": "approved_requirement",
+      "kind": "boundary",
+      "intent": "An 80-character title is the longest accepted title.",
+      "preconditions": ["priority and body are valid"],
+      "boundary": { "field": "title", "length": 80, "relation": "max_inclusive", "expect": "success", "approvedMax": 80 },
+      "actions": [
+        {
+          "id": "create",
+          "method": "POST",
+          "path": "/tickets",
+          "auth": false,
+          "body": { "title": { "$repeat": { "char": "T", "count": 80 } }, "priority": "normal", "body": "edge" }
+        }
+      ],
+      "extractions": [],
+      "assertions": [
+        { "action": "create", "status": 201 },
+        { "action": "create", "bodyMatch": { "title": { "$echo": "create.title" }, "status": "open" } }
+      ],
+      "cleanup": [{ "action": "reset-store" }]
+    },
+    {
+      "id": "tickets.create.boundary-title-over-max",
+      "classification": "approved_requirement",
+      "kind": "boundary",
+      "intent": "An 81-character title is rejected.",
+      "preconditions": ["priority is valid"],
+      "boundary": { "field": "title", "length": 81, "relation": "above_max", "expect": "rejection", "approvedMax": 80 },
+      "actions": [
+        {
+          "id": "create",
+          "method": "POST",
+          "path": "/tickets",
+          "auth": false,
+          "body": { "title": { "$repeat": { "char": "T", "count": 81 } }, "priority": "normal" }
+        }
+      ],
+      "extractions": [],
+      "assertions": [
+        { "action": "create", "status": 400 },
+        { "action": "create", "bodyEquals": { "error": "title_length" } }
+      ],
+      "cleanup": [{ "action": "reset-store" }]
+    },
+    {
+      "id": "tickets.create.boundary-body-max",
+      "classification": "approved_requirement",
+      "kind": "boundary",
+      "intent": "A 500-character body is the longest accepted body.",
+      "preconditions": ["title and priority are valid"],
+      "boundary": { "field": "body", "length": 500, "relation": "max_inclusive", "expect": "success", "approvedMax": 500 },
+      "actions": [
+        {
+          "id": "create",
+          "method": "POST",
+          "path": "/tickets",
+          "auth": false,
+          "body": { "title": "Valid", "priority": "high", "body": { "$repeat": { "char": "B", "count": 500 } } }
+        }
+      ],
+      "extractions": [],
+      "assertions": [
+        { "action": "create", "status": 201 },
+        { "action": "create", "bodyMatch": { "body": { "$echo": "create.body" }, "status": "open" } }
+      ],
+      "cleanup": [{ "action": "reset-store" }]
+    },
+    {
+      "id": "tickets.create.boundary-body-over-max",
+      "classification": "approved_requirement",
+      "kind": "boundary",
+      "intent": "A 501-character body is rejected.",
+      "preconditions": ["title and priority are valid"],
+      "boundary": { "field": "body", "length": 501, "relation": "above_max", "expect": "rejection", "approvedMax": 500 },
+      "actions": [
+        {
+          "id": "create",
+          "method": "POST",
+          "path": "/tickets",
+          "auth": false,
+          "body": { "title": "Valid", "priority": "high", "body": { "$repeat": { "char": "B", "count": 501 } } }
+        }
+      ],
+      "extractions": [],
+      "assertions": [
+        { "action": "create", "status": 400 },
+        { "action": "create", "bodyEquals": { "error": "body_length" } }
+      ],
+      "cleanup": [{ "action": "reset-store" }]
+    },
+    {
+      "id": "tickets.read.unauthorized-missing",
+      "classification": "approved_requirement",
+      "kind": "unauthorized",
+      "intent": "Reading a ticket without a bearer token is rejected.",
+      "preconditions": ["no Authorization header"],
+      "actions": [
+        { "id": "read", "method": "GET", "path": "/tickets/missing-ticket", "auth": false }
+      ],
+      "extractions": [],
+      "assertions": [
+        { "action": "read", "status": 401 },
+        { "action": "read", "bodyEquals": { "error": "unauthorized" } }
+      ],
+      "cleanup": [{ "action": "reset-store" }]
+    },
+    {
+      "id": "tickets.read.unauthorized-wrong-token",
+      "classification": "approved_requirement",
+      "kind": "unauthorized",
+      "intent": "Reading a ticket with the wrong bearer token is rejected.",
+      "preconditions": ["the supplied token is not the approved synthetic credential"],
+      "actions": [
+        { "id": "read", "method": "GET", "path": "/tickets/missing-ticket", "auth": { "token": "wrong-token" } }
+      ],
+      "extractions": [],
+      "assertions": [
+        { "action": "read", "status": 401 },
+        { "action": "read", "bodyEquals": { "error": "unauthorized" } }
+      ],
+      "cleanup": [{ "action": "reset-store" }]
+    },
+    {
+      "id": "tickets.read.positive",
+      "classification": "approved_requirement",
+      "kind": "positive",
+      "intent": "The ticket returned by create can be read with the approved bearer token.",
+      "preconditions": ["store is empty", "read requires the approved bearer token"],
+      "actions": [
+        {
+          "id": "create",
+          "method": "POST",
+          "path": "/tickets",
+          "auth": false,
+          "body": { "title": "Printer jam", "priority": "normal", "body": "Paper stuck" }
+        },
+        { "id": "read", "method": "GET", "path": "/tickets/{{ticketId}}", "auth": true }
+      ],
+      "extractions": [{ "name": "ticketId", "action": "create", "path": "id" }],
+      "assertions": [
+        { "action": "create", "status": 201 },
+        { "action": "read", "status": 200 },
+        { "action": "read", "bodyField": { "path": "id", "equalsExtraction": "ticketId" } },
+        { "action": "read", "bodyMatch": { "title": { "$echo": "create.title" }, "priority": "normal", "body": "Paper stuck", "status": "open" } }
+      ],
+      "cleanup": [{ "action": "reset-store" }]
+    },
+    {
+      "id": "tickets.read.not-found",
+      "classification": "approved_requirement",
+      "kind": "not_found",
+      "intent": "An unknown ticket id is not found when the caller is authorized.",
+      "preconditions": ["store is empty", "request uses the approved bearer token"],
+      "actions": [
+        { "id": "read", "method": "GET", "path": "/tickets/does-not-exist", "auth": true }
+      ],
+      "extractions": [],
+      "assertions": [
+        { "action": "read", "status": 404 },
+        { "action": "read", "bodyEquals": { "error": "not_found" } }
+      ],
+      "cleanup": [{ "action": "reset-store" }]
+    },
+    {
+      "id": "tickets.update.unauthorized",
+      "classification": "approved_requirement",
+      "kind": "unauthorized",
+      "intent": "Updating a ticket without a bearer token is rejected.",
+      "preconditions": ["no Authorization header"],
+      "actions": [
+        { "id": "update", "method": "PATCH", "path": "/tickets/missing-ticket", "auth": false, "body": { "status": "closed" } }
+      ],
+      "extractions": [],
+      "assertions": [
+        { "action": "update", "status": 401 },
+        { "action": "update", "bodyEquals": { "error": "unauthorized" } }
+      ],
+      "cleanup": [{ "action": "reset-store" }]
+    },
+    {
+      "id": "tickets.update.invalid-status",
+      "classification": "approved_requirement",
+      "kind": "invalid_input",
+      "intent": "A status other than open or closed is rejected.",
+      "preconditions": ["request uses the approved bearer token"],
+      "constraint": { "field": "status", "kind": "enum", "value": "OPEN", "expect": "rejection" },
+      "actions": [
+        { "id": "update", "method": "PATCH", "path": "/tickets/does-not-exist", "auth": true, "body": { "status": "OPEN" } }
+      ],
+      "extractions": [],
+      "assertions": [
+        { "action": "update", "status": 400 },
+        { "action": "update", "bodyEquals": { "error": "status_enum" } }
+      ],
+      "cleanup": [{ "action": "reset-store" }]
+    },
+    {
+      "id": "tickets.update.positive",
+      "classification": "approved_requirement",
+      "kind": "positive",
+      "intent": "An authorized caller can close a ticket without changing its other fields.",
+      "preconditions": ["store is empty", "update requires the approved bearer token"],
+      "actions": [
+        {
+          "id": "create",
+          "method": "POST",
+          "path": "/tickets",
+          "auth": false,
+          "body": { "title": "Printer jam", "priority": "normal", "body": "Paper stuck" }
+        },
+        { "id": "update", "method": "PATCH", "path": "/tickets/{{ticketId}}", "auth": true, "body": { "status": "closed" } }
+      ],
+      "extractions": [{ "name": "ticketId", "action": "create", "path": "id" }],
+      "assertions": [
+        { "action": "create", "status": 201 },
+        { "action": "update", "status": 200 },
+        { "action": "update", "bodyField": { "path": "id", "equalsExtraction": "ticketId" } },
+        { "action": "update", "bodyMatch": { "title": "Printer jam", "priority": "normal", "body": "Paper stuck", "status": "closed" } }
+      ],
+      "cleanup": [{ "action": "reset-store" }]
+    },
+    {
+      "id": "tickets.update.not-found",
+      "classification": "approved_requirement",
+      "kind": "not_found",
+      "intent": "Closing an unknown ticket id is not found when the status is valid.",
+      "preconditions": ["store is empty", "request uses the approved bearer token"],
+      "actions": [
+        { "id": "update", "method": "PATCH", "path": "/tickets/does-not-exist", "auth": true, "body": { "status": "open" } }
+      ],
+      "extractions": [],
+      "assertions": [
+        { "action": "update", "status": 404 },
+        { "action": "update", "bodyEquals": { "error": "not_found" } }
+      ],
+      "cleanup": [{ "action": "reset-store" }]
+    }
+  ]
+}

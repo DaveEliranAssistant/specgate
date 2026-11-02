@@ -1,0 +1,227 @@
+
+Running 21 tests using 1 worker
+
+
+
+[1/21] .tmp-proof/seeded-defect/generated/api.spec.mjs:28:1 › health.ok.positive
+[2/21] .tmp-proof/seeded-defect/generated/api.spec.mjs:43:1 › tickets.create.positive
+  1) .tmp-proof/seeded-defect/generated/api.spec.mjs:43:1 › tickets.create.positive ────────────────
+
+    Error: tickets.create.positive status
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 201
+    Received: 200
+
+      49 |     const response = await api.post("/tickets", {"failOnStatusCode":false,"data":{"title":"Printer jam","priority":"normal","body":"Paper stuck"}});
+      50 |     const responseBody = await response.json();
+    > 51 |     expect(response.status(), "tickets.create.positive status").toBe(201);
+         |                                                                 ^
+      52 |     expect(typeof responseBody.id, "tickets.create.positive id type").toBe('string');
+      53 |     expect(responseBody.id.length, "tickets.create.positive id length").toBeGreaterThan(0);
+      54 |     expect(responseBody, "tickets.create.positive bodyMatch").toMatchObject({"title":"Printer jam","priority":"normal","body":"Paper stuck","status":"open"});
+        at /workspace/poc/code-first-service-tests/.tmp-proof/seeded-defect/generated/api.spec.mjs:51:65
+
+    Error Context: .tmp-proof/seeded-defect/output/api-tickets-create-positive/error-context.md
+
+    Error Context: .tmp-proof/seeded-defect/output/api-tickets-create-positive/error-context.md
+
+
+
+
+[3/21] .tmp-proof/seeded-defect/generated/api.spec.mjs:61:1 › tickets.create.accepted-empty-body
+  2) .tmp-proof/seeded-defect/generated/api.spec.mjs:61:1 › tickets.create.accepted-empty-body ─────
+
+    Error: tickets.create.accepted-empty-body status
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 201
+    Received: 200
+
+      67 |     const response = await api.post("/tickets", {"failOnStatusCode":false,"data":{"title":"Printer jam","priority":"low"}});
+      68 |     const responseBody = await response.json();
+    > 69 |     expect(response.status(), "tickets.create.accepted-empty-body status").toBe(201);
+         |                                                                            ^
+      70 |     expect(responseBody, "tickets.create.accepted-empty-body bodyMatch").toMatchObject({"title":"Printer jam","priority":"low","body":"","status":"open"});
+      71 |   }
+      72 | });
+        at /workspace/poc/code-first-service-tests/.tmp-proof/seeded-defect/generated/api.spec.mjs:69:76
+
+    Error Context: .tmp-proof/seeded-defect/output/api-tickets-create-accepted-empty-body/error-context.md
+
+    Error Context: .tmp-proof/seeded-defect/output/api-tickets-create-accepted-empty-body/error-context.md
+
+
+
+
+[4/21] .tmp-proof/seeded-defect/generated/api.spec.mjs:76:1 › tickets.create.invalid-title-type
+[5/21] .tmp-proof/seeded-defect/generated/api.spec.mjs:91:1 › tickets.create.invalid-priority
+[6/21] .tmp-proof/seeded-defect/generated/api.spec.mjs:106:1 › tickets.create.invalid-priority-missing
+[7/21] .tmp-proof/seeded-defect/generated/api.spec.mjs:121:1 › tickets.create.invalid-body-type
+[8/21] .tmp-proof/seeded-defect/generated/api.spec.mjs:136:1 › tickets.create.boundary-title-min
+  3) .tmp-proof/seeded-defect/generated/api.spec.mjs:136:1 › tickets.create.boundary-title-min ─────
+
+    Error: tickets.create.boundary-title-min status
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 201
+    Received: 200
+
+      142 |     const response = await api.post("/tickets", {"failOnStatusCode":false,"data":{"title":"T","priority":"normal","body":"edge"}});
+      143 |     const responseBody = await response.json();
+    > 144 |     expect(response.status(), "tickets.create.boundary-title-min status").toBe(201);
+          |                                                                           ^
+      145 |     expect(responseBody, "tickets.create.boundary-title-min bodyMatch").toMatchObject({"title":"T","status":"open"});
+      146 |   }
+      147 | });
+        at /workspace/poc/code-first-service-tests/.tmp-proof/seeded-defect/generated/api.spec.mjs:144:75
+
+    Error Context: .tmp-proof/seeded-defect/output/api-tickets-create-boundary-title-min/error-context.md
+
+    Error Context: .tmp-proof/seeded-defect/output/api-tickets-create-boundary-title-min/error-context.md
+
+
+
+
+[9/21] .tmp-proof/seeded-defect/generated/api.spec.mjs:151:1 › tickets.create.boundary-title-empty
+[10/21] .tmp-proof/seeded-defect/generated/api.spec.mjs:166:1 › tickets.create.boundary-title-max
+  4) .tmp-proof/seeded-defect/generated/api.spec.mjs:166:1 › tickets.create.boundary-title-max ─────
+
+    Error: tickets.create.boundary-title-max status
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 201
+    Received: 200
+
+      172 |     const response = await api.post("/tickets", {"failOnStatusCode":false,"data":{"title":"TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT","priority":"normal","body":"edge"}});
+      173 |     const responseBody = await response.json();
+    > 174 |     expect(response.status(), "tickets.create.boundary-title-max status").toBe(201);
+          |                                                                           ^
+      175 |     expect(responseBody, "tickets.create.boundary-title-max bodyMatch").toMatchObject({"title":"TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT","status":"open"});
+      176 |   }
+      177 | });
+        at /workspace/poc/code-first-service-tests/.tmp-proof/seeded-defect/generated/api.spec.mjs:174:75
+
+    Error Context: .tmp-proof/seeded-defect/output/api-tickets-create-boundary-title-max/error-context.md
+
+    Error Context: .tmp-proof/seeded-defect/output/api-tickets-create-boundary-title-max/error-context.md
+
+
+
+
+[11/21] .tmp-proof/seeded-defect/generated/api.spec.mjs:181:1 › tickets.create.boundary-title-over-max
+[12/21] .tmp-proof/seeded-defect/generated/api.spec.mjs:196:1 › tickets.create.boundary-body-max
+  5) .tmp-proof/seeded-defect/generated/api.spec.mjs:196:1 › tickets.create.boundary-body-max ──────
+
+    Error: tickets.create.boundary-body-max status
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 201
+    Received: 200
+
+      202 |     const response = await api.post("/tickets", {"failOnStatusCode":false,"data":{"title":"Valid","priority":"high","body":"BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"}});
+      203 |     const responseBody = await response.json();
+    > 204 |     expect(response.status(), "tickets.create.boundary-body-max status").toBe(201);
+          |                                                                          ^
+      205 |     expect(responseBody, "tickets.create.boundary-body-max bodyMatch").toMatchObject({"body":"BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB","status":"open"});
+      206 |   }
+      207 | });
+        at /workspace/poc/code-first-service-tests/.tmp-proof/seeded-defect/generated/api.spec.mjs:204:74
+
+    Error Context: .tmp-proof/seeded-defect/output/api-tickets-create-boundary-body-max/error-context.md
+
+    Error Context: .tmp-proof/seeded-defect/output/api-tickets-create-boundary-body-max/error-context.md
+
+
+
+
+[13/21] .tmp-proof/seeded-defect/generated/api.spec.mjs:211:1 › tickets.create.boundary-body-over-max
+[14/21] .tmp-proof/seeded-defect/generated/api.spec.mjs:226:1 › tickets.read.unauthorized-missing
+[15/21] .tmp-proof/seeded-defect/generated/api.spec.mjs:241:1 › tickets.read.unauthorized-wrong-token
+[16/21] .tmp-proof/seeded-defect/generated/api.spec.mjs:256:1 › tickets.read.positive
+  6) .tmp-proof/seeded-defect/generated/api.spec.mjs:256:1 › tickets.read.positive ─────────────────
+
+    Error: tickets.read.positive status
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 201
+    Received: 200
+
+      262 |     const response = await api.post("/tickets", {"failOnStatusCode":false,"data":{"title":"Printer jam","priority":"normal","body":"Paper stuck"}});
+      263 |     const responseBody = await response.json();
+    > 264 |     expect(response.status(), "tickets.read.positive status").toBe(201);
+          |                                                               ^
+      265 |     vars.ticketId = responseBody.id;
+      266 |   }
+      267 |   {
+        at /workspace/poc/code-first-service-tests/.tmp-proof/seeded-defect/generated/api.spec.mjs:264:63
+
+    Error Context: .tmp-proof/seeded-defect/output/api-tickets-read-positive/error-context.md
+
+    Error Context: .tmp-proof/seeded-defect/output/api-tickets-read-positive/error-context.md
+
+
+
+
+[17/21] .tmp-proof/seeded-defect/generated/api.spec.mjs:278:1 › tickets.read.not-found
+[18/21] .tmp-proof/seeded-defect/generated/api.spec.mjs:293:1 › tickets.update.unauthorized
+[19/21] .tmp-proof/seeded-defect/generated/api.spec.mjs:308:1 › tickets.update.invalid-status
+[20/21] .tmp-proof/seeded-defect/generated/api.spec.mjs:323:1 › tickets.update.positive
+  7) .tmp-proof/seeded-defect/generated/api.spec.mjs:323:1 › tickets.update.positive ───────────────
+
+    Error: tickets.update.positive status
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 201
+    Received: 200
+
+      329 |     const response = await api.post("/tickets", {"failOnStatusCode":false,"data":{"title":"Printer jam","priority":"normal","body":"Paper stuck"}});
+      330 |     const responseBody = await response.json();
+    > 331 |     expect(response.status(), "tickets.update.positive status").toBe(201);
+          |                                                                 ^
+      332 |     vars.ticketId = responseBody.id;
+      333 |   }
+      334 |   {
+        at /workspace/poc/code-first-service-tests/.tmp-proof/seeded-defect/generated/api.spec.mjs:331:65
+
+    Error Context: .tmp-proof/seeded-defect/output/api-tickets-update-positive/error-context.md
+
+    Error Context: .tmp-proof/seeded-defect/output/api-tickets-update-positive/error-context.md
+
+
+
+
+[21/21] .tmp-proof/seeded-defect/generated/api.spec.mjs:345:1 › tickets.update.not-found
+  7 failed
+    .tmp-proof/seeded-defect/generated/api.spec.mjs:43:1 › tickets.create.positive ─────────────────
+    .tmp-proof/seeded-defect/generated/api.spec.mjs:61:1 › tickets.create.accepted-empty-body ──────
+    .tmp-proof/seeded-defect/generated/api.spec.mjs:136:1 › tickets.create.boundary-title-min ──────
+    .tmp-proof/seeded-defect/generated/api.spec.mjs:166:1 › tickets.create.boundary-title-max ──────
+    .tmp-proof/seeded-defect/generated/api.spec.mjs:196:1 › tickets.create.boundary-body-max ───────
+    .tmp-proof/seeded-defect/generated/api.spec.mjs:256:1 › tickets.read.positive ──────────────────
+    .tmp-proof/seeded-defect/generated/api.spec.mjs:323:1 › tickets.update.positive ────────────────
+  14 passed (3.9s)
+
+(node:4307) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4319) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4331) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4343) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4355) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4367) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4379) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4391) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

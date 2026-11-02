@@ -1,0 +1,23 @@
+{
+  "description": "Synthetic service, DTO, and route diff used to exercise maintenance. It is not a product change.",
+  "edits": [
+    {
+      "file": "fixture/ticket-desk/service.mjs",
+      "find": "title.length > 80",
+      "replace": "title.length > 40",
+      "expectCount": 1
+    },
+    {
+      "file": "fixture/ticket-desk/service.mjs",
+      "find": "app.get('/health', healthHandler);\n",
+      "replace": "app.get('/health', healthHandler);\n\nexport function auditHandler(req, res) {\n  res.status(200).json({ ok: true });\n}\napp.get('/audit', auditHandler);\n",
+      "expectCount": 1
+    },
+    {
+      "file": "fixture/ticket-desk/store.mjs",
+      "find": "status: 'open'",
+      "replace": "status: 'open', assignee: null",
+      "expectCount": 1
+    }
+  ]
+}

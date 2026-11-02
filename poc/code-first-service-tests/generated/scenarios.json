@@ -1,0 +1,1978 @@
+{
+  "schemaVersion": "1.0.0",
+  "synthetic": true,
+  "warning": "SYNTHETIC fixture. Assertions are copied from the reviewed baseline, not from implementation observations.",
+  "service": "synthetic-ticket-desk",
+  "supportedSubset": "express-literal-routes-v1",
+  "sourceCommit": "14842f909058ba990a38bc1bd58519cf40561b45",
+  "fixtureSha256": "c948f58695e279d8fd44be8b6e8287c3278907e217e8929c77de7b20211957e6",
+  "auth": {
+    "header": "Authorization",
+    "scheme": "Bearer",
+    "syntheticCredential": "synthetic-token",
+    "implementationConstant": "BEARER_TOKEN"
+  },
+  "scenarios": [
+    {
+      "id": "health.ok.positive",
+      "version": 1,
+      "intent": "The public health probe reports ok.",
+      "classification": "approved_requirement",
+      "kind": "positive",
+      "executable": true,
+      "discoveryGap": false,
+      "preconditions": [
+        "no authorization header"
+      ],
+      "fixtures": {
+        "store": "empty",
+        "credentialSource": "baseline",
+        "network": "127.0.0.1"
+      },
+      "boundary": null,
+      "constraint": null,
+      "actions": [
+        {
+          "id": "probe",
+          "method": "GET",
+          "path": "/health",
+          "auth": false
+        }
+      ],
+      "extractions": [],
+      "assertions": [
+        {
+          "action": "probe",
+          "status": 200
+        },
+        {
+          "action": "probe",
+          "bodyEquals": {
+            "ok": true
+          }
+        }
+      ],
+      "cleanup": [
+        {
+          "action": "reset-store"
+        }
+      ],
+      "evidence": [
+        {
+          "role": "requirement",
+          "file": "poc/code-first-service-tests/baseline/behavior-baseline.json",
+          "symbol": "health.ok.positive",
+          "line": 20,
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "app.get",
+          "line": 77,
+          "role": "route_registration",
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "healthHandler",
+          "line": 23,
+          "role": "handler",
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        }
+      ]
+    },
+    {
+      "id": "tickets.create.positive",
+      "version": 1,
+      "intent": "A valid title, priority, and body creates an open ticket.",
+      "classification": "approved_requirement",
+      "kind": "positive",
+      "executable": true,
+      "discoveryGap": false,
+      "preconditions": [
+        "store is empty",
+        "create does not require authorization"
+      ],
+      "fixtures": {
+        "store": "empty",
+        "credentialSource": "baseline",
+        "network": "127.0.0.1"
+      },
+      "boundary": null,
+      "constraint": null,
+      "actions": [
+        {
+          "id": "create",
+          "method": "POST",
+          "path": "/tickets",
+          "auth": false,
+          "body": {
+            "title": "Printer jam",
+            "priority": "normal",
+            "body": "Paper stuck"
+          }
+        }
+      ],
+      "extractions": [
+        {
+          "name": "ticketId",
+          "action": "create",
+          "path": "id"
+        }
+      ],
+      "assertions": [
+        {
+          "action": "create",
+          "status": 201
+        },
+        {
+          "action": "create",
+          "bodyField": {
+            "path": "id",
+            "type": "non_empty_string"
+          }
+        },
+        {
+          "action": "create",
+          "bodyMatch": {
+            "title": "Printer jam",
+            "priority": "normal",
+            "body": "Paper stuck",
+            "status": "open"
+          }
+        }
+      ],
+      "cleanup": [
+        {
+          "action": "reset-store"
+        }
+      ],
+      "evidence": [
+        {
+          "role": "requirement",
+          "file": "poc/code-first-service-tests/baseline/behavior-baseline.json",
+          "symbol": "tickets.create.positive",
+          "line": 36,
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "app.post",
+          "line": 74,
+          "role": "route_registration",
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "createTicketHandler",
+          "line": 27,
+          "role": "handler",
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        }
+      ]
+    },
+    {
+      "id": "tickets.create.accepted-empty-body",
+      "version": 1,
+      "intent": "Omitting the optional body is stored as an empty string. This is a reviewed acceptance, not a value read from the store.",
+      "classification": "accepted_regression_behavior",
+      "kind": "positive",
+      "executable": true,
+      "discoveryGap": false,
+      "preconditions": [
+        "store is empty"
+      ],
+      "fixtures": {
+        "store": "empty",
+        "credentialSource": "baseline",
+        "network": "127.0.0.1"
+      },
+      "boundary": null,
+      "constraint": null,
+      "actions": [
+        {
+          "id": "create",
+          "method": "POST",
+          "path": "/tickets",
+          "auth": false,
+          "body": {
+            "title": "Printer jam",
+            "priority": "low"
+          }
+        }
+      ],
+      "extractions": [],
+      "assertions": [
+        {
+          "action": "create",
+          "status": 201
+        },
+        {
+          "action": "create",
+          "bodyMatch": {
+            "title": "Printer jam",
+            "priority": "low",
+            "body": "",
+            "status": "open"
+          }
+        }
+      ],
+      "cleanup": [
+        {
+          "action": "reset-store"
+        }
+      ],
+      "evidence": [
+        {
+          "role": "requirement",
+          "file": "poc/code-first-service-tests/baseline/behavior-baseline.json",
+          "symbol": "tickets.create.accepted-empty-body",
+          "line": 67,
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "app.post",
+          "line": 74,
+          "role": "route_registration",
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "createTicketHandler",
+          "line": 27,
+          "role": "handler",
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        }
+      ]
+    },
+    {
+      "id": "tickets.create.invalid-title-type",
+      "version": 1,
+      "intent": "A non-string title is rejected.",
+      "classification": "approved_requirement",
+      "kind": "invalid_input",
+      "executable": true,
+      "discoveryGap": false,
+      "preconditions": [
+        "store is empty"
+      ],
+      "fixtures": {
+        "store": "empty",
+        "credentialSource": "baseline",
+        "network": "127.0.0.1"
+      },
+      "boundary": null,
+      "constraint": {
+        "field": "title",
+        "kind": "type",
+        "expectedType": "string",
+        "expect": "rejection"
+      },
+      "actions": [
+        {
+          "id": "create",
+          "method": "POST",
+          "path": "/tickets",
+          "auth": false,
+          "body": {
+            "title": 12,
+            "priority": "normal"
+          }
+        }
+      ],
+      "extractions": [],
+      "assertions": [
+        {
+          "action": "create",
+          "status": 400
+        },
+        {
+          "action": "create",
+          "bodyEquals": {
+            "error": "title_type"
+          }
+        }
+      ],
+      "cleanup": [
+        {
+          "action": "reset-store"
+        }
+      ],
+      "evidence": [
+        {
+          "role": "requirement",
+          "file": "poc/code-first-service-tests/baseline/behavior-baseline.json",
+          "symbol": "tickets.create.invalid-title-type",
+          "line": 89,
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "app.post",
+          "line": 74,
+          "role": "route_registration",
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "createTicketHandler",
+          "line": 27,
+          "role": "handler",
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        }
+      ]
+    },
+    {
+      "id": "tickets.create.invalid-priority",
+      "version": 1,
+      "intent": "A priority outside low, normal, and high is rejected.",
+      "classification": "approved_requirement",
+      "kind": "invalid_input",
+      "executable": true,
+      "discoveryGap": false,
+      "preconditions": [
+        "title is a non-empty string within the approved length"
+      ],
+      "fixtures": {
+        "store": "empty",
+        "credentialSource": "baseline",
+        "network": "127.0.0.1"
+      },
+      "boundary": null,
+      "constraint": {
+        "field": "priority",
+        "kind": "enum",
+        "value": "urgent",
+        "expect": "rejection"
+      },
+      "actions": [
+        {
+          "id": "create",
+          "method": "POST",
+          "path": "/tickets",
+          "auth": false,
+          "body": {
+            "title": "Valid",
+            "priority": "urgent"
+          }
+        }
+      ],
+      "extractions": [],
+      "assertions": [
+        {
+          "action": "create",
+          "status": 400
+        },
+        {
+          "action": "create",
+          "bodyEquals": {
+            "error": "priority_enum"
+          }
+        }
+      ],
+      "cleanup": [
+        {
+          "action": "reset-store"
+        }
+      ],
+      "evidence": [
+        {
+          "role": "requirement",
+          "file": "poc/code-first-service-tests/baseline/behavior-baseline.json",
+          "symbol": "tickets.create.invalid-priority",
+          "line": 106,
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "app.post",
+          "line": 74,
+          "role": "route_registration",
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "createTicketHandler",
+          "line": 27,
+          "role": "handler",
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        }
+      ]
+    },
+    {
+      "id": "tickets.create.invalid-priority-missing",
+      "version": 1,
+      "intent": "A missing priority is rejected.",
+      "classification": "approved_requirement",
+      "kind": "invalid_input",
+      "executable": true,
+      "discoveryGap": false,
+      "preconditions": [
+        "title is valid"
+      ],
+      "fixtures": {
+        "store": "empty",
+        "credentialSource": "baseline",
+        "network": "127.0.0.1"
+      },
+      "boundary": null,
+      "constraint": {
+        "field": "priority",
+        "kind": "enum",
+        "value": null,
+        "missing": true,
+        "expect": "rejection"
+      },
+      "actions": [
+        {
+          "id": "create",
+          "method": "POST",
+          "path": "/tickets",
+          "auth": false,
+          "body": {
+            "title": "Valid title"
+          }
+        }
+      ],
+      "extractions": [],
+      "assertions": [
+        {
+          "action": "create",
+          "status": 400
+        },
+        {
+          "action": "create",
+          "bodyEquals": {
+            "error": "priority_enum"
+          }
+        }
+      ],
+      "cleanup": [
+        {
+          "action": "reset-store"
+        }
+      ],
+      "evidence": [
+        {
+          "role": "requirement",
+          "file": "poc/code-first-service-tests/baseline/behavior-baseline.json",
+          "symbol": "tickets.create.invalid-priority-missing",
+          "line": 123,
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "app.post",
+          "line": 74,
+          "role": "route_registration",
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "createTicketHandler",
+          "line": 27,
+          "role": "handler",
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        }
+      ]
+    },
+    {
+      "id": "tickets.create.invalid-body-type",
+      "version": 1,
+      "intent": "A non-string body is rejected.",
+      "classification": "approved_requirement",
+      "kind": "invalid_input",
+      "executable": true,
+      "discoveryGap": false,
+      "preconditions": [
+        "title and priority are valid"
+      ],
+      "fixtures": {
+        "store": "empty",
+        "credentialSource": "baseline",
+        "network": "127.0.0.1"
+      },
+      "boundary": null,
+      "constraint": {
+        "field": "body",
+        "kind": "type",
+        "expectedType": "string",
+        "expect": "rejection"
+      },
+      "actions": [
+        {
+          "id": "create",
+          "method": "POST",
+          "path": "/tickets",
+          "auth": false,
+          "body": {
+            "title": "Valid",
+            "priority": "normal",
+            "body": 5
+          }
+        }
+      ],
+      "extractions": [],
+      "assertions": [
+        {
+          "action": "create",
+          "status": 400
+        },
+        {
+          "action": "create",
+          "bodyEquals": {
+            "error": "body_length"
+          }
+        }
+      ],
+      "cleanup": [
+        {
+          "action": "reset-store"
+        }
+      ],
+      "evidence": [
+        {
+          "role": "requirement",
+          "file": "poc/code-first-service-tests/baseline/behavior-baseline.json",
+          "symbol": "tickets.create.invalid-body-type",
+          "line": 140,
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "app.post",
+          "line": 74,
+          "role": "route_registration",
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "createTicketHandler",
+          "line": 27,
+          "role": "handler",
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        }
+      ]
+    },
+    {
+      "id": "tickets.create.boundary-title-min",
+      "version": 1,
+      "intent": "A one-character title is the shortest accepted title.",
+      "classification": "approved_requirement",
+      "kind": "boundary",
+      "executable": true,
+      "discoveryGap": false,
+      "preconditions": [
+        "priority and body are valid"
+      ],
+      "fixtures": {
+        "store": "empty",
+        "credentialSource": "baseline",
+        "network": "127.0.0.1"
+      },
+      "boundary": {
+        "field": "title",
+        "length": 1,
+        "relation": "min_inclusive",
+        "expect": "success",
+        "approvedMin": 1
+      },
+      "constraint": null,
+      "actions": [
+        {
+          "id": "create",
+          "method": "POST",
+          "path": "/tickets",
+          "auth": false,
+          "body": {
+            "title": "T",
+            "priority": "normal",
+            "body": "edge"
+          }
+        }
+      ],
+      "extractions": [],
+      "assertions": [
+        {
+          "action": "create",
+          "status": 201
+        },
+        {
+          "action": "create",
+          "bodyMatch": {
+            "title": "T",
+            "status": "open"
+          }
+        }
+      ],
+      "cleanup": [
+        {
+          "action": "reset-store"
+        }
+      ],
+      "evidence": [
+        {
+          "role": "requirement",
+          "file": "poc/code-first-service-tests/baseline/behavior-baseline.json",
+          "symbol": "tickets.create.boundary-title-min",
+          "line": 157,
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "app.post",
+          "line": 74,
+          "role": "route_registration",
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "createTicketHandler",
+          "line": 27,
+          "role": "handler",
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        }
+      ]
+    },
+    {
+      "id": "tickets.create.boundary-title-empty",
+      "version": 1,
+      "intent": "An empty title is rejected.",
+      "classification": "approved_requirement",
+      "kind": "boundary",
+      "executable": true,
+      "discoveryGap": false,
+      "preconditions": [
+        "priority is valid"
+      ],
+      "fixtures": {
+        "store": "empty",
+        "credentialSource": "baseline",
+        "network": "127.0.0.1"
+      },
+      "boundary": {
+        "field": "title",
+        "length": 0,
+        "relation": "below_min",
+        "expect": "rejection",
+        "approvedMin": 1
+      },
+      "constraint": null,
+      "actions": [
+        {
+          "id": "create",
+          "method": "POST",
+          "path": "/tickets",
+          "auth": false,
+          "body": {
+            "title": "",
+            "priority": "normal"
+          }
+        }
+      ],
+      "extractions": [],
+      "assertions": [
+        {
+          "action": "create",
+          "status": 400
+        },
+        {
+          "action": "create",
+          "bodyEquals": {
+            "error": "title_length"
+          }
+        }
+      ],
+      "cleanup": [
+        {
+          "action": "reset-store"
+        }
+      ],
+      "evidence": [
+        {
+          "role": "requirement",
+          "file": "poc/code-first-service-tests/baseline/behavior-baseline.json",
+          "symbol": "tickets.create.boundary-title-empty",
+          "line": 180,
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "app.post",
+          "line": 74,
+          "role": "route_registration",
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "createTicketHandler",
+          "line": 27,
+          "role": "handler",
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        }
+      ]
+    },
+    {
+      "id": "tickets.create.boundary-title-max",
+      "version": 1,
+      "intent": "An 80-character title is the longest accepted title.",
+      "classification": "approved_requirement",
+      "kind": "boundary",
+      "executable": true,
+      "discoveryGap": false,
+      "preconditions": [
+        "priority and body are valid"
+      ],
+      "fixtures": {
+        "store": "empty",
+        "credentialSource": "baseline",
+        "network": "127.0.0.1"
+      },
+      "boundary": {
+        "field": "title",
+        "length": 80,
+        "relation": "max_inclusive",
+        "expect": "success",
+        "approvedMax": 80
+      },
+      "constraint": null,
+      "actions": [
+        {
+          "id": "create",
+          "method": "POST",
+          "path": "/tickets",
+          "auth": false,
+          "body": {
+            "title": "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT",
+            "priority": "normal",
+            "body": "edge"
+          }
+        }
+      ],
+      "extractions": [],
+      "assertions": [
+        {
+          "action": "create",
+          "status": 201
+        },
+        {
+          "action": "create",
+          "bodyMatch": {
+            "title": "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT",
+            "status": "open"
+          }
+        }
+      ],
+      "cleanup": [
+        {
+          "action": "reset-store"
+        }
+      ],
+      "evidence": [
+        {
+          "role": "requirement",
+          "file": "poc/code-first-service-tests/baseline/behavior-baseline.json",
+          "symbol": "tickets.create.boundary-title-max",
+          "line": 203,
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "app.post",
+          "line": 74,
+          "role": "route_registration",
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "createTicketHandler",
+          "line": 27,
+          "role": "handler",
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        }
+      ]
+    },
+    {
+      "id": "tickets.create.boundary-title-over-max",
+      "version": 1,
+      "intent": "An 81-character title is rejected.",
+      "classification": "approved_requirement",
+      "kind": "boundary",
+      "executable": true,
+      "discoveryGap": false,
+      "preconditions": [
+        "priority is valid"
+      ],
+      "fixtures": {
+        "store": "empty",
+        "credentialSource": "baseline",
+        "network": "127.0.0.1"
+      },
+      "boundary": {
+        "field": "title",
+        "length": 81,
+        "relation": "above_max",
+        "expect": "rejection",
+        "approvedMax": 80
+      },
+      "constraint": null,
+      "actions": [
+        {
+          "id": "create",
+          "method": "POST",
+          "path": "/tickets",
+          "auth": false,
+          "body": {
+            "title": "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT",
+            "priority": "normal"
+          }
+        }
+      ],
+      "extractions": [],
+      "assertions": [
+        {
+          "action": "create",
+          "status": 400
+        },
+        {
+          "action": "create",
+          "bodyEquals": {
+            "error": "title_length"
+          }
+        }
+      ],
+      "cleanup": [
+        {
+          "action": "reset-store"
+        }
+      ],
+      "evidence": [
+        {
+          "role": "requirement",
+          "file": "poc/code-first-service-tests/baseline/behavior-baseline.json",
+          "symbol": "tickets.create.boundary-title-over-max",
+          "line": 226,
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "app.post",
+          "line": 74,
+          "role": "route_registration",
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "createTicketHandler",
+          "line": 27,
+          "role": "handler",
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        }
+      ]
+    },
+    {
+      "id": "tickets.create.boundary-body-max",
+      "version": 1,
+      "intent": "A 500-character body is the longest accepted body.",
+      "classification": "approved_requirement",
+      "kind": "boundary",
+      "executable": true,
+      "discoveryGap": false,
+      "preconditions": [
+        "title and priority are valid"
+      ],
+      "fixtures": {
+        "store": "empty",
+        "credentialSource": "baseline",
+        "network": "127.0.0.1"
+      },
+      "boundary": {
+        "field": "body",
+        "length": 500,
+        "relation": "max_inclusive",
+        "expect": "success",
+        "approvedMax": 500
+      },
+      "constraint": null,
+      "actions": [
+        {
+          "id": "create",
+          "method": "POST",
+          "path": "/tickets",
+          "auth": false,
+          "body": {
+            "title": "Valid",
+            "priority": "high",
+            "body": "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"
+          }
+        }
+      ],
+      "extractions": [],
+      "assertions": [
+        {
+          "action": "create",
+          "status": 201
+        },
+        {
+          "action": "create",
+          "bodyMatch": {
+            "body": "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
+            "status": "open"
+          }
+        }
+      ],
+      "cleanup": [
+        {
+          "action": "reset-store"
+        }
+      ],
+      "evidence": [
+        {
+          "role": "requirement",
+          "file": "poc/code-first-service-tests/baseline/behavior-baseline.json",
+          "symbol": "tickets.create.boundary-body-max",
+          "line": 249,
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "app.post",
+          "line": 74,
+          "role": "route_registration",
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "createTicketHandler",
+          "line": 27,
+          "role": "handler",
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        }
+      ]
+    },
+    {
+      "id": "tickets.create.boundary-body-over-max",
+      "version": 1,
+      "intent": "A 501-character body is rejected.",
+      "classification": "approved_requirement",
+      "kind": "boundary",
+      "executable": true,
+      "discoveryGap": false,
+      "preconditions": [
+        "title and priority are valid"
+      ],
+      "fixtures": {
+        "store": "empty",
+        "credentialSource": "baseline",
+        "network": "127.0.0.1"
+      },
+      "boundary": {
+        "field": "body",
+        "length": 501,
+        "relation": "above_max",
+        "expect": "rejection",
+        "approvedMax": 500
+      },
+      "constraint": null,
+      "actions": [
+        {
+          "id": "create",
+          "method": "POST",
+          "path": "/tickets",
+          "auth": false,
+          "body": {
+            "title": "Valid",
+            "priority": "high",
+            "body": "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"
+          }
+        }
+      ],
+      "extractions": [],
+      "assertions": [
+        {
+          "action": "create",
+          "status": 400
+        },
+        {
+          "action": "create",
+          "bodyEquals": {
+            "error": "body_length"
+          }
+        }
+      ],
+      "cleanup": [
+        {
+          "action": "reset-store"
+        }
+      ],
+      "evidence": [
+        {
+          "role": "requirement",
+          "file": "poc/code-first-service-tests/baseline/behavior-baseline.json",
+          "symbol": "tickets.create.boundary-body-over-max",
+          "line": 272,
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "app.post",
+          "line": 74,
+          "role": "route_registration",
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "createTicketHandler",
+          "line": 27,
+          "role": "handler",
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        }
+      ]
+    },
+    {
+      "id": "tickets.read.unauthorized-missing",
+      "version": 1,
+      "intent": "Reading a ticket without a bearer token is rejected.",
+      "classification": "approved_requirement",
+      "kind": "unauthorized",
+      "executable": true,
+      "discoveryGap": false,
+      "preconditions": [
+        "no Authorization header"
+      ],
+      "fixtures": {
+        "store": "empty",
+        "credentialSource": "baseline",
+        "network": "127.0.0.1"
+      },
+      "boundary": null,
+      "constraint": null,
+      "actions": [
+        {
+          "id": "read",
+          "method": "GET",
+          "path": "/tickets/missing-ticket",
+          "auth": false
+        }
+      ],
+      "extractions": [],
+      "assertions": [
+        {
+          "action": "read",
+          "status": 401
+        },
+        {
+          "action": "read",
+          "bodyEquals": {
+            "error": "unauthorized"
+          }
+        }
+      ],
+      "cleanup": [
+        {
+          "action": "reset-store"
+        }
+      ],
+      "evidence": [
+        {
+          "role": "requirement",
+          "file": "poc/code-first-service-tests/baseline/behavior-baseline.json",
+          "symbol": "tickets.read.unauthorized-missing",
+          "line": 295,
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "app.get",
+          "line": 75,
+          "role": "route_registration",
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "getTicketHandler",
+          "line": 51,
+          "role": "handler",
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        }
+      ]
+    },
+    {
+      "id": "tickets.read.unauthorized-wrong-token",
+      "version": 1,
+      "intent": "Reading a ticket with the wrong bearer token is rejected.",
+      "classification": "approved_requirement",
+      "kind": "unauthorized",
+      "executable": true,
+      "discoveryGap": false,
+      "preconditions": [
+        "the supplied token is not the approved synthetic credential"
+      ],
+      "fixtures": {
+        "store": "empty",
+        "credentialSource": "baseline",
+        "network": "127.0.0.1"
+      },
+      "boundary": null,
+      "constraint": null,
+      "actions": [
+        {
+          "id": "read",
+          "method": "GET",
+          "path": "/tickets/missing-ticket",
+          "auth": {
+            "token": "wrong-token"
+          }
+        }
+      ],
+      "extractions": [],
+      "assertions": [
+        {
+          "action": "read",
+          "status": 401
+        },
+        {
+          "action": "read",
+          "bodyEquals": {
+            "error": "unauthorized"
+          }
+        }
+      ],
+      "cleanup": [
+        {
+          "action": "reset-store"
+        }
+      ],
+      "evidence": [
+        {
+          "role": "requirement",
+          "file": "poc/code-first-service-tests/baseline/behavior-baseline.json",
+          "symbol": "tickets.read.unauthorized-wrong-token",
+          "line": 311,
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "app.get",
+          "line": 75,
+          "role": "route_registration",
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "getTicketHandler",
+          "line": 51,
+          "role": "handler",
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        }
+      ]
+    },
+    {
+      "id": "tickets.read.positive",
+      "version": 1,
+      "intent": "The ticket returned by create can be read with the approved bearer token.",
+      "classification": "approved_requirement",
+      "kind": "positive",
+      "executable": true,
+      "discoveryGap": false,
+      "preconditions": [
+        "store is empty",
+        "read requires the approved bearer token"
+      ],
+      "fixtures": {
+        "store": "empty",
+        "credentialSource": "baseline",
+        "network": "127.0.0.1"
+      },
+      "boundary": null,
+      "constraint": null,
+      "actions": [
+        {
+          "id": "create",
+          "method": "POST",
+          "path": "/tickets",
+          "auth": false,
+          "body": {
+            "title": "Printer jam",
+            "priority": "normal",
+            "body": "Paper stuck"
+          }
+        },
+        {
+          "id": "read",
+          "method": "GET",
+          "path": "/tickets/{{ticketId}}",
+          "auth": true
+        }
+      ],
+      "extractions": [
+        {
+          "name": "ticketId",
+          "action": "create",
+          "path": "id"
+        }
+      ],
+      "assertions": [
+        {
+          "action": "create",
+          "status": 201
+        },
+        {
+          "action": "read",
+          "status": 200
+        },
+        {
+          "action": "read",
+          "bodyField": {
+            "path": "id",
+            "equalsExtraction": "ticketId"
+          }
+        },
+        {
+          "action": "read",
+          "bodyMatch": {
+            "title": "Printer jam",
+            "priority": "normal",
+            "body": "Paper stuck",
+            "status": "open"
+          }
+        }
+      ],
+      "cleanup": [
+        {
+          "action": "reset-store"
+        }
+      ],
+      "evidence": [
+        {
+          "role": "requirement",
+          "file": "poc/code-first-service-tests/baseline/behavior-baseline.json",
+          "symbol": "tickets.read.positive",
+          "line": 327,
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "app.post",
+          "line": 74,
+          "role": "route_registration",
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "createTicketHandler",
+          "line": 27,
+          "role": "handler",
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "app.get",
+          "line": 75,
+          "role": "route_registration",
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "getTicketHandler",
+          "line": 51,
+          "role": "handler",
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        }
+      ]
+    },
+    {
+      "id": "tickets.read.not-found",
+      "version": 1,
+      "intent": "An unknown ticket id is not found when the caller is authorized.",
+      "classification": "approved_requirement",
+      "kind": "not_found",
+      "executable": true,
+      "discoveryGap": false,
+      "preconditions": [
+        "store is empty",
+        "request uses the approved bearer token"
+      ],
+      "fixtures": {
+        "store": "empty",
+        "credentialSource": "baseline",
+        "network": "127.0.0.1"
+      },
+      "boundary": null,
+      "constraint": null,
+      "actions": [
+        {
+          "id": "read",
+          "method": "GET",
+          "path": "/tickets/does-not-exist",
+          "auth": true
+        }
+      ],
+      "extractions": [],
+      "assertions": [
+        {
+          "action": "read",
+          "status": 404
+        },
+        {
+          "action": "read",
+          "bodyEquals": {
+            "error": "not_found"
+          }
+        }
+      ],
+      "cleanup": [
+        {
+          "action": "reset-store"
+        }
+      ],
+      "evidence": [
+        {
+          "role": "requirement",
+          "file": "poc/code-first-service-tests/baseline/behavior-baseline.json",
+          "symbol": "tickets.read.not-found",
+          "line": 352,
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "app.get",
+          "line": 75,
+          "role": "route_registration",
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "getTicketHandler",
+          "line": 51,
+          "role": "handler",
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        }
+      ]
+    },
+    {
+      "id": "tickets.update.unauthorized",
+      "version": 1,
+      "intent": "Updating a ticket without a bearer token is rejected.",
+      "classification": "approved_requirement",
+      "kind": "unauthorized",
+      "executable": true,
+      "discoveryGap": false,
+      "preconditions": [
+        "no Authorization header"
+      ],
+      "fixtures": {
+        "store": "empty",
+        "credentialSource": "baseline",
+        "network": "127.0.0.1"
+      },
+      "boundary": null,
+      "constraint": null,
+      "actions": [
+        {
+          "id": "update",
+          "method": "PATCH",
+          "path": "/tickets/missing-ticket",
+          "auth": false,
+          "body": {
+            "status": "closed"
+          }
+        }
+      ],
+      "extractions": [],
+      "assertions": [
+        {
+          "action": "update",
+          "status": 401
+        },
+        {
+          "action": "update",
+          "bodyEquals": {
+            "error": "unauthorized"
+          }
+        }
+      ],
+      "cleanup": [
+        {
+          "action": "reset-store"
+        }
+      ],
+      "evidence": [
+        {
+          "role": "requirement",
+          "file": "poc/code-first-service-tests/baseline/behavior-baseline.json",
+          "symbol": "tickets.update.unauthorized",
+          "line": 368,
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "app.patch",
+          "line": 76,
+          "role": "route_registration",
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "updateStatusHandler",
+          "line": 60,
+          "role": "handler",
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        }
+      ]
+    },
+    {
+      "id": "tickets.update.invalid-status",
+      "version": 1,
+      "intent": "A status other than open or closed is rejected.",
+      "classification": "approved_requirement",
+      "kind": "invalid_input",
+      "executable": true,
+      "discoveryGap": false,
+      "preconditions": [
+        "request uses the approved bearer token"
+      ],
+      "fixtures": {
+        "store": "empty",
+        "credentialSource": "baseline",
+        "network": "127.0.0.1"
+      },
+      "boundary": null,
+      "constraint": {
+        "field": "status",
+        "kind": "enum",
+        "value": "OPEN",
+        "expect": "rejection"
+      },
+      "actions": [
+        {
+          "id": "update",
+          "method": "PATCH",
+          "path": "/tickets/does-not-exist",
+          "auth": true,
+          "body": {
+            "status": "OPEN"
+          }
+        }
+      ],
+      "extractions": [],
+      "assertions": [
+        {
+          "action": "update",
+          "status": 400
+        },
+        {
+          "action": "update",
+          "bodyEquals": {
+            "error": "status_enum"
+          }
+        }
+      ],
+      "cleanup": [
+        {
+          "action": "reset-store"
+        }
+      ],
+      "evidence": [
+        {
+          "role": "requirement",
+          "file": "poc/code-first-service-tests/baseline/behavior-baseline.json",
+          "symbol": "tickets.update.invalid-status",
+          "line": 384,
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "app.patch",
+          "line": 76,
+          "role": "route_registration",
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "updateStatusHandler",
+          "line": 60,
+          "role": "handler",
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        }
+      ]
+    },
+    {
+      "id": "tickets.update.positive",
+      "version": 1,
+      "intent": "An authorized caller can close a ticket without changing its other fields.",
+      "classification": "approved_requirement",
+      "kind": "positive",
+      "executable": true,
+      "discoveryGap": false,
+      "preconditions": [
+        "store is empty",
+        "update requires the approved bearer token"
+      ],
+      "fixtures": {
+        "store": "empty",
+        "credentialSource": "baseline",
+        "network": "127.0.0.1"
+      },
+      "boundary": null,
+      "constraint": null,
+      "actions": [
+        {
+          "id": "create",
+          "method": "POST",
+          "path": "/tickets",
+          "auth": false,
+          "body": {
+            "title": "Printer jam",
+            "priority": "normal",
+            "body": "Paper stuck"
+          }
+        },
+        {
+          "id": "update",
+          "method": "PATCH",
+          "path": "/tickets/{{ticketId}}",
+          "auth": true,
+          "body": {
+            "status": "closed"
+          }
+        }
+      ],
+      "extractions": [
+        {
+          "name": "ticketId",
+          "action": "create",
+          "path": "id"
+        }
+      ],
+      "assertions": [
+        {
+          "action": "create",
+          "status": 201
+        },
+        {
+          "action": "update",
+          "status": 200
+        },
+        {
+          "action": "update",
+          "bodyField": {
+            "path": "id",
+            "equalsExtraction": "ticketId"
+          }
+        },
+        {
+          "action": "update",
+          "bodyMatch": {
+            "title": "Printer jam",
+            "priority": "normal",
+            "body": "Paper stuck",
+            "status": "closed"
+          }
+        }
+      ],
+      "cleanup": [
+        {
+          "action": "reset-store"
+        }
+      ],
+      "evidence": [
+        {
+          "role": "requirement",
+          "file": "poc/code-first-service-tests/baseline/behavior-baseline.json",
+          "symbol": "tickets.update.positive",
+          "line": 401,
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "app.post",
+          "line": 74,
+          "role": "route_registration",
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "createTicketHandler",
+          "line": 27,
+          "role": "handler",
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "app.patch",
+          "line": 76,
+          "role": "route_registration",
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "updateStatusHandler",
+          "line": 60,
+          "role": "handler",
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        }
+      ]
+    },
+    {
+      "id": "tickets.update.not-found",
+      "version": 1,
+      "intent": "Closing an unknown ticket id is not found when the status is valid.",
+      "classification": "approved_requirement",
+      "kind": "not_found",
+      "executable": true,
+      "discoveryGap": false,
+      "preconditions": [
+        "store is empty",
+        "request uses the approved bearer token"
+      ],
+      "fixtures": {
+        "store": "empty",
+        "credentialSource": "baseline",
+        "network": "127.0.0.1"
+      },
+      "boundary": null,
+      "constraint": null,
+      "actions": [
+        {
+          "id": "update",
+          "method": "PATCH",
+          "path": "/tickets/does-not-exist",
+          "auth": true,
+          "body": {
+            "status": "open"
+          }
+        }
+      ],
+      "extractions": [],
+      "assertions": [
+        {
+          "action": "update",
+          "status": 404
+        },
+        {
+          "action": "update",
+          "bodyEquals": {
+            "error": "not_found"
+          }
+        }
+      ],
+      "cleanup": [
+        {
+          "action": "reset-store"
+        }
+      ],
+      "evidence": [
+        {
+          "role": "requirement",
+          "file": "poc/code-first-service-tests/baseline/behavior-baseline.json",
+          "symbol": "tickets.update.not-found",
+          "line": 426,
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "app.patch",
+          "line": 76,
+          "role": "route_registration",
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "updateStatusHandler",
+          "line": 60,
+          "role": "handler",
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        }
+      ]
+    }
+  ],
+  "observations": [
+    {
+      "id": "observe.POST /tickets",
+      "classification": "implementation_observation",
+      "executable": false,
+      "statement": "POST /tickets is registered on createTicketHandler. This is not an assertion.",
+      "evidence": [
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "app.post",
+          "line": 74,
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "createTicketHandler",
+          "line": 27,
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        }
+      ]
+    },
+    {
+      "id": "observe.GET /tickets/:id",
+      "classification": "implementation_observation",
+      "executable": false,
+      "statement": "GET /tickets/:id is registered on getTicketHandler. This is not an assertion.",
+      "evidence": [
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "app.get",
+          "line": 75,
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "getTicketHandler",
+          "line": 51,
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        }
+      ]
+    },
+    {
+      "id": "observe.PATCH /tickets/:id",
+      "classification": "implementation_observation",
+      "executable": false,
+      "statement": "PATCH /tickets/:id is registered on updateStatusHandler. This is not an assertion.",
+      "evidence": [
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "app.patch",
+          "line": 76,
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "updateStatusHandler",
+          "line": 60,
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        }
+      ]
+    },
+    {
+      "id": "observe.GET /health",
+      "classification": "implementation_observation",
+      "executable": false,
+      "statement": "GET /health is registered on healthHandler. This is not an assertion.",
+      "evidence": [
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "app.get",
+          "line": 77,
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        },
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/service.mjs",
+          "symbol": "healthHandler",
+          "line": 23,
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        }
+      ]
+    },
+    {
+      "id": "observe.dto.createTicket.ticket",
+      "classification": "implementation_observation",
+      "executable": false,
+      "statement": "Object literal ticket in createTicket has keys id, title, priority, body, status.",
+      "evidence": [
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/store.mjs",
+          "symbol": "createTicket",
+          "line": 23,
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        }
+      ]
+    },
+    {
+      "id": "observe.dto.updateTicketStatus.updated",
+      "classification": "implementation_observation",
+      "executable": false,
+      "statement": "Object literal updated in updateTicketStatus has keys id, title, priority, body, status.",
+      "evidence": [
+        {
+          "file": "poc/code-first-service-tests/fixture/ticket-desk/store.mjs",
+          "symbol": "updateTicketStatus",
+          "line": 37,
+          "commit": "14842f909058ba990a38bc1bd58519cf40561b45"
+        }
+      ]
+    }
+  ],
+  "unsupported": [
+    {
+      "file": "fixture/ticket-desk/store.mjs",
+      "line": 5,
+      "pattern": "new-expression",
+      "symbol": "tickets",
+      "snippet": "const tickets = new Map();"
+    },
+    {
+      "file": "fixture/ticket-desk/store.mjs",
+      "line": 6,
+      "pattern": "unsupported-declaration",
+      "symbol": "seq",
+      "snippet": "let seq = 0;"
+    },
+    {
+      "file": "fixture/ticket-desk/store.mjs",
+      "line": 9,
+      "pattern": "unsupported-statement",
+      "symbol": "resetStore",
+      "snippet": "tickets.clear();"
+    },
+    {
+      "file": "fixture/ticket-desk/store.mjs",
+      "line": 10,
+      "pattern": "assignment",
+      "symbol": "resetStore",
+      "snippet": "seq = 0;"
+    },
+    {
+      "file": "fixture/ticket-desk/store.mjs",
+      "line": 14,
+      "pattern": "unsupported-statement",
+      "symbol": "createTicket",
+      "snippet": "const title = input.title;"
+    },
+    {
+      "file": "fixture/ticket-desk/store.mjs",
+      "line": 15,
+      "pattern": "unsupported-statement",
+      "symbol": "createTicket",
+      "snippet": "const priority = input.priority;"
+    },
+    {
+      "file": "fixture/ticket-desk/store.mjs",
+      "line": 16,
+      "pattern": "unsupported-statement",
+      "symbol": "createTicket",
+      "snippet": "const rawBody = input.body;"
+    },
+    {
+      "file": "fixture/ticket-desk/store.mjs",
+      "line": 17,
+      "pattern": "unsupported-declaration",
+      "symbol": "createTicket",
+      "snippet": "let storedBody = '';"
+    },
+    {
+      "file": "fixture/ticket-desk/store.mjs",
+      "line": 18,
+      "pattern": "unsupported-statement",
+      "symbol": "createTicket",
+      "snippet": "if (rawBody !== undefined) {"
+    },
+    {
+      "file": "fixture/ticket-desk/store.mjs",
+      "line": 21,
+      "pattern": "assignment",
+      "symbol": "createTicket",
+      "snippet": "seq = seq + 1;"
+    },
+    {
+      "file": "fixture/ticket-desk/store.mjs",
+      "line": 22,
+      "pattern": "unsupported-statement",
+      "symbol": "createTicket",
+      "snippet": "const id = String(seq);"
+    },
+    {
+      "file": "fixture/ticket-desk/store.mjs",
+      "line": 24,
+      "pattern": "unsupported-statement",
+      "symbol": "createTicket",
+      "snippet": "tickets.set(id, ticket);"
+    },
+    {
+      "file": "fixture/ticket-desk/store.mjs",
+      "line": 29,
+      "pattern": "unsupported-statement",
+      "symbol": "getTicket",
+      "snippet": "return tickets.get(id);"
+    },
+    {
+      "file": "fixture/ticket-desk/store.mjs",
+      "line": 33,
+      "pattern": "unsupported-statement",
+      "symbol": "updateTicketStatus",
+      "snippet": "const existing = tickets.get(id);"
+    },
+    {
+      "file": "fixture/ticket-desk/store.mjs",
+      "line": 34,
+      "pattern": "unsupported-statement",
+      "symbol": "updateTicketStatus",
+      "snippet": "if (!existing) {"
+    },
+    {
+      "file": "fixture/ticket-desk/store.mjs",
+      "line": 38,
+      "pattern": "unsupported-statement",
+      "symbol": "updateTicketStatus",
+      "snippet": "tickets.set(id, updated);"
+    },
+    {
+      "file": "fixture/ticket-desk/unsupported.mjs",
+      "line": 7,
+      "pattern": "computed-method",
+      "symbol": "app",
+      "snippet": "app[method]('/computed-method', healthHandler);"
+    },
+    {
+      "file": "fixture/ticket-desk/unsupported.mjs",
+      "line": 8,
+      "pattern": "template-path",
+      "symbol": "app.get",
+      "snippet": "app.get(`/tickets/${id}`, healthHandler);"
+    },
+    {
+      "file": "fixture/ticket-desk/unsupported.mjs",
+      "line": 9,
+      "pattern": "call-expression-path",
+      "symbol": "app.post",
+      "snippet": "app.post(pathFromConfig(), healthHandler);"
+    },
+    {
+      "file": "fixture/ticket-desk/unsupported.mjs",
+      "line": 10,
+      "pattern": "concatenated-path",
+      "symbol": "app.delete",
+      "snippet": "app.delete('/ok' + '/joined', healthHandler);"
+    },
+    {
+      "file": "fixture/ticket-desk/unsupported.mjs",
+      "line": 11,
+      "pattern": "inline-handler",
+      "symbol": "app.get",
+      "snippet": "app.get('/inline', (req, res) => {"
+    },
+    {
+      "file": "fixture/ticket-desk/unsupported.mjs",
+      "line": 14,
+      "pattern": "chained-route",
+      "symbol": "app.route",
+      "snippet": "app.route('/chained').get(healthHandler);"
+    },
+    {
+      "file": "fixture/ticket-desk/unsupported.mjs",
+      "line": 21,
+      "pattern": "unsupported-statement",
+      "symbol": "nested",
+      "snippet": "const route = '/inside';"
+    },
+    {
+      "file": "fixture/ticket-desk/unsupported.mjs",
+      "line": 22,
+      "pattern": "nested-registration",
+      "symbol": "app",
+      "snippet": "app.get(route, healthHandler);"
+    },
+    {
+      "file": "fixture/ticket-desk/unsupported.mjs",
+      "line": 23,
+      "pattern": "nested-registration",
+      "symbol": "app",
+      "snippet": "app.get('/literal-but-nested', healthHandler);"
+    }
+  ]
+}

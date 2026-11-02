@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "specgate.release-evidence/1",
+  "disposition": "internal_pilot_candidate_not_production_approved",
+  "pullRequest": "https://github.com/DaveEliranAssistant/qe-atlas/pull/3",
+  "verifiedCodeCommit": "44d999ad9055844826b9edbf0250327a7e636682",
+  "archive": {
+    "name": "specgate-0.1.0-rc.1.tgz",
+    "sha256": "7529fac02fce42658816c7d4671bbed3b221cb2b9a9a75982c60172e2bc9edab",
+    "offlineInstallWithEmptyNpmCache": true,
+    "bundledDependency": "acorn@8.19.0",
+    "bundledDependencyLicenseIncluded": true
+  },
+  "githubActions": {
+    "url": "https://github.com/DaveEliranAssistant/qe-atlas/actions/runs/41350121935",
+    "status": "completed",
+    "conclusion": "success",
+    "jobs": [
+      {"node": 22, "conclusion": "success", "completedAt": "2026-11-01T21:05:27Z"},
+      {"node": 24, "conclusion": "success", "completedAt": "2026-11-01T21:05:31Z"}
+    ]
+  },
+  "checksPerMatrixJob": {
+    "packageTestsPassed": 41,
+    "pocUnitTestsPassed": 21,
+    "pocBaselineApiTestsPassed": 21,
+    "seededDefect": {"expectedFailures": 7, "passed": 14, "predictedFailureIdsMatched": true},
+    "maintenance": {"expectedFailures": 1, "passed": 20, "predictedFailureIdsMatched": true},
+    "siteNodeTestsPassed": 12,
+    "sitePythonTestsPassed": 5,
+    "staticBuildTestsPassed": 2,
+    "knowledgeTestsPassed": 8,
+    "dependencyAuditPassed": true,
+    "installedArchiveSmokePassed": true
+  },
+  "independentSourceReview": {"passed": true, "remainingReportedBlockers": [], "didNotGrantReleaseApproval": true},
+  "separateVercelCheck": "failure; automatic preview/author-team-membership check; no access/protection change attempted",
+  "remainingProductionGates": [
+    "Representative real-service and independently approved requirement baseline qualification",
+    "Observe-only CI pilot with unsupported-coverage, false-positive, performance and fixture-recovery evidence",
+    "Owner-approved enforcement and release"
+  ]
+}

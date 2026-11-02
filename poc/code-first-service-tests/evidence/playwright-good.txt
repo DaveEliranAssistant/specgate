@@ -1,0 +1,30 @@
+
+Running 21 tests using 1 worker
+
+
+
+[1/21] generated/api.spec.mjs:28:1 › health.ok.positive
+[2/21] generated/api.spec.mjs:43:1 › tickets.create.positive
+[3/21] generated/api.spec.mjs:61:1 › tickets.create.accepted-empty-body
+[4/21] generated/api.spec.mjs:76:1 › tickets.create.invalid-title-type
+[5/21] generated/api.spec.mjs:91:1 › tickets.create.invalid-priority
+[6/21] generated/api.spec.mjs:106:1 › tickets.create.invalid-priority-missing
+[7/21] generated/api.spec.mjs:121:1 › tickets.create.invalid-body-type
+[8/21] generated/api.spec.mjs:136:1 › tickets.create.boundary-title-min
+[9/21] generated/api.spec.mjs:151:1 › tickets.create.boundary-title-empty
+[10/21] generated/api.spec.mjs:166:1 › tickets.create.boundary-title-max
+[11/21] generated/api.spec.mjs:181:1 › tickets.create.boundary-title-over-max
+[12/21] generated/api.spec.mjs:196:1 › tickets.create.boundary-body-max
+[13/21] generated/api.spec.mjs:211:1 › tickets.create.boundary-body-over-max
+[14/21] generated/api.spec.mjs:226:1 › tickets.read.unauthorized-missing
+[15/21] generated/api.spec.mjs:241:1 › tickets.read.unauthorized-wrong-token
+[16/21] generated/api.spec.mjs:256:1 › tickets.read.positive
+[17/21] generated/api.spec.mjs:278:1 › tickets.read.not-found
+[18/21] generated/api.spec.mjs:293:1 › tickets.update.unauthorized
+[19/21] generated/api.spec.mjs:308:1 › tickets.update.invalid-status
+[20/21] generated/api.spec.mjs:323:1 › tickets.update.positive
+[21/21] generated/api.spec.mjs:345:1 › tickets.update.not-found
+  21 passed (709ms)
+
+(node:4275) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

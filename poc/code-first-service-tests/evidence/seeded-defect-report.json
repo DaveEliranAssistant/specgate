@@ -1,0 +1,171 @@
+{
+  "slug": "seeded-defect",
+  "sourceCommit": "14842f909058ba990a38bc1bd58519cf40561b45",
+  "playwrightStatus": 1,
+  "playwrightStats": {
+    "startTime": "2026-10-31T20:49:21.713Z",
+    "duration": 3888.7230000000004,
+    "expected": 14,
+    "skipped": 0,
+    "unexpected": 7,
+    "flaky": 0
+  },
+  "tests": [
+    {
+      "title": "health.ok.positive",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.create.positive",
+      "status": "failed"
+    },
+    {
+      "title": "tickets.create.accepted-empty-body",
+      "status": "failed"
+    },
+    {
+      "title": "tickets.create.invalid-title-type",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.create.invalid-priority",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.create.invalid-priority-missing",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.create.invalid-body-type",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.create.boundary-title-min",
+      "status": "failed"
+    },
+    {
+      "title": "tickets.create.boundary-title-empty",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.create.boundary-title-max",
+      "status": "failed"
+    },
+    {
+      "title": "tickets.create.boundary-title-over-max",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.create.boundary-body-max",
+      "status": "failed"
+    },
+    {
+      "title": "tickets.create.boundary-body-over-max",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.read.unauthorized-missing",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.read.unauthorized-wrong-token",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.read.positive",
+      "status": "failed"
+    },
+    {
+      "title": "tickets.read.not-found",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.update.unauthorized",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.update.invalid-status",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.update.positive",
+      "status": "failed"
+    },
+    {
+      "title": "tickets.update.not-found",
+      "status": "passed"
+    }
+  ],
+  "predictedFailureIds": [
+    "tickets.create.accepted-empty-body",
+    "tickets.create.boundary-body-max",
+    "tickets.create.boundary-title-max",
+    "tickets.create.boundary-title-min",
+    "tickets.create.positive",
+    "tickets.read.positive",
+    "tickets.update.positive"
+  ],
+  "actualFailureIds": [
+    "tickets.create.accepted-empty-body",
+    "tickets.create.boundary-body-max",
+    "tickets.create.boundary-title-max",
+    "tickets.create.boundary-title-min",
+    "tickets.create.positive",
+    "tickets.read.positive",
+    "tickets.update.positive"
+  ],
+  "classifications": [
+    {
+      "scenarioId": "tickets.create.accepted-empty-body",
+      "changeClass": "genuine_regression",
+      "recommendedAction": "fix_service",
+      "explanation": "The failure is an assertion mismatch against the approved baseline.",
+      "assertionPatch": null
+    },
+    {
+      "scenarioId": "tickets.create.boundary-body-max",
+      "changeClass": "genuine_regression",
+      "recommendedAction": "fix_service",
+      "explanation": "The failure is an assertion mismatch against the approved baseline.",
+      "assertionPatch": null
+    },
+    {
+      "scenarioId": "tickets.create.boundary-title-max",
+      "changeClass": "genuine_regression",
+      "recommendedAction": "fix_service",
+      "explanation": "The failure is an assertion mismatch against the approved baseline.",
+      "assertionPatch": null
+    },
+    {
+      "scenarioId": "tickets.create.boundary-title-min",
+      "changeClass": "genuine_regression",
+      "recommendedAction": "fix_service",
+      "explanation": "The failure is an assertion mismatch against the approved baseline.",
+      "assertionPatch": null
+    },
+    {
+      "scenarioId": "tickets.create.positive",
+      "changeClass": "genuine_regression",
+      "recommendedAction": "fix_service",
+      "explanation": "The failure is an assertion mismatch against the approved baseline.",
+      "assertionPatch": null
+    },
+    {
+      "scenarioId": "tickets.read.positive",
+      "changeClass": "genuine_regression",
+      "recommendedAction": "fix_service",
+      "explanation": "The failure is an assertion mismatch against the approved baseline.",
+      "assertionPatch": null
+    },
+    {
+      "scenarioId": "tickets.update.positive",
+      "changeClass": "genuine_regression",
+      "recommendedAction": "fix_service",
+      "explanation": "The failure is an assertion mismatch against the approved baseline.",
+      "assertionPatch": null
+    }
+  ],
+  "specUnchanged": true,
+  "scenarioAssertionsUnchanged": true,
+  "createPositiveStillExpects201": true
+}

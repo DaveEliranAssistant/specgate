@@ -1,0 +1,822 @@
+{
+  "schemaVersion": "1.0.0",
+  "synthetic": true,
+  "supportedSubset": "express-literal-routes-v1",
+  "files": [
+    {
+      "path": "fixture/ticket-desk/service.mjs",
+      "sha256": "0ecef1bc2faac14c6c66497f30df3b453720948c6eefef3eba04662dc40e7a8a",
+      "parseError": null
+    },
+    {
+      "path": "fixture/ticket-desk/store.mjs",
+      "sha256": "4cde57f98fe2df8795324bf11c0590fefd9ec6f2c9d9021752071776a3227d1c",
+      "parseError": null
+    },
+    {
+      "path": "fixture/ticket-desk/unsupported.mjs",
+      "sha256": "5e0e6decc0aff6fceeec46b46734729e9f56599be3cf7ac9f55423c2b65794e8",
+      "parseError": null
+    }
+  ],
+  "routes": [
+    {
+      "method": "POST",
+      "path": "/tickets",
+      "params": [],
+      "handler": "createTicketHandler",
+      "middleware": [],
+      "auth": false,
+      "file": "fixture/ticket-desk/service.mjs",
+      "registration": {
+        "file": "fixture/ticket-desk/service.mjs",
+        "line": 74,
+        "symbol": "app.post"
+      },
+      "handlerLocation": {
+        "file": "fixture/ticket-desk/service.mjs",
+        "line": 27,
+        "symbol": "createTicketHandler"
+      },
+      "middlewareLocations": [],
+      "validation": [
+        {
+          "kind": "type",
+          "local": "title",
+          "field": "title",
+          "expectedType": "string",
+          "optional": false,
+          "file": "fixture/ticket-desk/service.mjs",
+          "line": 31,
+          "observedRejection": {
+            "status": 400,
+            "body": {
+              "error": "title_type"
+            },
+            "line": 32,
+            "note": "Implementation observation. Not an assertion source."
+          }
+        },
+        {
+          "kind": "length",
+          "local": "title",
+          "field": "title",
+          "minLength": 1,
+          "maxLength": 80,
+          "optional": false,
+          "file": "fixture/ticket-desk/service.mjs",
+          "line": 35,
+          "observedRejection": {
+            "status": 400,
+            "body": {
+              "error": "title_length"
+            },
+            "line": 36,
+            "note": "Implementation observation. Not an assertion source."
+          }
+        },
+        {
+          "kind": "enum",
+          "local": "priority",
+          "field": "priority",
+          "values": [
+            "low",
+            "normal",
+            "high"
+          ],
+          "optional": false,
+          "file": "fixture/ticket-desk/service.mjs",
+          "line": 39,
+          "observedRejection": {
+            "status": 400,
+            "body": {
+              "error": "priority_enum"
+            },
+            "line": 40,
+            "note": "Implementation observation. Not an assertion source."
+          }
+        },
+        {
+          "kind": "type",
+          "local": "body",
+          "field": "body",
+          "expectedType": "string",
+          "maxLength": 500,
+          "optional": true,
+          "file": "fixture/ticket-desk/service.mjs",
+          "line": 43,
+          "observedRejection": {
+            "status": 400,
+            "body": {
+              "error": "body_length"
+            },
+            "line": 44,
+            "note": "Implementation observation. Not an assertion source."
+          }
+        }
+      ],
+      "terminalResponses": [
+        {
+          "status": 201,
+          "bodyKind": "identifier",
+          "name": "ticket",
+          "literal": null,
+          "line": 48,
+          "note": "Implementation observation. Not an assertion source."
+        }
+      ],
+      "dependencies": [
+        {
+          "callee": "createTicket",
+          "module": "./store.mjs",
+          "argumentsSupported": true,
+          "line": 47,
+          "file": "fixture/ticket-desk/service.mjs"
+        }
+      ],
+      "handlerUnsupported": 0
+    },
+    {
+      "method": "GET",
+      "path": "/tickets/:id",
+      "params": [
+        "id"
+      ],
+      "handler": "getTicketHandler",
+      "middleware": [
+        "requireBearer"
+      ],
+      "auth": true,
+      "file": "fixture/ticket-desk/service.mjs",
+      "registration": {
+        "file": "fixture/ticket-desk/service.mjs",
+        "line": 75,
+        "symbol": "app.get"
+      },
+      "handlerLocation": {
+        "file": "fixture/ticket-desk/service.mjs",
+        "line": 51,
+        "symbol": "getTicketHandler"
+      },
+      "middlewareLocations": [
+        {
+          "file": "fixture/ticket-desk/service.mjs",
+          "line": 14,
+          "symbol": "requireBearer"
+        }
+      ],
+      "validation": [
+        {
+          "kind": "auth_header",
+          "local": "header",
+          "field": null,
+          "header": "authorization",
+          "schemePrefix": "Bearer ",
+          "constant": "BEARER_TOKEN",
+          "optional": false,
+          "file": "fixture/ticket-desk/service.mjs",
+          "line": 16,
+          "observedRejection": {
+            "status": 401,
+            "body": {
+              "error": "unauthorized"
+            },
+            "line": 17,
+            "note": "Implementation observation. Not an assertion source."
+          }
+        },
+        {
+          "kind": "falsy",
+          "local": "ticket",
+          "field": null,
+          "optional": false,
+          "file": "fixture/ticket-desk/service.mjs",
+          "line": 53,
+          "observedRejection": {
+            "status": 404,
+            "body": {
+              "error": "not_found"
+            },
+            "line": 54,
+            "note": "Implementation observation. Not an assertion source."
+          }
+        }
+      ],
+      "terminalResponses": [
+        {
+          "status": 200,
+          "bodyKind": "identifier",
+          "name": "ticket",
+          "literal": null,
+          "line": 57,
+          "note": "Implementation observation. Not an assertion source."
+        }
+      ],
+      "dependencies": [
+        {
+          "callee": "getTicket",
+          "module": "./store.mjs",
+          "argumentsSupported": true,
+          "line": 52,
+          "file": "fixture/ticket-desk/service.mjs"
+        }
+      ],
+      "handlerUnsupported": 0
+    },
+    {
+      "method": "PATCH",
+      "path": "/tickets/:id",
+      "params": [
+        "id"
+      ],
+      "handler": "updateStatusHandler",
+      "middleware": [
+        "requireBearer"
+      ],
+      "auth": true,
+      "file": "fixture/ticket-desk/service.mjs",
+      "registration": {
+        "file": "fixture/ticket-desk/service.mjs",
+        "line": 76,
+        "symbol": "app.patch"
+      },
+      "handlerLocation": {
+        "file": "fixture/ticket-desk/service.mjs",
+        "line": 60,
+        "symbol": "updateStatusHandler"
+      },
+      "middlewareLocations": [
+        {
+          "file": "fixture/ticket-desk/service.mjs",
+          "line": 14,
+          "symbol": "requireBearer"
+        }
+      ],
+      "validation": [
+        {
+          "kind": "auth_header",
+          "local": "header",
+          "field": null,
+          "header": "authorization",
+          "schemePrefix": "Bearer ",
+          "constant": "BEARER_TOKEN",
+          "optional": false,
+          "file": "fixture/ticket-desk/service.mjs",
+          "line": 16,
+          "observedRejection": {
+            "status": 401,
+            "body": {
+              "error": "unauthorized"
+            },
+            "line": 17,
+            "note": "Implementation observation. Not an assertion source."
+          }
+        },
+        {
+          "kind": "enum",
+          "local": "status",
+          "field": "status",
+          "values": [
+            "open",
+            "closed"
+          ],
+          "optional": false,
+          "file": "fixture/ticket-desk/service.mjs",
+          "line": 62,
+          "observedRejection": {
+            "status": 400,
+            "body": {
+              "error": "status_enum"
+            },
+            "line": 63,
+            "note": "Implementation observation. Not an assertion source."
+          }
+        },
+        {
+          "kind": "falsy",
+          "local": "ticket",
+          "field": null,
+          "optional": false,
+          "file": "fixture/ticket-desk/service.mjs",
+          "line": 67,
+          "observedRejection": {
+            "status": 404,
+            "body": {
+              "error": "not_found"
+            },
+            "line": 68,
+            "note": "Implementation observation. Not an assertion source."
+          }
+        }
+      ],
+      "terminalResponses": [
+        {
+          "status": 200,
+          "bodyKind": "identifier",
+          "name": "ticket",
+          "literal": null,
+          "line": 71,
+          "note": "Implementation observation. Not an assertion source."
+        }
+      ],
+      "dependencies": [
+        {
+          "callee": "updateTicketStatus",
+          "module": "./store.mjs",
+          "argumentsSupported": true,
+          "line": 66,
+          "file": "fixture/ticket-desk/service.mjs"
+        }
+      ],
+      "handlerUnsupported": 0
+    },
+    {
+      "method": "GET",
+      "path": "/health",
+      "params": [],
+      "handler": "healthHandler",
+      "middleware": [],
+      "auth": false,
+      "file": "fixture/ticket-desk/service.mjs",
+      "registration": {
+        "file": "fixture/ticket-desk/service.mjs",
+        "line": 77,
+        "symbol": "app.get"
+      },
+      "handlerLocation": {
+        "file": "fixture/ticket-desk/service.mjs",
+        "line": 23,
+        "symbol": "healthHandler"
+      },
+      "middlewareLocations": [],
+      "validation": [],
+      "terminalResponses": [
+        {
+          "status": 200,
+          "bodyKind": "literal",
+          "name": null,
+          "literal": {
+            "ok": true
+          },
+          "line": 24,
+          "note": "Implementation observation. Not an assertion source."
+        }
+      ],
+      "dependencies": [],
+      "handlerUnsupported": 0
+    }
+  ],
+  "dto": [
+    {
+      "file": "fixture/ticket-desk/store.mjs",
+      "function": "createTicket",
+      "line": 23,
+      "local": "ticket",
+      "keys": [
+        {
+          "name": "id",
+          "kind": "shorthand"
+        },
+        {
+          "name": "title",
+          "kind": "shorthand"
+        },
+        {
+          "name": "priority",
+          "kind": "shorthand"
+        },
+        {
+          "name": "body",
+          "kind": "identifier",
+          "identifier": "storedBody"
+        },
+        {
+          "name": "status",
+          "kind": "literal",
+          "literal": "open"
+        }
+      ]
+    },
+    {
+      "file": "fixture/ticket-desk/store.mjs",
+      "function": "updateTicketStatus",
+      "line": 37,
+      "local": "updated",
+      "keys": [
+        {
+          "name": "id",
+          "kind": "dynamic"
+        },
+        {
+          "name": "title",
+          "kind": "dynamic"
+        },
+        {
+          "name": "priority",
+          "kind": "dynamic"
+        },
+        {
+          "name": "body",
+          "kind": "dynamic"
+        },
+        {
+          "name": "status",
+          "kind": "shorthand"
+        }
+      ]
+    }
+  ],
+  "constants": [
+    {
+      "file": "fixture/ticket-desk/service.mjs",
+      "name": "BEARER_TOKEN",
+      "literal": "synthetic-token",
+      "line": 12,
+      "note": "Observed source literal. Not an assertion source."
+    },
+    {
+      "file": "fixture/ticket-desk/unsupported.mjs",
+      "name": "method",
+      "literal": "get",
+      "line": 4,
+      "note": "Observed source literal. Not an assertion source."
+    },
+    {
+      "file": "fixture/ticket-desk/unsupported.mjs",
+      "name": "id",
+      "literal": "1",
+      "line": 5,
+      "note": "Observed source literal. Not an assertion source."
+    }
+  ],
+  "exports": [
+    {
+      "file": "fixture/ticket-desk/service.mjs",
+      "name": "app",
+      "kind": "const",
+      "line": 9
+    },
+    {
+      "file": "fixture/ticket-desk/service.mjs",
+      "name": "BEARER_TOKEN",
+      "kind": "const",
+      "line": 12
+    },
+    {
+      "file": "fixture/ticket-desk/service.mjs",
+      "name": "requireBearer",
+      "kind": "function",
+      "line": 14
+    },
+    {
+      "file": "fixture/ticket-desk/service.mjs",
+      "name": "healthHandler",
+      "kind": "function",
+      "line": 23
+    },
+    {
+      "file": "fixture/ticket-desk/service.mjs",
+      "name": "createTicketHandler",
+      "kind": "function",
+      "line": 27
+    },
+    {
+      "file": "fixture/ticket-desk/service.mjs",
+      "name": "getTicketHandler",
+      "kind": "function",
+      "line": 51
+    },
+    {
+      "file": "fixture/ticket-desk/service.mjs",
+      "name": "updateStatusHandler",
+      "kind": "function",
+      "line": 60
+    },
+    {
+      "file": "fixture/ticket-desk/store.mjs",
+      "name": "resetStore",
+      "kind": "function",
+      "line": 8
+    },
+    {
+      "file": "fixture/ticket-desk/store.mjs",
+      "name": "createTicket",
+      "kind": "function",
+      "line": 13
+    },
+    {
+      "file": "fixture/ticket-desk/store.mjs",
+      "name": "getTicket",
+      "kind": "function",
+      "line": 28
+    },
+    {
+      "file": "fixture/ticket-desk/store.mjs",
+      "name": "updateTicketStatus",
+      "kind": "function",
+      "line": 32
+    }
+  ],
+  "imports": [
+    {
+      "file": "fixture/ticket-desk/service.mjs",
+      "line": 6,
+      "module": "express",
+      "names": [
+        {
+          "imported": "default",
+          "local": "express"
+        }
+      ]
+    },
+    {
+      "file": "fixture/ticket-desk/service.mjs",
+      "line": 7,
+      "module": "./store.mjs",
+      "names": [
+        {
+          "imported": "createTicket",
+          "local": "createTicket"
+        },
+        {
+          "imported": "getTicket",
+          "local": "getTicket"
+        },
+        {
+          "imported": "updateTicketStatus",
+          "local": "updateTicketStatus"
+        }
+      ]
+    }
+  ],
+  "setups": [
+    {
+      "file": "fixture/ticket-desk/service.mjs",
+      "kind": "express-app",
+      "line": 9,
+      "symbol": "app"
+    },
+    {
+      "file": "fixture/ticket-desk/service.mjs",
+      "kind": "json-parser",
+      "line": 10,
+      "symbol": "express.json"
+    }
+  ],
+  "functions": [
+    {
+      "file": "fixture/ticket-desk/service.mjs",
+      "name": "requireBearer",
+      "line": 14,
+      "authGate": true,
+      "unsupportedCount": 0
+    },
+    {
+      "file": "fixture/ticket-desk/service.mjs",
+      "name": "healthHandler",
+      "line": 23,
+      "authGate": false,
+      "unsupportedCount": 0
+    },
+    {
+      "file": "fixture/ticket-desk/service.mjs",
+      "name": "createTicketHandler",
+      "line": 27,
+      "authGate": false,
+      "unsupportedCount": 0
+    },
+    {
+      "file": "fixture/ticket-desk/service.mjs",
+      "name": "getTicketHandler",
+      "line": 51,
+      "authGate": false,
+      "unsupportedCount": 0
+    },
+    {
+      "file": "fixture/ticket-desk/service.mjs",
+      "name": "updateStatusHandler",
+      "line": 60,
+      "authGate": false,
+      "unsupportedCount": 0
+    },
+    {
+      "file": "fixture/ticket-desk/store.mjs",
+      "name": "resetStore",
+      "line": 8,
+      "authGate": false,
+      "unsupportedCount": 2
+    },
+    {
+      "file": "fixture/ticket-desk/store.mjs",
+      "name": "createTicket",
+      "line": 13,
+      "authGate": false,
+      "unsupportedCount": 8
+    },
+    {
+      "file": "fixture/ticket-desk/store.mjs",
+      "name": "getTicket",
+      "line": 28,
+      "authGate": false,
+      "unsupportedCount": 1
+    },
+    {
+      "file": "fixture/ticket-desk/store.mjs",
+      "name": "updateTicketStatus",
+      "line": 32,
+      "authGate": false,
+      "unsupportedCount": 3
+    },
+    {
+      "file": "fixture/ticket-desk/unsupported.mjs",
+      "name": "pathFromConfig",
+      "line": 16,
+      "authGate": false,
+      "unsupportedCount": 0
+    },
+    {
+      "file": "fixture/ticket-desk/unsupported.mjs",
+      "name": "nested",
+      "line": 20,
+      "authGate": false,
+      "unsupportedCount": 1
+    }
+  ],
+  "unsupported": [
+    {
+      "file": "fixture/ticket-desk/store.mjs",
+      "line": 5,
+      "pattern": "new-expression",
+      "symbol": "tickets",
+      "snippet": "const tickets = new Map();"
+    },
+    {
+      "file": "fixture/ticket-desk/store.mjs",
+      "line": 6,
+      "pattern": "unsupported-declaration",
+      "symbol": "seq",
+      "snippet": "let seq = 0;"
+    },
+    {
+      "file": "fixture/ticket-desk/store.mjs",
+      "line": 9,
+      "pattern": "unsupported-statement",
+      "symbol": "resetStore",
+      "snippet": "tickets.clear();"
+    },
+    {
+      "file": "fixture/ticket-desk/store.mjs",
+      "line": 10,
+      "pattern": "assignment",
+      "symbol": "resetStore",
+      "snippet": "seq = 0;"
+    },
+    {
+      "file": "fixture/ticket-desk/store.mjs",
+      "line": 14,
+      "pattern": "unsupported-statement",
+      "symbol": "createTicket",
+      "snippet": "const title = input.title;"
+    },
+    {
+      "file": "fixture/ticket-desk/store.mjs",
+      "line": 15,
+      "pattern": "unsupported-statement",
+      "symbol": "createTicket",
+      "snippet": "const priority = input.priority;"
+    },
+    {
+      "file": "fixture/ticket-desk/store.mjs",
+      "line": 16,
+      "pattern": "unsupported-statement",
+      "symbol": "createTicket",
+      "snippet": "const rawBody = input.body;"
+    },
+    {
+      "file": "fixture/ticket-desk/store.mjs",
+      "line": 17,
+      "pattern": "unsupported-declaration",
+      "symbol": "createTicket",
+      "snippet": "let storedBody = '';"
+    },
+    {
+      "file": "fixture/ticket-desk/store.mjs",
+      "line": 18,
+      "pattern": "unsupported-statement",
+      "symbol": "createTicket",
+      "snippet": "if (rawBody !== undefined) {"
+    },
+    {
+      "file": "fixture/ticket-desk/store.mjs",
+      "line": 21,
+      "pattern": "assignment",
+      "symbol": "createTicket",
+      "snippet": "seq = seq + 1;"
+    },
+    {
+      "file": "fixture/ticket-desk/store.mjs",
+      "line": 22,
+      "pattern": "unsupported-statement",
+      "symbol": "createTicket",
+      "snippet": "const id = String(seq);"
+    },
+    {
+      "file": "fixture/ticket-desk/store.mjs",
+      "line": 24,
+      "pattern": "unsupported-statement",
+      "symbol": "createTicket",
+      "snippet": "tickets.set(id, ticket);"
+    },
+    {
+      "file": "fixture/ticket-desk/store.mjs",
+      "line": 29,
+      "pattern": "unsupported-statement",
+      "symbol": "getTicket",
+      "snippet": "return tickets.get(id);"
+    },
+    {
+      "file": "fixture/ticket-desk/store.mjs",
+      "line": 33,
+      "pattern": "unsupported-statement",
+      "symbol": "updateTicketStatus",
+      "snippet": "const existing = tickets.get(id);"
+    },
+    {
+      "file": "fixture/ticket-desk/store.mjs",
+      "line": 34,
+      "pattern": "unsupported-statement",
+      "symbol": "updateTicketStatus",
+      "snippet": "if (!existing) {"
+    },
+    {
+      "file": "fixture/ticket-desk/store.mjs",
+      "line": 38,
+      "pattern": "unsupported-statement",
+      "symbol": "updateTicketStatus",
+      "snippet": "tickets.set(id, updated);"
+    },
+    {
+      "file": "fixture/ticket-desk/unsupported.mjs",
+      "line": 7,
+      "pattern": "computed-method",
+      "symbol": "app",
+      "snippet": "app[method]('/computed-method', healthHandler);"
+    },
+    {
+      "file": "fixture/ticket-desk/unsupported.mjs",
+      "line": 8,
+      "pattern": "template-path",
+      "symbol": "app.get",
+      "snippet": "app.get(`/tickets/${id}`, healthHandler);"
+    },
+    {
+      "file": "fixture/ticket-desk/unsupported.mjs",
+      "line": 9,
+      "pattern": "call-expression-path",
+      "symbol": "app.post",
+      "snippet": "app.post(pathFromConfig(), healthHandler);"
+    },
+    {
+      "file": "fixture/ticket-desk/unsupported.mjs",
+      "line": 10,
+      "pattern": "concatenated-path",
+      "symbol": "app.delete",
+      "snippet": "app.delete('/ok' + '/joined', healthHandler);"
+    },
+    {
+      "file": "fixture/ticket-desk/unsupported.mjs",
+      "line": 11,
+      "pattern": "inline-handler",
+      "symbol": "app.get",
+      "snippet": "app.get('/inline', (req, res) => {"
+    },
+    {
+      "file": "fixture/ticket-desk/unsupported.mjs",
+      "line": 14,
+      "pattern": "chained-route",
+      "symbol": "app.route",
+      "snippet": "app.route('/chained').get(healthHandler);"
+    },
+    {
+      "file": "fixture/ticket-desk/unsupported.mjs",
+      "line": 21,
+      "pattern": "unsupported-statement",
+      "symbol": "nested",
+      "snippet": "const route = '/inside';"
+    },
+    {
+      "file": "fixture/ticket-desk/unsupported.mjs",
+      "line": 22,
+      "pattern": "nested-registration",
+      "symbol": "app",
+      "snippet": "app.get(route, healthHandler);"
+    },
+    {
+      "file": "fixture/ticket-desk/unsupported.mjs",
+      "line": 23,
+      "pattern": "nested-registration",
+      "symbol": "app",
+      "snippet": "app.get('/literal-but-nested', healthHandler);"
+    }
+  ]
+}

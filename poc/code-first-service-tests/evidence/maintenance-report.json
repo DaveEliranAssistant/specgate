@@ -1,0 +1,117 @@
+{
+  "slug": "maintenance",
+  "sourceCommit": "14842f909058ba990a38bc1bd58519cf40561b45",
+  "playwrightStatus": 1,
+  "playwrightStats": {
+    "startTime": "2026-10-31T20:49:26.066Z",
+    "duration": 1154.643,
+    "expected": 20,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  },
+  "tests": [
+    {
+      "title": "health.ok.positive",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.create.positive",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.create.accepted-empty-body",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.create.invalid-title-type",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.create.invalid-priority",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.create.invalid-priority-missing",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.create.invalid-body-type",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.create.boundary-title-min",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.create.boundary-title-empty",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.create.boundary-title-max",
+      "status": "failed"
+    },
+    {
+      "title": "tickets.create.boundary-title-over-max",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.create.boundary-body-max",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.create.boundary-body-over-max",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.read.unauthorized-missing",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.read.unauthorized-wrong-token",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.read.positive",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.read.not-found",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.update.unauthorized",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.update.invalid-status",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.update.positive",
+      "status": "passed"
+    },
+    {
+      "title": "tickets.update.not-found",
+      "status": "passed"
+    }
+  ],
+  "predictedFailureIds": [
+    "tickets.create.boundary-title-max"
+  ],
+  "actualFailureIds": [
+    "tickets.create.boundary-title-max"
+  ],
+  "classifications": [
+    {
+      "scenarioId": "tickets.create.boundary-title-max",
+      "changeClass": "genuine_regression",
+      "recommendedAction": "fix_service",
+      "explanation": "The failure is an assertion mismatch against the approved baseline.",
+      "assertionPatch": null
+    }
+  ],
+  "specUnchanged": true,
+  "scenarioAssertionsUnchanged": true,
+  "createPositiveStillExpects201": true
+}
