@@ -1,0 +1,16 @@
+{
+  "source": "QE Atlas local SG-02 handoff, exact historical engine",
+  "sourceRepository": "https://github.com/DaveEliranAssistant/qe-atlas",
+  "engineExpectedSha256": "ef87326988d381c15997bcb9e6bf48fc47c66cd46526f65c282e4eedea1e9c69",
+  "publication": "Owner explicitly approved only bounded engine/thin wrapper MIT snapshot for qe-dogfood; code-first scanner excluded",
+  "files": [
+    {
+      "file": "specgate-diff.mjs",
+      "sha256": "ef87326988d381c15997bcb9e6bf48fc47c66cd46526f65c282e4eedea1e9c69"
+    },
+    {
+      "file": "specgate-diff-test.mjs",
+      "sha256": "33260c4b7ce9c09322c944d492122362da1f6c4f047a4fd3e38c81bba5305d68"
+    }
+  ]
+}

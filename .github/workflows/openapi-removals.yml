@@ -1,0 +1,22 @@
+name: OpenAPI removal adapter
+on:
+  pull_request:
+    paths: ['tools/openapi-removals/**', '.github/workflows/openapi-removals.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  bounded-wrapper:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    strategy:
+      matrix:
+        node: [22, 24]
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444
+        with:
+          node-version: ${{ matrix.node }}
+      - run: node --test tools/openapi-removals/cli.test.mjs tools/openapi-removals/specgate-diff-test.mjs
