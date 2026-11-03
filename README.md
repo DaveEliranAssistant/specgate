@@ -7,7 +7,8 @@ This private repository is the dedicated SpecGate product home. It replaces the 
 ## Status
 
 - **Available:** private CLI release candidate `0.1.0-rc.1`, bounded committed-source scanning, baseline checks, reviewed-scenario compilation and executable synthetic proofs.
-- **Not launched:** product website, interactive code-first walkthrough, hosted signup endpoint, public npm distribution and real-service qualification.
+- **Reviewable onboarding preview:** [guided pilot page and verification instructions](onboarding/README.md), supported-scope fit check, recorded static CLI examples, private offline quickstart and pilot brief. This is not a deployed public website or hosted signup.
+- **Not launched:** public product website, authenticated private-release CI installation, hosted signup endpoint, public npm distribution, consumer-compatibility modes and real-service qualification.
 - **Not production approved:** begin with a controlled, observe-only pilot. Passing the synthetic suite is not customer-service qualification.
 
 See [adoption status and remaining acceptance gates](docs/ADOPTION.md). No customer repository is required to build the website or signup flow. A customer service is only needed for the separate real-service qualification gate.
@@ -21,7 +22,7 @@ See [adoption status and remaining acceptance gates](docs/ADOPTION.md). No custo
 | `docs/` | Product adoption, release evidence, migration provenance and security notes |
 | `.github/workflows/quality.yml` | Standalone Node 22/24 quality gates; no deployment or production secrets |
 
-Future website, public documentation and beta-access backend belong in this repository too. Those components have not been implemented yet; no placeholder site is presented as a working product.
+The reviewable [onboarding preview](onboarding/README.md) now lives here. It is a static guided-pilot experience, not a public deployment or hosted signup. A public website and beta-access backend remain unlaunched.
 
 ## Development and verification
 

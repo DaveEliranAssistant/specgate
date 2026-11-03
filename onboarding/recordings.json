@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "toolVersion": "0.1.0-rc.1",
+  "scannerRevision": "cb2d55bb9e18f37c777ed55cea347ea21ace0587",
+  "kind": "Recorded synthetic static CLI output; not live scanning or consumer compatibility proof",
+  "examples": [
+    {
+      "id": "scan",
+      "exitCode": 0,
+      "sourceCommit": "cd1e5a3a0e948d882b4849e62c034f5566556916",
+      "sourceSha256": "cb034e663a0a430a81da4faa2876faf41f048c7bc40dc73be82d2837e746f29a",
+      "source": "import express from 'express'; export const app=express(); app.get('/health',(req,res)=>{res.status(200).json({ok:true});});",
+      "report": {
+        "schemaVersion": "specgate.scan/1",
+        "toolVersion": "0.1.0-rc.1",
+        "supportedSubset": "express-literal-routes-v1",
+        "inputMode": "git-revision",
+        "sourceCommit": "cd1e5a3a0e948d882b4849e62c034f5566556916",
+        "scopes": [
+          "src"
+        ],
+        "files": [
+          {
+            "path": "src/app.mjs",
+            "sha256": "cb034e663a0a430a81da4faa2876faf41f048c7bc40dc73be82d2837e746f29a"
+          }
+        ],
+        "routes": [
+          {
+            "id": "route.74fac65f350e55c6eab7fce4",
+            "method": "GET",
+            "path": "/health",
+            "file": "src/app.mjs",
+            "line": 1,
+            "handler": "inline_1_59_0",
+            "auth": "not_observed",
+            "validation": [],
+            "responseStatuses": [
+              200
+            ]
+          }
+        ],
+        "gaps": [],
+        "complete": true,
+        "warning": "Committed source only. Static observations, not correctness assertions or a security audit. Complete means only the declared parser subset; excluded dependencies and unscanned files are not covered.",
+        "fingerprint": "4bdd1f00f5bd193e9ba52436e14a0a5432c68c036af9e80ccc0e60d8d2ccaa5f"
+      }
+    },
+    {
+      "id": "change",
+      "exitCode": 1,
+      "sourceCommit": "60c2a1d407302799f3bbe581c65a11b6632ad5e4",
+      "sourceSha256": "48785d64b150f4aa19b0ca094a6edf255e2da137694c8ee6f86ad09b1a6691df",
+      "source": "import express from 'express'; export const app=express(); app.get('/health',(req,res)=>{res.status(200).json({ok:false});});",
+      "report": {
+        "schemaVersion": "specgate.check/1",
+        "passed": false,
+        "previousFingerprint": "4bdd1f00f5bd193e9ba52436e14a0a5432c68c036af9e80ccc0e60d8d2ccaa5f",
+        "currentFingerprint": "8d218e24291fdfb8d1f8c888e3ed27151e0b6e208aa3caaebacdb9067c9de64d",
+        "findings": [
+          {
+            "code": "source-changed",
+            "file": "src/app.mjs",
+            "action": "review_and_run_impacted_tests"
+          }
+        ],
+        "warning": "Changed code requires review, not automatic baseline acceptance. No behavioral or security compatibility guarantee."
+      }
+    },
+    {
+      "id": "unsupported",
+      "exitCode": 1,
+      "sourceCommit": "ab14c4cb2c64fa679bfc1ac02141afbcaa609030",
+      "sourceSha256": "e8b091ec4ff23c68948ba764bccb51e9b0a873ba11c83e80ae04611d5e02e5de",
+      "source": "import express from 'express'; export const app=express(); app.get('/health',async (req,res)=>{res.status(200).json({ok:true});});",
+      "report": {
+        "schemaVersion": "specgate.scan/1",
+        "toolVersion": "0.1.0-rc.1",
+        "supportedSubset": "express-literal-routes-v1",
+        "inputMode": "git-revision",
+        "sourceCommit": "ab14c4cb2c64fa679bfc1ac02141afbcaa609030",
+        "scopes": [
+          "src"
+        ],
+        "files": [
+          {
+            "path": "src/app.mjs",
+            "sha256": "e8b091ec4ff23c68948ba764bccb51e9b0a873ba11c83e80ae04611d5e02e5de"
+          }
+        ],
+        "routes": [],
+        "gaps": [
+          {
+            "file": "src/app.mjs",
+            "line": 1,
+            "code": "inline-handler"
+          },
+          {
+            "file": null,
+            "line": null,
+            "code": "no-routes"
+          }
+        ],
+        "complete": false,
+        "warning": "Committed source only. Static observations, not correctness assertions or a security audit. Complete means only the declared parser subset; excluded dependencies and unscanned files are not covered.",
+        "fingerprint": "a413c1af52ffa9c19fb73c5513752588427fbf4b42992110a354c4a446b0015c"
+      }
+    }
+  ]
+}
