@@ -9,3 +9,5 @@ SpecGate PASS means removal rules only; manual review is required and other comp
 Operational failures may leave no shared file when input/path validation fails before output acquisition. Configure expected-files in the reporter so this is an explicit ERROR, never a silent omission.
 
 Tests: `node --test tools/openapi-removals/*.test.mjs`. No baseline or assertion changes.
+
+Removal findings carry `change: new`, based on the actual base/head comparison. The engine and native verdict are unchanged.

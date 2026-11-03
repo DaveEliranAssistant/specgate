@@ -5,6 +5,6 @@ export function buildResult(r,detailsMarkdown='',code=0){
  base.verdict=r.cli.exitCode===0?'pass':r.cli.exitCode===1?'fail':'error';
  base.headline=`${r.summary.total} removal(s); removal rules only. Manual review required; API compatibility is unassessed.`;
  base.metrics=[{label:'removed paths',value:r.summary.pathRemoved},{label:'removed operations',value:r.summary.operationRemoved},{label:'manual review',value:'required'}];
- base.findings=(r.findings||[]).slice(0,100).map(f=>({severity:f.severity||'breaking',title:f.rule,location:f.basePointer}));
+ base.findings=(r.findings||[]).slice(0,100).map(f=>({change:'new',severity:f.severity||'breaking',title:f.rule,location:f.basePointer}));
  return base;
 }
