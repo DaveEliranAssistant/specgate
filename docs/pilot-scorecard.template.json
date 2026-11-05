@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "status": "NOT_QUALIFIED",
+  "service": {
+    "repository": null,
+    "baseCommit": null,
+    "headCommit": null,
+    "sourceScopes": [],
+    "maintainer": null,
+    "staticReadAuthorization": null,
+    "runtimeExecutionAuthorization": null
+  },
+  "tool": {
+    "sourceCommit": null,
+    "archiveSha256": null
+  },
+  "review": {
+    "baselineSha256": null,
+    "scenarioSha256": null,
+    "approvalReference": null,
+    "predeclaredAcceptanceThresholds": null
+  },
+  "measurements": {
+    "usefulDetections": null,
+    "falsePositives": null,
+    "unresolvedFindings": null,
+    "benignDriftReviewOverhead": null,
+    "knownEndpointDenominator": null,
+    "supportedObservedRoutes": null,
+    "routesWithReviewedScenarios": null,
+    "executedScenarios": null,
+    "coverageGaps": null,
+    "setupElapsedMinutes": null,
+    "setupActiveMinutes": null,
+    "maintenanceActiveMinutes": null,
+    "unintendedAssertionRewrites": null
+  },
+  "observations": [],
+  "productionEnforcementApproved": false,
+  "note": "Null means unmeasured. No real-service/customer qualification performed; static synthetic mechanics do not fill this scorecard."
+}
