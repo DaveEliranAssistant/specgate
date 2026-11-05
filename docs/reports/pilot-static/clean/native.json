@@ -1,0 +1,114 @@
+{
+  "schemaVersion": "specgate.pilot/1",
+  "toolVersion": "0.1.0-rc.1",
+  "buildStatus": "unreleased-source-candidate",
+  "mode": "observe-only",
+  "verdict": "UNCHANGED_DECLARED_SUBSET",
+  "exitCode": 0,
+  "compatibility": "NOT_ASSESSED",
+  "behavioralValidation": "NOT_EXECUTED",
+  "source": {
+    "baseCommit": "8168ab530eeba2edfb7122996ccc3b25a04833e9",
+    "headCommit": "8168ab530eeba2edfb7122996ccc3b25a04833e9",
+    "scopes": [
+      "src"
+    ],
+    "baseFingerprint": "1ff6f6304f26a7d52dc4f9564716fddd8c9d47d7585f66de5519a2e233b91d40",
+    "headFingerprint": "1ff6f6304f26a7d52dc4f9564716fddd8c9d47d7585f66de5519a2e233b91d40"
+  },
+  "reviewedScenarioFingerprint": "068bea29a3bd7951a347e588fd52e367a2732e5e7e0e99f3b4910d12f9ed5687",
+  "coverage": {
+    "status": "declared-subset-only",
+    "observedRoutes": 2,
+    "routesWithReviewedScenario": 2,
+    "routesWithoutReviewedScenario": 0,
+    "executedScenarios": 0,
+    "unsupportedConstructs": [],
+    "unassessedScope": [
+      "Only explicit committed Git source scopes and the documented Express grammar are analyzed; untracked/working-tree changes and excluded files are not assessed.",
+      "Imports outside supplied scopes, database/outbound dependencies, general control flow, authorization correctness, response schemas and full consumer compatibility are unassessed.",
+      "Scenario-to-route association is not executed behavioral coverage, approved review identity, freshness, or proof that every route/state is represented.",
+      "File hashes detect drift, including comments; registration locations are not exact changed statement locations or proof of a behavioral defect."
+    ]
+  },
+  "routes": [
+    {
+      "routeId": "route.14cea6de9f9e54b024e1152a",
+      "method": "POST",
+      "path": "/tickets",
+      "source": {
+        "file": "src/app.mjs",
+        "line": 1
+      },
+      "observations": {
+        "auth": "not_observed",
+        "validation": [],
+        "responseStatuses": [
+          201
+        ]
+      },
+      "reviewedExpectations": [
+        {
+          "scenarioId": "tickets.create",
+          "classification": "approved_requirement",
+          "reference": "SYNTHETIC requirements: POST tickets remains 201; health remains 200",
+          "method": "POST",
+          "path": "/tickets",
+          "pathKind": "route-template",
+          "kind": "action",
+          "expectedStatus": 201,
+          "bodyAssertion": "exact",
+          "execution": "NOT_EXECUTED"
+        }
+      ]
+    },
+    {
+      "routeId": "route.74fac65f350e55c6eab7fce4",
+      "method": "GET",
+      "path": "/health",
+      "source": {
+        "file": "src/app.mjs",
+        "line": 1
+      },
+      "observations": {
+        "auth": "not_observed",
+        "validation": [],
+        "responseStatuses": [
+          200
+        ]
+      },
+      "reviewedExpectations": [
+        {
+          "scenarioId": "health.read",
+          "classification": "approved_requirement",
+          "reference": "SYNTHETIC requirements: POST tickets remains 201; health remains 200",
+          "method": "GET",
+          "path": "/health",
+          "pathKind": "route-template",
+          "kind": "action",
+          "expectedStatus": 200,
+          "bodyAssertion": "exact",
+          "execution": "NOT_EXECUTED"
+        }
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "tickets.create",
+      "classification": "approved_requirement",
+      "reference": "SYNTHETIC requirements: POST tickets remains 201; health remains 200",
+      "status": "NOT_EXECUTED",
+      "review": "caller-asserted-not-verified"
+    },
+    {
+      "id": "health.read",
+      "classification": "approved_requirement",
+      "reference": "SYNTHETIC requirements: POST tickets remains 201; health remains 200",
+      "status": "NOT_EXECUTED",
+      "review": "caller-asserted-not-verified"
+    }
+  ],
+  "findings": [],
+  "warning": "Static source observations only, not API compatibility or behavioral validation. Reviewed assertions are never rewritten. A reference is not proof of approval; protect trusted inputs operationally."
+}
