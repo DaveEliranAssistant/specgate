@@ -67,3 +67,8 @@ An existing dedicated free-tier `specgate-beta` database was provisioned before 
 ## Imported evidence
 
 The nested release reports describe the upstream candidate and its historical QE Atlas CI. They do not prove a deployment or run in this repository. The migration imports 77 committed files, recorded in [the import manifest](docs/provenance/import-manifest.json). Runtime, requirements, fixtures and generated artifacts are unchanged. One provenance test is adapted to verify the imported revision and input hashes instead of unavailable upstream Git ancestry. Source attribution and this snapshot/history distinction are documented in [NOTICE.md](NOTICE.md).
+
+
+## Developer pilot evidence (review candidate)
+
+See [the developer-pilot entry point](docs/PILOT.md): explicit static coverage and reviewed-expectation context, actual private archive observe-only installation, recorded walkthrough, real-service protocol and unmeasured scorecard. This does not enable production enforcement or imply API compatibility.

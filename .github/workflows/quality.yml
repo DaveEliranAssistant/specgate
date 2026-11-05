@@ -4,6 +4,11 @@ on:
     branches: [main]
   pull_request:
   workflow_dispatch:
+    inputs:
+      run_synthetic_runtime:
+        description: Explicitly authorize executing the synthetic fixture runtime proofs
+        type: boolean
+        default: false
 permissions:
   contents: read
 concurrency:
@@ -11,6 +16,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   verify:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_synthetic_runtime }}
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     strategy:
@@ -38,3 +44,44 @@ jobs:
         run: npm run audit:production
       - name: Empty-cache offline installed-package smoke
         run: npm run test:pack
+  pilot:
+    name: Static developer-pilot evidence (${{ matrix.node }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [22, 24]
+    env:
+      TMPDIR: ${{ runner.temp }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Install only trusted tooling with lifecycle scripts disabled
+        run: |
+          npm ci --ignore-scripts
+          npm ci --prefix packages/specgate --ignore-scripts
+          npm ci --prefix poc/code-first-service-tests --ignore-scripts
+      - name: Preserve imported bytes and independent assertions; static tests only
+        run: |
+          node --test test/*.test.mjs packages/specgate/test/cli.test.mjs packages/specgate/test/scan.test.mjs packages/specgate/test/git-source.test.mjs packages/specgate/test/hardening.test.mjs packages/specgate/test/generate.test.mjs packages/specgate/test/pilot*.test.mjs
+          node --test poc/code-first-service-tests/test/oracle.test.mjs poc/code-first-service-tests/test/maintain.test.mjs
+      - name: Actual archive, empty-cache offline install and observe-only recipe
+        run: node scripts/verify-pilot-package.mjs "$RUNNER_TEMP/specgate-proof"
+      - name: Preserve original installed-package assertions
+        run: npm run test:pack
+      - name: Audit trusted production dependencies
+        run: npm run audit:production
+      - name: Private synthetic mechanics evidence, not customer qualification
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: specgate-static-pilot-node-${{ matrix.node }}
+          path: ${{ runner.temp }}/specgate-proof/
+          retention-days: 14
+          if-no-files-found: error

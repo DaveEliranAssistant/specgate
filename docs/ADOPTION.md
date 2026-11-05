@@ -33,3 +33,8 @@ The customer helper is exercised against a locally packed private candidate usin
 Earlier website/backend implementation stopped at a timed-out approval gate. This repository migration does not claim that blocked implementation or public deployment occurred. Preserve free-tier and existing protection boundaries. No database schema or credentials are included in this repository.
 
 Do not claim launch readiness from a green scanner pipeline alone. Verify the website bytes, browser interactions, CI recipe and persisted signup independently when those components exist.
+
+
+## Developer-pilot increment (review branch)
+
+[Static developer-pilot evidence](PILOT.md) now prepares coverage/change explanations, actual archive-install observe-only collection, a recorded walkthrough and real-service protocol/scorecard. New functionality is an unreleased private source candidate, not public npm availability. The imported scanner and assertions remain unchanged. Automatic checks are static; existing synthetic runtime proofs require explicit manual opt-in, and no real-service qualification is claimed. Gates 3 and 6 above remain partly blocked on authenticated consumer distribution and an explicitly authorized target with independent reviewed behavior/runtime permission. Public site/signup/deployment gates remain separate and unchanged.
