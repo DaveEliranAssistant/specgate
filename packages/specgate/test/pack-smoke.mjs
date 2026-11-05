@@ -9,7 +9,8 @@ const pkg=resolve(import.meta.dirname,'..');
 const work=mkdtempSync(join(tmpdir(),'specgate-pack-'));
 try {
  const [packed]=JSON.parse(execFileSync('npm',['pack','--json','--pack-destination',work],{cwd:pkg,encoding:'utf8'}));
- assert(packed.files.every(f=>f.path==='package.json'||['README.md','SECURITY.md','NOTICE.md'].includes(f.path)||f.path.startsWith('bin/')||f.path.startsWith('src/')||f.path.startsWith('node_modules/acorn/')),'Only allowlisted runtime and Acorn files may be packed');
+ assert(packed.files.every(f=>f.path==='package.json'||['LICENSE','README.md','SECURITY.md','NOTICE.md'].includes(f.path)||f.path.startsWith('bin/')||f.path.startsWith('src/')||f.path.startsWith('node_modules/acorn/')),'Only allowlisted runtime and Acorn files may be packed');
+ assert(packed.files.some(f=>f.path==='LICENSE'),'SpecGate MIT license must be included');
  assert(packed.files.some(f=>f.path==='node_modules/acorn/LICENSE'),'Bundled dependency license must be included');
  assert(packed.files.some(f=>f.path==='src/parser-worker.mjs'));
  const archive=join(work,packed.filename), install=join(work,'install'),root=join(work,'service');mkdirSync(install);mkdirSync(join(root,'src'),{recursive:true});

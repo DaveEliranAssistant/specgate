@@ -27,7 +27,7 @@ Recordings were captured by `node scripts/record-onboarding.mjs` from controlled
 
 ## Deliberate remaining gates
 
-- No public deployment or live beta/signup API.
+- No public deployment. The waitlist API stays closed until the owner connects a SpecGate database.
 - No cross-repository CI artifact install until scoped reader provisioning and real download proof.
 - No real-customer qualification or production enforcement.
 - No conform/diff implementation or C/D/E compatibility proof.

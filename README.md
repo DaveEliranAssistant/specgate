@@ -56,7 +56,7 @@ Only committed source is scanned; `HEAD` is pinned once. Baselines and scenarios
 
 The supported adapter is a constrained JavaScript/Express literal-route subset, not all JavaScript, TypeScript or frameworks. Unsupported constructs are reported as non-green gaps. Independently reviewed requirements define expected behavior; code changes do not automatically rewrite assertions.
 
-See the [package guide](packages/specgate/README.md), [security model](packages/specgate/SECURITY.md) and [provenance](NOTICE.md). There is no public `npx specgate` install yet.
+See the [package guide](packages/specgate/README.md), [security model](packages/specgate/SECURITY.md) and [provenance](NOTICE.md). SpecGate is [MIT licensed](LICENSE). The npm package is prepared but not published yet.
 
 ## Vercel and beta access
 

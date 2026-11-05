@@ -8,13 +8,25 @@ This branch prepares a public product landing export, not a deployment. Existing
 
 ## Waitlist
 
-Modeled on A11yGate's explicit consent, unavailable-state handling and server-only database design. The disabled UI has no submit handler, fetch, storage or success message. A11yGate's endpoint/database is not reused: cross-product ownership and consent have not been verified. No secrets added or requested for this static build.
+`POST /api/waitlist` is a Vercel function (`api/waitlist.mjs`) modeled on A11yGate's waitlist: explicit consent, normalized and deduplicated email, a 4 KiB payload bound, a per-instance rate limit, a honeypot and no stored IP. It collects less than A11yGate, with no role or company. A11yGate's endpoint and database are not reused.
 
-Future server integration requires an approved SpecGate-owned database, server-only `DATABASE_URL_POOLED` (or `DATABASE_URL`), migration/schema, explicit purpose and withdrawal/retention policy, email validation, bounded payloads, rate limiting, deduplication and tests that missing credentials/write failure return 503 without claiming success. Do not expose a DB URL through NEXT_PUBLIC variables or static assets. Until then registration stays disabled regardless of environment variables.
+The form stays hidden until `GET /api/waitlist` reports a configured database. Without one, the page says the waitlist is temporarily unavailable, the API returns 503 and no success is claimed. A failed write also returns 503.
 
-## Distribution blocker
+### Owner setup
 
-The inherited NOTICE explicitly withholds public distribution permission. Package metadata is prepared but `private: true` and `UNLICENSED` retain that boundary. The owner must resolve source rights/license before npm publication. See the package README for exact future qe-atlas npm commands. No publication occurs here.
+No database or secret is created by this repository.
+
+1. Create a Postgres database owned by SpecGate, separate from A11yGate.
+2. In the SpecGate Vercel project, set server-only `DATABASE_URL_POOLED` (preferred) or `DATABASE_URL`. See `.env.example`. Never use a `NEXT_PUBLIC_` name or a static asset.
+3. Connect the Vercel project to this repository's root. `npm run vercel-build` applies `sql/waitlist.sql` when a URL is set, then builds the static export. If a URL is set and the migration fails, the build stops and the log redacts the connection string. Without a URL the migration is skipped.
+
+`npm run db:migrate` runs only the migration, using a URL already in the environment.
+
+The page tells visitors that signups are kept until they ask for deletion, and that deletion requests go to dave.eliran.assistant@gmail.com. There is no automatic expiry. The owner should confirm this wording before opening the waitlist.
+
+## Distribution
+
+SpecGate is MIT licensed, approved by the owner on 2026-11-05. The package is `private: false`, `license: MIT`, and its tarball includes `LICENSE`. The repository root stays `private` in `package.json` and is not published. It is not on npm yet: publishing needs an npm login with two-factor authentication or a granular token with 2FA bypass. `packages/specgate/README.md` ships in the tarball, so it is written for the published state. The GitHub repository's visibility is a separate owner decision: while it is private, the package's `repository` and `bugs` links return 404 for the public.
 
 ## Read-only live evidence
 

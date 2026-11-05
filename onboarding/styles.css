@@ -120,5 +120,9 @@ fieldset{padding:16px}
 .report-card{padding:16px}
 section{padding:34px 0}
 }
+.waitlist-fields{display:grid;gap:14px;margin-bottom:16px}
+.waitlist-consent{font-weight:400}
+.waitlist-trap{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+#waitlist-email-error,#waitlist-consent-error{color:#9a2f1f;margin:0}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}
 }

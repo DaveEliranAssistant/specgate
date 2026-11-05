@@ -31,6 +31,26 @@ if(typeof document!=='undefined'){
  }
  for(const button of document.querySelectorAll('[data-example]')){button.hidden=false;button.addEventListener('click',()=>showExample(button.dataset.example));}
  showExample('scan');
+ const waitlist=document.getElementById('waitlist-form'),waitlistStatus=document.getElementById('waitlist-status'),waitlistError=document.getElementById('waitlist-error');
+ const unavailable='The waitlist is temporarily unavailable.';
+ function showWaitlistFields(fields={},message=''){
+  for(const name of ['email','consent']){const error=document.getElementById(`waitlist-${name}-error`),input=document.getElementById(`waitlist-${name}`);error.textContent=fields[name]??'';error.hidden=!fields[name];if(fields[name])input.setAttribute('aria-invalid','true');else input.removeAttribute('aria-invalid');}
+  waitlistError.textContent=message;waitlistError.hidden=!message;if(message)waitlistError.focus();
+ }
+ function closeWaitlist(message){waitlist.hidden=true;waitlistStatus.textContent=message;waitlistStatus.hidden=false;waitlistStatus.focus();}
+ fetch('/api/waitlist').then(async response=>{const body=await response.json();if(response.ok&&body.available===true){waitlist.hidden=false;waitlistStatus.hidden=true;}}).catch(()=>{});
+ waitlist.addEventListener('submit',async event=>{
+  event.preventDefault();
+  const submit=document.getElementById('waitlist-submit');submit.disabled=true;
+  try{
+   const response=await fetch('/api/waitlist',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({email:waitlist.elements.email.value,consent:waitlist.elements.consent.checked,company_website:waitlist.elements.company_website.value})});
+   const body=await response.json().catch(()=>({}));
+   if(response.ok)closeWaitlist(body.message||'You are on the waitlist.');
+   else if(response.status===503)closeWaitlist(unavailable);
+   else showWaitlistFields(body.fields,body.message||'Check the form and try again.');
+  }catch{closeWaitlist(unavailable);}
+  finally{submit.disabled=false;}
+ });
  document.getElementById('copy-command').hidden=false;
  document.getElementById('copy-command').addEventListener('click',async()=>{
   const code=document.getElementById('scan-command'),status=document.getElementById('copy-status');

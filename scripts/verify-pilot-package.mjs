@@ -18,12 +18,13 @@ const [packed] = JSON.parse(
 );
 assert.ok(packed.files.some((f) => f.path === "bin/specgate-pilot.mjs"));
 assert.ok(packed.files.some((f) => f.path === "bin/specgate-observe.mjs"));
+assert.ok(packed.files.some((f) => f.path === "LICENSE"));
 assert.ok(packed.files.some((f) => f.path === "node_modules/acorn/LICENSE"));
 assert.ok(
   packed.files.every(
     (f) =>
       f.path === "package.json" ||
-      ["README.md", "SECURITY.md", "NOTICE.md"].includes(f.path) ||
+      ["LICENSE", "README.md", "SECURITY.md", "NOTICE.md"].includes(f.path) ||
       f.path.startsWith("bin/") ||
       f.path.startsWith("src/") ||
       f.path.startsWith("node_modules/acorn/"),
