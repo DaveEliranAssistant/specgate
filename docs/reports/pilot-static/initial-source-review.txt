@@ -1,0 +1,22 @@
+{
+  "passed": false,
+  "security_concerns": [
+    {
+      "location": "packages/specgate/src/pilot-cli.mjs: --output handling (diff lines 248–249)",
+      "issue": "The direct pilot CLI writes a fresh output file anywhere, including inside the scanned target or through a parent-directory symlink into it. Exclusive creation prevents overwriting existing inputs but does not enforce the required target isolation. The collector checks resolved output placement; the direct CLI does not.",
+      "recommendation": "Resolve the output parent and target to canonical paths and reject output within the target before writing. Apply the same protection to direct CLI output and collector output."
+    },
+    {
+      "location": "packages/specgate/src/pilot-report.mjs: reviewed expectation projection and Markdown rendering (diff lines 328 and 513)",
+      "issue": "Reviewed request paths are copied verbatim from step.path into JSON and Markdown. A supported parameterized route can therefore expose a sensitive concrete request-path value from a reviewed scenario, even though request bodies and body assertion values are omitted.",
+      "recommendation": "Report the matched route template instead of the concrete scenario request path, or redact parameter values. Add a sensitive path-value canary alongside the existing body/source canaries."
+    }
+  ],
+  "logic_errors": [],
+  "suggestions": [
+    "Extend the isolation tests to cover direct pilot --output under the target and under a symlinked parent pointing into it; existing alias coverage only exercises the collector."
+  ],
+  "summary": "Read the supplied diff fully and performed source review only; no code or tests were executed. The changes preserve the stated static-only policy, distinguish collector acquisition success from native review/incomplete results, and avoid presenting incomplete missing routes as confirmed removals. Two security requirements remain unmet: direct CLI output isolation and redaction of sensitive concrete scenario request paths. No runtime qualification or customer-validation claim is made."
+}
+
+session_id: 20261105_083018_c293c4

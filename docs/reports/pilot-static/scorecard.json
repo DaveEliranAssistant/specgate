@@ -1,0 +1,31 @@
+{
+  "status": "SYNTHETIC_STATIC_MECHANICS_ONLY_NOT_REAL_SERVICE_QUALIFICATION",
+  "runtimeSourceCommit": "0d90a98cfee6c66abe14c777dbce1087e55c9ef6",
+  "caseCount": 7,
+  "caseVerdicts": {
+    "UNCHANGED_DECLARED_SUBSET": 1,
+    "REVIEW_REQUIRED": 4,
+    "INCOMPLETE": 2
+  },
+  "sourceExecuted": false,
+  "executedScenarios": 0,
+  "malformedCollectorExit": 2,
+  "assertionsUnchanged": true,
+  "customerMeasurements": {
+    "usefulDetections": null,
+    "falsePositives": null,
+    "unresolvedFindings": null,
+    "benignDriftReviewOverhead": null,
+    "knownEndpointDenominator": null,
+    "supportedObservedRoutes": null,
+    "routesWithReviewedScenarios": null,
+    "executedScenarios": null,
+    "coverageGaps": null,
+    "setupElapsedMinutes": null,
+    "setupActiveMinutes": null,
+    "maintenanceActiveMinutes": null,
+    "unintendedAssertionRewrites": null
+  },
+  "runtimeQualification": "NOT_EXECUTED",
+  "productionEnforcementApproved": false
+}

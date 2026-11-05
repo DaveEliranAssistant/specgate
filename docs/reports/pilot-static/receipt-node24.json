@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "syntheticOnly": true,
+  "toolSourceCommit": "0d90a98cfee6c66abe14c777dbce1087e55c9ef6",
+  "runtimeUncommitted": false,
+  "scope": "Static mechanics, not customer validation, runtime defect execution, or API compatibility",
+  "package": "@qe-atlas/specgate",
+  "version": "0.1.0-rc.1",
+  "archive": "qe-atlas-specgate-0.1.0-rc.1.tgz",
+  "archiveSha256": "2920e7d26e5a4b17dff7dd2aeb200e49a60f3d71caa6d6ba8741496027bbad12",
+  "node": "v24.22.2",
+  "emptyCacheOfflineInstall": true,
+  "lifecycleScriptsDisabled": true,
+  "baselineSha256": "60f1c3744f63826843354aa3ab9284e99c2e8422def82c56ea6817e99f96783f",
+  "reviewedScenarioSha256": "e858072e6ad95175db915901038d6cde504149315992b53dae9f67e0de048033",
+  "assertionsUnchanged": true,
+  "sourceCodeExecuted": false,
+  "behavioralValidation": "NOT_EXECUTED",
+  "malformedCollectorExit": 2,
+  "cases": [
+    {
+      "name": "clean",
+      "verdict": "UNCHANGED_DECLARED_SUBSET",
+      "analysisExitCode": 0,
+      "collectorExitCode": 0,
+      "sourceSha256": "00903cfd68af46fd460728e188db265e7f2c1cd6ff2f8da70cd6e87c952d0db8",
+      "sourceCommit": "061b2e8a35f5866deb36d3ebe657e8b5cb0d13d7",
+      "findings": 0,
+      "unsupportedConstructs": 0
+    },
+    {
+      "name": "seeded-status-defect",
+      "verdict": "REVIEW_REQUIRED",
+      "analysisExitCode": 1,
+      "collectorExitCode": 0,
+      "sourceSha256": "bb4f44a291d91aef1d44e7df523fd48e70ebfd02254a65dc6f50b818d9a75006",
+      "sourceCommit": "91c3c130fd578d9a14ce103964e4154f9b0bc80d",
+      "findings": 2,
+      "unsupportedConstructs": 0
+    },
+    {
+      "name": "comment-only",
+      "verdict": "REVIEW_REQUIRED",
+      "analysisExitCode": 1,
+      "collectorExitCode": 0,
+      "sourceSha256": "06ce92790af11d8040a05ced48d1d9b70b65c8c3528e3422b1de7f1e152c0589",
+      "sourceCommit": "99077c38fad3bead5f9946c39072235a4f4020a7",
+      "findings": 1,
+      "unsupportedConstructs": 0
+    },
+    {
+      "name": "added-unreviewed-route",
+      "verdict": "REVIEW_REQUIRED",
+      "analysisExitCode": 1,
+      "collectorExitCode": 0,
+      "sourceSha256": "2b593436c0a1e856583ec8ad0c190b5e3731f5063c0e993f66012145c0e51b11",
+      "sourceCommit": "ba2eea284bd86a5908a765945b12bd2c59f27cb0",
+      "findings": 2,
+      "unsupportedConstructs": 0
+    },
+    {
+      "name": "removed-route",
+      "verdict": "REVIEW_REQUIRED",
+      "analysisExitCode": 1,
+      "collectorExitCode": 0,
+      "sourceSha256": "44a5f6fcd2460d15b9fe98613e4e68f6b4e6d86839ab58e493dd491ccc055cca",
+      "sourceCommit": "5827d3bee3d46ecfc43a75522e39450f3f7dd368",
+      "findings": 3,
+      "unsupportedConstructs": 0
+    },
+    {
+      "name": "unsupported-async",
+      "verdict": "INCOMPLETE",
+      "analysisExitCode": 1,
+      "collectorExitCode": 0,
+      "sourceSha256": "b13c76f99fe154e195adcd60da581bf5977bc5585aba8a0dcad9e579139be057",
+      "sourceCommit": "89a792912b6757abdc2ed0fe5397742669a49413",
+      "findings": 4,
+      "unsupportedConstructs": 1
+    },
+    {
+      "name": "unsupported-dynamic",
+      "verdict": "INCOMPLETE",
+      "analysisExitCode": 1,
+      "collectorExitCode": 0,
+      "sourceSha256": "4e8752d132dd56c64a62aa08383c505674daa12a3ecb1625a3ffe3f9f141a6d7",
+      "sourceCommit": "bbb19abd082ffbe974a6e180c3f8bd7f5b6f1ace",
+      "findings": 2,
+      "unsupportedConstructs": 1
+    }
+  ]
+}

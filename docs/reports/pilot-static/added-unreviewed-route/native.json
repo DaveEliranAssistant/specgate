@@ -1,0 +1,238 @@
+{
+  "schemaVersion": "specgate.pilot/1",
+  "toolVersion": "0.1.0-rc.1",
+  "buildStatus": "unreleased-source-candidate",
+  "mode": "observe-only",
+  "verdict": "REVIEW_REQUIRED",
+  "exitCode": 1,
+  "compatibility": "NOT_ASSESSED",
+  "behavioralValidation": "NOT_EXECUTED",
+  "source": {
+    "baseCommit": "8168ab530eeba2edfb7122996ccc3b25a04833e9",
+    "headCommit": "d81137ee6cc803ce2f47c61c15c9346b9b6c7a4e",
+    "scopes": [
+      "src"
+    ],
+    "baseFingerprint": "1ff6f6304f26a7d52dc4f9564716fddd8c9d47d7585f66de5519a2e233b91d40",
+    "headFingerprint": "79e0ba476fc66cffe3ca83b403e5ceb0a307d4c0e9c7964af8ee05278114f74e"
+  },
+  "reviewedScenarioFingerprint": "068bea29a3bd7951a347e588fd52e367a2732e5e7e0e99f3b4910d12f9ed5687",
+  "coverage": {
+    "status": "declared-subset-only",
+    "observedRoutes": 3,
+    "routesWithReviewedScenario": 2,
+    "routesWithoutReviewedScenario": 1,
+    "executedScenarios": 0,
+    "unsupportedConstructs": [],
+    "unassessedScope": [
+      "Only explicit committed Git source scopes and the documented Express grammar are analyzed; untracked/working-tree changes and excluded files are not assessed.",
+      "Imports outside supplied scopes, database/outbound dependencies, general control flow, authorization correctness, response schemas and full consumer compatibility are unassessed.",
+      "Scenario-to-route association is not executed behavioral coverage, approved review identity, freshness, or proof that every route/state is represented.",
+      "File hashes detect drift, including comments; registration locations are not exact changed statement locations or proof of a behavioral defect."
+    ]
+  },
+  "routes": [
+    {
+      "routeId": "route.14cea6de9f9e54b024e1152a",
+      "method": "POST",
+      "path": "/tickets",
+      "source": {
+        "file": "src/app.mjs",
+        "line": 1
+      },
+      "observations": {
+        "auth": "not_observed",
+        "validation": [],
+        "responseStatuses": [
+          201
+        ]
+      },
+      "reviewedExpectations": [
+        {
+          "scenarioId": "tickets.create",
+          "classification": "approved_requirement",
+          "reference": "SYNTHETIC requirements: POST tickets remains 201; health remains 200",
+          "method": "POST",
+          "path": "/tickets",
+          "pathKind": "route-template",
+          "kind": "action",
+          "expectedStatus": 201,
+          "bodyAssertion": "exact",
+          "execution": "NOT_EXECUTED"
+        }
+      ]
+    },
+    {
+      "routeId": "route.60db46a04624689858a869ce",
+      "method": "GET",
+      "path": "/audit",
+      "source": {
+        "file": "src/app.mjs",
+        "line": 1
+      },
+      "observations": {
+        "auth": "not_observed",
+        "validation": [],
+        "responseStatuses": [
+          200
+        ]
+      },
+      "reviewedExpectations": []
+    },
+    {
+      "routeId": "route.74fac65f350e55c6eab7fce4",
+      "method": "GET",
+      "path": "/health",
+      "source": {
+        "file": "src/app.mjs",
+        "line": 1
+      },
+      "observations": {
+        "auth": "not_observed",
+        "validation": [],
+        "responseStatuses": [
+          200
+        ]
+      },
+      "reviewedExpectations": [
+        {
+          "scenarioId": "health.read",
+          "classification": "approved_requirement",
+          "reference": "SYNTHETIC requirements: POST tickets remains 201; health remains 200",
+          "method": "GET",
+          "path": "/health",
+          "pathKind": "route-template",
+          "kind": "action",
+          "expectedStatus": 200,
+          "bodyAssertion": "exact",
+          "execution": "NOT_EXECUTED"
+        }
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "tickets.create",
+      "classification": "approved_requirement",
+      "reference": "SYNTHETIC requirements: POST tickets remains 201; health remains 200",
+      "status": "NOT_EXECUTED",
+      "review": "caller-asserted-not-verified"
+    },
+    {
+      "id": "health.read",
+      "classification": "approved_requirement",
+      "reference": "SYNTHETIC requirements: POST tickets remains 201; health remains 200",
+      "status": "NOT_EXECUTED",
+      "review": "caller-asserted-not-verified"
+    }
+  ],
+  "findings": [
+    {
+      "code": "route-added",
+      "scannerCode": "route-added",
+      "assessment": "unverified-change",
+      "source": {
+        "base": null,
+        "head": {
+          "file": "src/app.mjs",
+          "line": 1
+        }
+      },
+      "locationPrecision": "route-registration-or-gap",
+      "affectedEndpoints": [
+        {
+          "routeId": "route.60db46a04624689858a869ce",
+          "method": "GET",
+          "path": "/audit",
+          "source": {
+            "file": "src/app.mjs",
+            "line": 1
+          }
+        }
+      ],
+      "endpointAssociation": "route-identity",
+      "reviewedExpectations": [],
+      "expectationStatus": "unassessed",
+      "reason": "Static drift; no confirmed behavioral diagnosis.",
+      "observationDelta": null,
+      "recommendedAction": "Obtain independent reviewed expectations for the added endpoint; do not infer assertions from its implementation."
+    },
+    {
+      "code": "source-changed",
+      "scannerCode": "source-changed",
+      "assessment": "unverified-change",
+      "source": {
+        "base": {
+          "file": "src/app.mjs",
+          "line": null
+        },
+        "head": {
+          "file": "src/app.mjs",
+          "line": null
+        }
+      },
+      "locationPrecision": "route-registration-in-changed-file",
+      "affectedEndpoints": [
+        {
+          "routeId": "route.14cea6de9f9e54b024e1152a",
+          "method": "POST",
+          "path": "/tickets",
+          "source": {
+            "file": "src/app.mjs",
+            "line": 1
+          }
+        },
+        {
+          "routeId": "route.74fac65f350e55c6eab7fce4",
+          "method": "GET",
+          "path": "/health",
+          "source": {
+            "file": "src/app.mjs",
+            "line": 1
+          }
+        },
+        {
+          "routeId": "route.60db46a04624689858a869ce",
+          "method": "GET",
+          "path": "/audit",
+          "source": {
+            "file": "src/app.mjs",
+            "line": 1
+          }
+        }
+      ],
+      "endpointAssociation": "file-level-candidates-not-proven-impact",
+      "reviewedExpectations": [
+        {
+          "scenarioId": "tickets.create",
+          "classification": "approved_requirement",
+          "reference": "SYNTHETIC requirements: POST tickets remains 201; health remains 200",
+          "method": "POST",
+          "path": "/tickets",
+          "pathKind": "route-template",
+          "kind": "action",
+          "expectedStatus": 201,
+          "bodyAssertion": "exact",
+          "execution": "NOT_EXECUTED"
+        },
+        {
+          "scenarioId": "health.read",
+          "classification": "approved_requirement",
+          "reference": "SYNTHETIC requirements: POST tickets remains 201; health remains 200",
+          "method": "GET",
+          "path": "/health",
+          "pathKind": "route-template",
+          "kind": "action",
+          "expectedStatus": 200,
+          "bodyAssertion": "exact",
+          "execution": "NOT_EXECUTED"
+        }
+      ],
+      "expectationStatus": "references-not-executed",
+      "reason": "Static drift; no confirmed behavioral diagnosis.",
+      "observationDelta": null,
+      "recommendedAction": "Review the source change and run relevant unchanged independently reviewed scenarios; fix a confirmed defect or approve a requirement change separately."
+    }
+  ],
+  "warning": "Static source observations only, not API compatibility or behavioral validation. Reviewed assertions are never rewritten. A reference is not proof of approval; protect trusted inputs operationally."
+}
