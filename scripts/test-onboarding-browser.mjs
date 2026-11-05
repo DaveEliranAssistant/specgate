@@ -25,7 +25,7 @@ try{
  const context=await browser.newContext({viewport:{width:1440,height:1080},reducedMotion:'reduce',permissions:['clipboard-read','clipboard-write']});
  const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
  page.on('request',r=>{if(!r.url().startsWith(url+'/'))result.externalRequests.push(r.url());});
- await page.goto(url);await page.getByRole('heading',{name:'Your first useful API change review.'}).waitFor();
+ await page.goto(url);await page.getByRole('heading',{name:'Review Express changes. Keep source local.'}).waitFor();
  await page.keyboard.press('Tab');assert.equal(await page.locator(':focus').textContent(),'Skip to onboarding');await page.keyboard.press('Enter');assert.equal(new URL(page.url()).hash,'#main');result.checks.push('keyboard-skip-link');
  await page.getByRole('button',{name:'Check pilot fit',exact:true}).click();assert.match(await page.locator('#fit-result').textContent(),/Needs a scope review/);
  for(const [id,value] of Object.entries({framework:'literal',committed:'yes',node:'22',platform:'linux'}))await page.locator('#'+id).selectOption(value);

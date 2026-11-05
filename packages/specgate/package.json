@@ -4,10 +4,46 @@
   "private": true,
   "type": "module",
   "description": "Local code-first Express change review gate. No OpenAPI required.",
-  "bin": { "specgate": "bin/specgate.mjs" },
-  "files": ["bin/", "src/", "README.md", "SECURITY.md", "NOTICE.md"],
-  "engines": { "node": ">=22 <25" },
-  "scripts": { "test": "node --test test/*.test.mjs", "test:runtime": "node --test test/runtime.test.mjs" },
-  "bundleDependencies": ["acorn"],
-  "dependencies": { "acorn": "8.19.0" }
+  "bin": {
+    "specgate": "bin/specgate.mjs"
+  },
+  "files": [
+    "bin/",
+    "src/",
+    "README.md",
+    "SECURITY.md",
+    "NOTICE.md"
+  ],
+  "engines": {
+    "node": ">=22 <25"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "test:runtime": "node --test test/runtime.test.mjs"
+  },
+  "bundleDependencies": [
+    "acorn"
+  ],
+  "dependencies": {
+    "acorn": "8.19.0"
+  },
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DaveEliranAssistant/specgate.git",
+    "directory": "packages/specgate"
+  },
+  "homepage": "https://specgate.vercel.app",
+  "bugs": {
+    "url": "https://github.com/DaveEliranAssistant/specgate/issues"
+  },
+  "keywords": [
+    "express",
+    "testing",
+    "source-review"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "tag": "next"
+  }
 }
