@@ -1,12 +1,19 @@
 # SpecGate — code-first release candidate
 
-**0.1.0-rc.1 · Internal pilot only · No OpenAPI input**
+**0.1.0-rc.1 · npm `next` prerelease · Pilot use only · No OpenAPI input · MIT**
 
 Scan service source, review changed behavior, and compile independently reviewed scenarios into Playwright API tests. This is a local CLI, not a hosted upload service or an autonomous test-writing agent. Production qualification is **not complete**: a representative real service, an independently approved correctness baseline and platform qualification are release gates.
 
 ## Install and scan
 
-Node 22 or 24 and Git, Linux/macOS. Windows is not qualified. From this repository:
+Node 22 or 24 and Git, Linux/macOS. Windows is not qualified.
+
+```sh
+npm exec --package=@qe-atlas/specgate@0.1.0-rc.1 -- specgate scan \
+  --root ./my-service --source src --format markdown
+```
+
+From a source checkout:
 
 ```sh
 npm ci --prefix packages/specgate --ignore-scripts
@@ -91,17 +98,15 @@ cd packages/specgate
 npm pack --pack-destination /approved/output/path
 ```
 
-Use the pinned archive produced by `npm pack` (or pack from inside this directory), verify its SHA-256 and retain local receipts. Acorn is exact-pinned and bundled with its license, so the tested archive installs offline even with an empty npm cache. `private: true` prevents accidental registry publication. Packed runtime excludes POC, tests, reports and repository metadata. The GitHub workflow runs quality checks only; it does not publish/deploy or access production credentials. Keep its required-check settings an explicit repository-owner decision.
+Use the pinned archive produced by `npm pack` (or pack from inside this directory), verify its SHA-256 and retain local receipts. Acorn is exact-pinned and bundled with its license, so the tested archive installs offline even with an empty npm cache. Packed runtime excludes POC, tests, reports and repository metadata. The GitHub workflow runs quality checks only; it does not publish/deploy or access production credentials. Keep its required-check settings an explicit repository-owner decision.
 
 Rollout: independent review → reproduce tests/audits → immutable archive install smoke → representative real-service qualification → observe-only CI pilot → investigate false positives/gaps → owner-approved enforcement/release. Roll back by removing the consuming CI step or pinning the previous accepted archive; do not rewrite accepted baselines to hide failures. No automatic startup, cron or product-site deployment is introduced.
 
 See `SECURITY.md`, `NOTICE.md`, and the repository's release-readiness report. Full multi-framework/AI generation, real integration/E2E composition, real-customer acceptance, Windows support, signed registry releases and a vulnerability-disclosure service are not delivered by this candidate.
 
-## Prospective npm release (unpublished)
+## npm release
 
-Public release is blocked on owner-approved distribution rights: the source NOTICE explicitly grants no public license. `private: true` and `license: UNLICENSED` deliberately remain until that decision. No open-source license is inferred from release-readiness authorization. Acorn is MIT-licensed; its bundled license is checked by the isolated install smoke. Root/POC tooling is excluded from the archive.
-
-After license clearance, update LICENSE/NOTICE, license metadata, the migration adaptation record and remove this package's `private` flag. Keep the repository root private. With npm authenticated as **qe-atlas**, review these commands manually (none runs in CI):
+MIT licensed (see `LICENSE`). Acorn is MIT-licensed; its bundled license is checked by the isolated install smoke. Root/POC tooling is excluded from the archive and the repository root stays `private`. With npm authenticated as **qe-atlas** (none of this runs in CI):
 
 ```sh
 npm whoami # must print qe-atlas
@@ -110,10 +115,5 @@ npm run test:pack
 cd packages/specgate
 npm pack --dry-run
 npm publish --dry-run --access public --tag next
-# Separate owner-authorized future action, NOT performed by readiness work:
 npm publish --access public --tag next
-# Only after that release exists:
-npm exec --package=@qe-atlas/specgate@0.1.0-rc.1 -- specgate --help
 ```
-
-Do not advertise the prospective npm command as available today. Until publication, use the digest-verified private archive and observe-only pilot instructions.

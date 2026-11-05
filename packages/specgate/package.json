@@ -1,7 +1,7 @@
 {
   "name": "@qe-atlas/specgate",
   "version": "0.1.0-rc.1",
-  "private": true,
+  "private": false,
   "type": "module",
   "description": "Local code-first Express change review gate. No OpenAPI required.",
   "bin": {
@@ -10,6 +10,7 @@
   "files": [
     "bin/",
     "src/",
+    "LICENSE",
     "README.md",
     "SECURITY.md",
     "NOTICE.md"
@@ -27,7 +28,7 @@
   "dependencies": {
     "acorn": "8.19.0"
   },
-  "license": "UNLICENSED",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/DaveEliranAssistant/specgate.git",

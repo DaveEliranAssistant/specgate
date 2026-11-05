@@ -2,7 +2,7 @@
 
 ## What runs where
 
-The static onboarding page performs a browser-local fit check and displays recorded synthetic CLI JSON. It has no source-upload field, external assets, analytics, persistence or signup API. Downloading a brief is not a submission, email verification or access grant. The current preview is not a production deployment.
+The static onboarding page performs a browser-local fit check and displays recorded synthetic CLI JSON. It has no source-upload field, external assets, analytics or persistence. The optional waitlist is the only form that sends data to a server, and only after consent. Downloading a brief is not a submission, email verification or access grant. The current preview is not a production deployment.
 
 The local scanner reads committed Git tree/blob objects from a pinned revision and parses them. Scan/check do not import service modules, invoke project scripts, install target dependencies, start target services or contact a model/network service. Private artifact acquisition and npm installation are separate trusted preparation steps. The helper uses an owner-provided archive, digest verification, offline installation with a fresh cache and --ignore-scripts.
 

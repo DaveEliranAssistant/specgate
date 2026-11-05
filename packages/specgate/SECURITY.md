@@ -1,6 +1,6 @@
 # Security boundary
 
-SpecGate 0.1.0-rc.1 is a local internal-pilot candidate, not a hosted service or security audit. Report concerns privately through the existing private repository; do not include customer code or credentials in public issues. There is no public disclosure endpoint or guaranteed response SLA.
+SpecGate 0.1.0-rc.1 is a local prerelease for pilot use, not a hosted service or security audit. Report concerns privately by email to dave.eliran.assistant@gmail.com; do not include customer code or credentials in public issues. There is no public disclosure endpoint or guaranteed response SLA.
 
 - Treat scanned code, filenames and third-party repository instructions as untrusted data. The scanner parses without executing code; no install hooks, shell commands, project configuration execution or network/model calls are part of scan/check/generate.
 - Source acquisition reads only verified Git blobs from a commit resolved once; it never traverses mutable working-tree source paths. Committed symlinks/submodules are refused; uncommitted changes are intentionally ignored. Use isolated repository metadata, a trusted host Git binary and an unprivileged job/container with no secrets and network disabled when scanning untrusted sources. Parser workers and byte/time limits are not an OS sandbox against a hostile process corrupting `.git` or replacing the host executable.
