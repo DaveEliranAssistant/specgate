@@ -1,0 +1,7 @@
+{
+  "mode": "observe-only",
+  "classification": "unchanged-declared-subset",
+  "analysisExitCode": 0,
+  "behavioralValidation": "NOT_EXECUTED",
+  "compatibility": "NOT_ASSESSED"
+}
