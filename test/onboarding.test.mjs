@@ -25,6 +25,7 @@ test('build exports only the onboarding allowlist and works without external scr
   const html=readFileSync(join(output,'index.html'),'utf8');
   assert.match(html,/Guided pilot/);assert.match(html,/not.*compatibility guarantee/i);assert.match(html,/recorded/i);
   assert.ok(!html.includes('<!-- ONBOARDING_'));assert.ok(!/<script[^>]+src=/i.test(html));assert.ok(!/<form|type=["']file/i.test(html));
+  assert.match(html,/<fieldset disabled>/);assert.match(html,/Registration unavailable/);assert.match(html,/UNPUBLISHED/);assert.match(html,/free observe-only/);
   assert.match(html,/Nothing is submitted/);assert.match(html,/not available/i);
   assert.throws(()=>buildOnboarding(output),/exist/i);
  }finally{rmSync(work,{recursive:true,force:true});}

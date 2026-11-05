@@ -96,3 +96,24 @@ Use the pinned archive produced by `npm pack` (or pack from inside this director
 Rollout: independent review → reproduce tests/audits → immutable archive install smoke → representative real-service qualification → observe-only CI pilot → investigate false positives/gaps → owner-approved enforcement/release. Roll back by removing the consuming CI step or pinning the previous accepted archive; do not rewrite accepted baselines to hide failures. No automatic startup, cron or product-site deployment is introduced.
 
 See `SECURITY.md`, `NOTICE.md`, and the repository's release-readiness report. Full multi-framework/AI generation, real integration/E2E composition, real-customer acceptance, Windows support, signed registry releases and a vulnerability-disclosure service are not delivered by this candidate.
+
+## Prospective npm release (unpublished)
+
+Public release is blocked on owner-approved distribution rights: the source NOTICE explicitly grants no public license. `private: true` and `license: UNLICENSED` deliberately remain until that decision. No open-source license is inferred from release-readiness authorization. Acorn is MIT-licensed; its bundled license is checked by the isolated install smoke. Root/POC tooling is excluded from the archive.
+
+After license clearance, update LICENSE/NOTICE, license metadata, the migration adaptation record and remove this package's `private` flag. Keep the repository root private. With npm authenticated as **qe-atlas**, review these commands manually (none runs in CI):
+
+```sh
+npm whoami # must print qe-atlas
+npm test
+npm run test:pack
+cd packages/specgate
+npm pack --dry-run
+npm publish --dry-run --access public --tag next
+# Separate owner-authorized future action, NOT performed by readiness work:
+npm publish --access public --tag next
+# Only after that release exists:
+npm exec --package=@qe-atlas/specgate@0.1.0-rc.1 -- specgate --help
+```
+
+Do not advertise the prospective npm command as available today. Until publication, use the digest-verified private archive and observe-only pilot instructions.

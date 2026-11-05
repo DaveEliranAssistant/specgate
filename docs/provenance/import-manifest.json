@@ -6,11 +6,28 @@
   "grokSourceCommit": "8d5766c8c3a51fb14a43ebd50f6e5a3760307b74",
   "method": "allowlisted committed snapshot, not full Git history",
   "syntheticScenarioSourceCommit": "14842f909058ba990a38bc1bd58519cf40561b45",
-  "adaptations": [{
-    "path": "poc/code-first-service-tests/test/artifacts.test.mjs",
-    "sha256": "d9f16d091be2b053d9278b6253aeffaaf65463fb4621208796f24c55cfa42686",
-    "reason": "Replace upstream Git-ancestry assertion with pinned scenario revision plus hash validation of all imported proof inputs and artifacts; behavior assertions remain unchanged."
-  }],
+  "adaptations": [
+    {
+      "path": "poc/code-first-service-tests/test/artifacts.test.mjs",
+      "sha256": "d9f16d091be2b053d9278b6253aeffaaf65463fb4621208796f24c55cfa42686",
+      "reason": "Replace upstream Git-ancestry assertion with pinned scenario revision plus hash validation of all imported proof inputs and artifacts; behavior assertions remain unchanged."
+    },
+    {
+      "path": "packages/specgate/package.json",
+      "sha256": "5f5f165ed8fbdf583535be38abcc661d555662e2f7d368525e0f37763e838f34",
+      "reason": "Launch readiness metadata and prospective npm instructions; original snapshot hashes retained; runtime unchanged."
+    },
+    {
+      "path": "packages/specgate/README.md",
+      "sha256": "3fde09ef11ad8c7575305fc525a66a637ce3f1084888c14030c4ecf88395c9cf",
+      "reason": "Launch readiness metadata and prospective npm instructions; original snapshot hashes retained; runtime unchanged."
+    },
+    {
+      "path": "packages/specgate/package-lock.json",
+      "sha256": "ac3f320aad5e3e0fbe74be716093d0d165b37d038e07e270c2eace3dc5e08694",
+      "reason": "Record UNLICENSED root-package metadata; dependency versions unchanged."
+    }
+  ],
   "files": [
     {
       "path": "docs/plans/specgate-code-first-hardening.md",
