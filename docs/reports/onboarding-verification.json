@@ -1,0 +1,56 @@
+{
+  "capturedAt": "2026-11-03T14:04:11.317547+00:00",
+  "verificationScope": "Local macOS, Node 22.22.2; no scanned service execution. Existing runtime/proof CI deliberately not run.",
+  "productBase": "cb2d55bb9e18f37c777ed55cea347ea21ace0587",
+  "independentReview": {"passed": true, "evidence": "onboarding-independent-review.json", "testsExecutedByReviewer": false},
+  "standaloneFilePreview": {"fitCheck": true, "recordedResults": true, "browserErrors": []},
+  "nativeScannerAndProofsAndWorkflowsUnchanged": true,
+  "tests": {
+    "onboarding": {
+      "tests": 4,
+      "pass": 4,
+      "fail": 0,
+      "skipped": 0
+    },
+    "static-regressions": {
+      "tests": 30,
+      "pass": 30,
+      "fail": 0,
+      "skipped": 0
+    }
+  },
+  "browser": {
+    "checks": [
+      "keyboard-skip-link",
+      "supported-and-unsupported-fit",
+      "recorded-results-and-keyboard-disclosure",
+      "copy-success-and-honest-fallback",
+      "actual-pilot-brief-download",
+      "all-navigation-and-download-links",
+      "no-repository-source-served",
+      "mobile-no-overflow",
+      "no-javascript-fallback",
+      "no-browser-errors",
+      "no-external-requests"
+    ],
+    "accessibility": [
+      {
+        "viewport": "desktop",
+        "violations": []
+      },
+      {
+        "viewport": "mobile",
+        "violations": []
+      }
+    ],
+    "externalRequests": []
+  },
+  "notVerified": [
+    "Linux/Node24 onboarding helper execution",
+    "Authenticated private release/package download in CI",
+    "Existing full CI runtime/proof suite",
+    "Public deployment or hosted signup",
+    "Real customer qualification",
+    "Unreleased conform/diff modes and C/D/E compatibility proofs"
+  ]
+}

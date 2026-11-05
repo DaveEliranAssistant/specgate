@@ -3,12 +3,20 @@
   "version": "0.1.0-rc.1",
   "private": true,
   "type": "module",
-  "engines": { "node": ">=22 <25" },
+  "engines": {
+    "node": ">=22 <25"
+  },
   "scripts": {
+    "build:onboarding": "node scripts/build-onboarding.mjs",
+    "test:onboarding": "node --test test/onboarding.test.mjs test/onboarding-install.test.mjs",
+    "test:onboarding:browser": "node scripts/test-onboarding-browser.mjs",
     "test": "node --test test/*.test.mjs && node --test packages/specgate/test/*.test.mjs && node --test poc/code-first-service-tests/test/*.test.mjs",
     "test:proofs": "node poc/code-first-service-tests/scripts/run-generated.mjs && node poc/code-first-service-tests/scripts/prove-seeded-defect.mjs && node poc/code-first-service-tests/scripts/prove-maintenance.mjs",
     "test:pack": "node packages/specgate/test/pack-smoke.mjs",
     "audit:production": "npm audit --omit=dev && npm audit --prefix packages/specgate --omit=dev && npm audit --prefix poc/code-first-service-tests --omit=dev"
   },
-  "devDependencies": { "@playwright/test": "1.64.1" }
+  "devDependencies": {
+    "@axe-core/playwright": "4.14.0",
+    "@playwright/test": "1.64.1"
+  }
 }

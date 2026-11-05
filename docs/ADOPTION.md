@@ -13,6 +13,12 @@ The product repository is distinct from a **pilot target**: an independently aut
 - Private package, bundled parser/license and empty-cache offline smoke test.
 - Standalone Node 22/24 CI in this repository.
 
+## Customer onboarding preview (review branch, not deployed)
+
+The [guided pilot experience](../onboarding/README.md) provides a local fit check, actual recorded synthetic scan/check results, private archive quickstart, trust/troubleshooting notes and a downloadable pilot brief. The allowlisted static export includes no scanner runtime, third-party assets, analytics or source upload. Downloading the brief is not a signup or access grant.
+
+The customer helper is exercised against a locally packed private candidate using a fresh offline npm cache, lifecycle scripts disabled and static source scans only. That proves the local archive recipe, not authenticated release download. CI distribution still requires the separately approved scoped read-only secret. Current scan/check is not consumer-compatibility proof; conform/diff are not implemented by this onboarding change. Existing source, assertions and baselines remain unchanged.
+
 ## Remaining work, in order
 
 1. **Product website:** dedicated Vercel project linked to this repository, clear supported subset, installation path, limitations and launch status. Keep QE Atlas production untouched except a separately authorized link/update.
