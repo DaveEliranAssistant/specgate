@@ -9,7 +9,7 @@ npm run build:onboarding
 python3 -m http.server 8766 --bind 127.0.0.1 --directory dist/onboarding
 ```
 
-Open http://127.0.0.1:8766. Serve ONLY dist/onboarding, never the repository root. Build refuses an existing output directory; use a new path with `node scripts/build-onboarding.mjs /absolute/new/output` rather than silently overwriting assets.
+Open http://127.0.0.1:8766. Serve ONLY dist/onboarding, never the repository root. Build refuses an existing output directory; use a new path with `node scripts/build-onboarding.mjs /absolute/new/output` rather than silently overwriting assets. The one exception is on Vercel (`VERCEL` set), whose builder runs the build command twice: a directory holding exactly the allowlisted export is reused untouched, and anything else is still refused.
 
 The allowlisted export contains only index.html, quickstart.md, quickstart.sh, trust.md and pilot-brief.md. All CSS/JS/recorded JSON is embedded in index.html, with no external dependencies at runtime. The scanner, its bundled parser, fixtures, repository files and private packages are not exported. No deployment configuration or account state is changed. The standalone index.html also works without a server; offline clipboard access may fall back to manual selection.
 
