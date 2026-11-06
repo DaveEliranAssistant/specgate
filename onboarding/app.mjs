@@ -26,7 +26,7 @@ if(typeof document!=='undefined'){
   document.getElementById('example-explanation').textContent=descriptions[id];
   document.getElementById('example-source').textContent=example.source;
   document.getElementById('example-report').textContent=JSON.stringify(example.report,null,2);
-  document.getElementById('example-provenance').textContent=`Actual CLI ${data.toolVersion} · exit ${example.exitCode} · synthetic commit ${example.sourceCommit} · source SHA-256 ${example.sourceSha256}`;
+  document.getElementById('example-provenance').textContent=`CLI example ${data.toolVersion} · exit ${example.exitCode} · synthetic commit ${example.sourceCommit} · source SHA-256 ${example.sourceSha256}`;
   for(const button of document.querySelectorAll('[data-example]'))button.setAttribute('aria-pressed',String(button.dataset.example===id));
  }
  for(const button of document.querySelectorAll('[data-example]')){button.hidden=false;button.addEventListener('click',()=>showExample(button.dataset.example));}

@@ -1,6 +1,6 @@
 # Customer onboarding preview
 
-A static guided-pilot experience for the EXISTING scan/check candidate, published on npm as `@qe-atlas/specgate@0.1.0-rc.1`. It is not a hosted signup or a claim that unreleased API-compatibility modes work.
+A static guided-pilot experience for the EXISTING scan/check candidate, published on npm as `@qe-atlas/specgate@0.1.0-rc.2`. It is not a hosted signup or a claim that unreleased API-compatibility modes work.
 
 ## Build and preview
 
@@ -23,7 +23,7 @@ npm run test:onboarding:browser
 
 For local installed Chrome, set `REPORT_BROWSER_CHANNEL=chrome`. Browser checks start their own loopback allowlist server, cover desktop/mobile, fit results, copy fallback/success, all three recorded results, download/navigation, no unexpected network requests, keyboard focus, no-JS fallback and axe accessibility. They do not execute scanned service code. The archive-install test packs the unchanged private candidate, installs offline with an empty cache and scans controlled committed source with service dependencies deliberately unavailable. It proves REVIEW and error preservation, digest refusal, no overwrites and exclusion of uncommitted edits. It is NOT authenticated release-download evidence.
 
-Recordings were captured by `node scripts/record-onboarding.mjs` from controlled source and have source commits/hashes, scanner revision and actual native output. That script prints NEW recording data for review; it never overwrites approved expectations. Do not regenerate recordings to make a regression pass.
+Recordings were captured by `node scripts/record-onboarding.mjs` from controlled source and have source commits/hashes, scanner revision and actual native output. That script prints NEW recording data for review; it never overwrites approved expectations. The landing fixture release labels and dependent report fingerprints are normalized for rc.2; source commits, source hashes, observations and exit codes remain from the original capture, not a new scanner run. Do not regenerate recordings to make a regression pass.
 
 ## Deliberate remaining gates
 
