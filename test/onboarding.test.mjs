@@ -1,10 +1,16 @@
 import { test } from 'node:test';
 import { createHash } from 'node:crypto';
 import assert from 'node:assert/strict';
-import { existsSync, mkdtempSync, readFileSync, readdirSync, rmSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 const root=new URL('../',import.meta.url);
+function withVercelEnv(value,run){
+ const previous=process.env.VERCEL;
+ if(value===undefined)delete process.env.VERCEL;else process.env.VERCEL=value;
+ try{return run();}finally{if(previous===undefined)delete process.env.VERCEL;else process.env.VERCEL=previous;}
+}
+function snapshot(dir){return readdirSync(dir).sort().map(name=>{const file=join(dir,name);return [name,readFileSync(file,'utf8'),statSync(file).mtimeMs];});}
 test('fit check distinguishes supported, unsupported and uncommitted source',async()=>{
  assert.ok(existsSync(new URL('onboarding/app.mjs',root)),'onboarding fit check is not implemented');
  const {assessFit}=await import('../onboarding/app.mjs');
@@ -27,7 +33,38 @@ test('build exports only the onboarding allowlist and works without external scr
   assert.ok(!html.includes('<!-- ONBOARDING_'));assert.ok(!/<script[^>]+src=/i.test(html));assert.ok(!/type=["']file/i.test(html));
   assert.match(html,/<form id="waitlist-form" novalidate hidden>/);assert.match(html,/The waitlist is temporarily unavailable/);assert.ok(!/DATABASE_URL|postgres:/i.test(html));assert.equal(html.match(/<form/g).length,1);assert.match(html,/@qe-atlas\/specgate@0\.1\.0-rc\.1/);assert.ok(!/UNPUBLISHED|NO PUBLIC NPM/.test(html));assert.match(html,/free observe-only/);
   assert.match(html,/Nothing is submitted/);assert.match(html,/not available/i);
-  assert.throws(()=>buildOnboarding(output),/exist/i);
+  withVercelEnv(undefined,()=>assert.throws(()=>buildOnboarding(output),/exist/i));
+ }finally{rmSync(work,{recursive:true,force:true});}
+});
+test('on Vercel a second build reuses the finished export without touching it',async()=>{
+ const {buildOnboarding}=await import('../scripts/build-onboarding.mjs');
+ const work=mkdtempSync(join(tmpdir(),'specgate-site-test-'));
+ const previous=process.env.VERCEL;
+ try{
+  const output=join(work,'site');
+  withVercelEnv('1',()=>{
+   assert.equal(buildOnboarding(output),output);
+   const first=snapshot(output);
+   assert.equal(buildOnboarding(output),output);
+   assert.deepEqual(snapshot(output),first);
+  });
+  assert.equal(process.env.VERCEL,previous,'VERCEL must be restored');
+  withVercelEnv(undefined,()=>assert.throws(()=>buildOnboarding(output),/exist/i));
+ }finally{rmSync(work,{recursive:true,force:true});}
+});
+test('on Vercel a build still refuses a directory that is not a finished export',async()=>{
+ const {buildOnboarding}=await import('../scripts/build-onboarding.mjs');
+ const work=mkdtempSync(join(tmpdir(),'specgate-site-test-'));
+ try{
+  const unrelated=join(work,'unrelated');mkdirSync(unrelated);writeFileSync(join(unrelated,'keep.txt'),'keep');
+  const empty=join(work,'empty');mkdirSync(empty);
+  withVercelEnv('1',()=>{
+   assert.throws(()=>buildOnboarding(unrelated),/exist/i);
+   assert.throws(()=>buildOnboarding(empty),/exist/i);
+  });
+  assert.deepEqual(readdirSync(unrelated),['keep.txt']);
+  assert.equal(readFileSync(join(unrelated,'keep.txt'),'utf8'),'keep');
+  assert.deepEqual(readdirSync(empty),[]);
  }finally{rmSync(work,{recursive:true,force:true});}
 });
 test('recorded examples identify their real CLI status without claiming consumer compatibility',()=>{
