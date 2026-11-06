@@ -1,6 +1,6 @@
 {
   "name": "@qe-atlas/specgate",
-  "version": "0.1.0-rc.1",
+  "version": "0.1.0-rc.2",
   "private": false,
   "type": "module",
   "description": "Local code-first Express change review gate. No OpenAPI required.",
@@ -34,7 +34,7 @@
     "url": "git+https://github.com/DaveEliranAssistant/specgate.git",
     "directory": "packages/specgate"
   },
-  "homepage": "https://specgate.vercel.app",
+  "homepage": "https://specgate-qe-atlas.vercel.app",
   "bugs": {
     "url": "https://github.com/DaveEliranAssistant/specgate/issues"
   },
