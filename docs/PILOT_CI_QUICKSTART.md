@@ -1,8 +1,8 @@
 # Reproducible private-archive observe-only quickstart
 
-## Actual availability, not a registry promise
+## Actual availability
 
-The available distribution is a **locally packed private RC candidate**, now also built/tested by this PR's private static CI. There are no GitHub releases and no public npm installation claim. Older 0.1.0-rc.1 archives do not contain these new entrypoints; pin the source commit and archive SHA-256 from the matching evidence receipt. No publication is performed.
+`@qe-atlas/specgate@0.1.0-rc.1` is published on npm (dist-tags `latest` and `next`, MIT). This quickstart uses a **locally packed RC archive** instead, now also built/tested by this PR's private static CI, because it verifies a digest and installs offline. There are no GitHub releases. Older 0.1.0-rc.1 archives do not contain these new entrypoints; pin the source commit and archive SHA-256 from the matching evidence receipt. This recipe performs no publication.
 
 Reproduce the full installation/collector proof from the reviewed source checkout:
 

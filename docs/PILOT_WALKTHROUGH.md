@@ -4,7 +4,7 @@ This is a guided reading of **actual installed-package output on committed synth
 
 ## 1. Install the thing that actually exists
 
-Follow `PILOT_CI_QUICKSTART.md`: obtain the approved private `.tgz`, verify SHA-256 against trusted matching source/run evidence, install offline with an empty cache and lifecycle scripts disabled. No `npx specgate` public installation or hosted source-upload promise. Do not execute service code. The installed `specgate-pilot.mjs` reuses the original scanner and scenario validator.
+Follow `PILOT_CI_QUICKSTART.md`: obtain the approved private `.tgz`, verify SHA-256 against trusted matching source/run evidence, install offline with an empty cache and lifecycle scripts disabled. The public package is the scoped `@qe-atlas/specgate@0.1.0-rc.1`; unscoped `specgate` is not this package. No hosted source-upload promise. Do not execute service code. The installed `specgate-pilot.mjs` reuses the original scanner and scenario validator.
 
 ## 2. Start with the independent synthetic expectations
 

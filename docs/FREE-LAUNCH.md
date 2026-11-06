@@ -14,7 +14,7 @@ The form stays hidden until `GET /api/waitlist` reports a configured database. W
 
 ### Owner setup
 
-No database or secret is created by this repository.
+No database or secret is created by this repository. As of 2026-11-06 the waitlist code is merged but not deployed, and no `DATABASE_URL_POOLED` is configured.
 
 1. Create a Postgres database owned by SpecGate, separate from A11yGate.
 2. In the SpecGate Vercel project, set server-only `DATABASE_URL_POOLED` (preferred) or `DATABASE_URL`. See `.env.example`. Never use a `NEXT_PUBLIC_` name or a static asset.
@@ -26,7 +26,7 @@ The page tells visitors that signups are kept until they ask for deletion, and t
 
 ## Distribution
 
-SpecGate is MIT licensed, approved by the owner on 2026-11-05. The package is `private: false`, `license: MIT`, and its tarball includes `LICENSE`. The repository root stays `private` in `package.json` and is not published. It is not on npm yet: publishing needs an npm login with two-factor authentication or a granular token with 2FA bypass. `packages/specgate/README.md` ships in the tarball, so it is written for the published state. The GitHub repository's visibility is a separate owner decision: while it is private, the package's `repository` and `bugs` links return 404 for the public.
+SpecGate is MIT licensed, approved by the owner on 2026-11-05. `@qe-atlas/specgate@0.1.0-rc.1` is published on npm with dist-tags `latest` and `next` (registry readback 2026-11-06). The package is `private: false`, `license: MIT`, and its tarball includes `LICENSE`. The repository root stays `private` in `package.json` and is not published. Publishing needs an npm login with two-factor authentication or a granular token with 2FA bypass. `packages/specgate/README.md` ships in the tarball. The GitHub repository remains private and its visibility is a separate owner decision: while it is private, the package's `repository` and `bugs` links return 404 for the public. The published `homepage` metadata points to https://specgate.vercel.app, which is not this product's landing (see below); correcting registry metadata needs a new package version. No public product website or hosted signup is live.
 
 ## Read-only live evidence
 

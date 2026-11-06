@@ -10,7 +10,7 @@ The product repository is distinct from a **pilot target**: an independently aut
 
 - Bounded JavaScript/Express committed-source scanner, CLI/check contracts and reviewed-scenario compiler.
 - Synthetic generated API tests, seeded-defect detection and assertion-preserving maintenance proofs.
-- Private package, bundled parser/license and empty-cache offline smoke test.
+- Package published on npm as `@qe-atlas/specgate@0.1.0-rc.1` (dist-tags `latest` and `next`, MIT), bundled parser/license and empty-cache offline smoke test.
 - Standalone Node 22/24 CI in this repository.
 
 ## Customer onboarding preview (review branch, not deployed)
@@ -23,7 +23,7 @@ The customer helper is exercised against a locally packed private candidate usin
 
 1. **Product website:** dedicated Vercel project linked to this repository, clear supported subset, installation path, limitations and launch status. Keep QE Atlas production untouched except a separately authorized link/update.
 2. **Honest interactive walkthrough:** captured CLI results must be labeled recorded; live scanning must not upload or execute visitors' code implicitly. Demonstrate a route change, reviewed expectations and unsupported-coverage gaps.
-3. **Adoption and CI quickstart:** run documented installation and CI commands against the actual package. Obtain tooling, baselines and scenarios from trusted revisions. Distinguish observe-only findings from tool failures. Do not advertise a public npm install while private/unpublished.
+3. **Adoption and CI quickstart:** run documented installation and CI commands against the actual package. Obtain tooling, baselines and scenarios from trusted revisions. Distinguish observe-only findings from tool failures. Describe the published npm package as a pilot-use prerelease, not production approval.
 4. **Durable beta request flow:** bounded request handling, explicit consent/privacy, private storage, abuse controls and an actual read-back of a persisted test request. Signup receipt is not email verification, sent mail or access entitlement. No email campaign is authorized.
 5. **Vercel setup:** use the already provisioned dedicated `specgate-beta` free-tier database, not A11yGate's database. It is still connected to QE Atlas. Do not detach it, copy runtime secrets, alter existing protection or provision paid resources merely as a side effect of repository creation. Connect it deliberately when configuring the dedicated app.
 6. **Real-service qualification:** select an authorized representative service, approve expected behavior independently of source and run observe-only CI. Record coverage gaps, meaningful changes caught, false positives, environment/fixture safety and operational cost. This gate blocks production enforcement, not website development.
@@ -37,4 +37,4 @@ Do not claim launch readiness from a green scanner pipeline alone. Verify the we
 
 ## Developer-pilot increment (review branch)
 
-[Static developer-pilot evidence](PILOT.md) now prepares coverage/change explanations, actual archive-install observe-only collection, a recorded walkthrough and real-service protocol/scorecard. New functionality is an unreleased private source candidate, not public npm availability. The imported scanner and assertions remain unchanged. Automatic checks are static; existing synthetic runtime proofs require explicit manual opt-in, and no real-service qualification is claimed. Gates 3 and 6 above remain partly blocked on authenticated consumer distribution and an explicitly authorized target with independent reviewed behavior/runtime permission. Public site/signup/deployment gates remain separate and unchanged.
+[Static developer-pilot evidence](PILOT.md) now prepares coverage/change explanations, actual archive-install observe-only collection, a recorded walkthrough and real-service protocol/scorecard. The new entrypoints ship in the published `@qe-atlas/specgate@0.1.0-rc.1` tarball but are not npm bin aliases. The imported scanner and assertions remain unchanged. Automatic checks are static; existing synthetic runtime proofs require explicit manual opt-in, and no real-service qualification is claimed. Gates 3 and 6 above remain partly blocked on authenticated consumer distribution and an explicitly authorized target with independent reviewed behavior/runtime permission. Public site/signup/deployment gates remain separate and unchanged.

@@ -14,7 +14,7 @@ if(typeof document!=='undefined'){
   const result=assessFit(input),panel=document.getElementById('fit-result');
   panel.replaceChildren();const title=document.createElement('strong');title.textContent=result.ready?'Good fit for a guided pilot—not release approval.':'Needs a scope review before scanning.';panel.append(title);
   const list=document.createElement('ul');
-  for(const reason of result.ready?['Next: obtain a private archive and trusted checksum from the person coordinating your pilot.']:result.reasons){const item=document.createElement('li');item.textContent=reason;list.append(item);}
+  for(const reason of result.ready?['Next: install the published npm package, or obtain a private archive and trusted checksum from the person coordinating your pilot.']:result.reasons){const item=document.createElement('li');item.textContent=reason;list.append(item);}
   panel.append(list);panel.dataset.state=result.ready?'ready':'review';
  });
  const data=JSON.parse(document.getElementById('recordings').textContent);

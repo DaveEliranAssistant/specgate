@@ -19,8 +19,8 @@
     },
     {
       "path": "packages/specgate/README.md",
-      "sha256": "8fe187224d3b922cb3eaedc1c6f8f720283a2de8d29161304a570cb7b5165ae5",
-      "reason": "Owner-approved MIT relicense on 2026-11-05: license metadata, notices and public-install docs; runtime unchanged."
+      "sha256": "0734dec66d0c224c5f2c287333e6525a7a5fe799e4f8d8784472e62692a23c1d",
+      "reason": "Owner-approved MIT relicense on 2026-11-05: license metadata, notices and public-install docs; runtime unchanged. 2026-11-06: dist-tag status line only."
     },
     {
       "path": "packages/specgate/package-lock.json",
