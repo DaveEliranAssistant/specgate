@@ -11,8 +11,8 @@ LOCAL TEMPLATE ONLY. Downloading does not submit a request, send mail or grant a
 - Unsupported constructs already known:
 
 ## Setup and data boundaries
-- Approved private archive version/source commit and trusted SHA-256:
-- Private distribution route and scoped reader provisioning owner (NO TOKEN VALUE):
+- Approved npm version, or private archive version/source commit and trusted SHA-256:
+- If using a private archive: distribution route and scoped reader provisioning owner (NO TOKEN VALUE):
 - Isolated credential-free/network-denied analysis boundary:
 - Trusted reviewed baseline owner/reference (if using check):
 - Report recipients and approved private storage:

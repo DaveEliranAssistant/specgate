@@ -6,9 +6,9 @@ This private repository is the dedicated SpecGate product home. It replaces the 
 
 ## Status
 
-- **Available:** private CLI release candidate `0.1.0-rc.1`, bounded committed-source scanning, baseline checks, reviewed-scenario compilation and executable synthetic proofs.
+- **Available:** MIT-licensed CLI release candidate `@qe-atlas/specgate@0.1.0-rc.1`, published on npm with dist-tags `latest` and `next`; bounded committed-source scanning, baseline checks, reviewed-scenario compilation and executable synthetic proofs.
 - **Reviewable onboarding preview:** [guided pilot page and verification instructions](onboarding/README.md), supported-scope fit check, recorded static CLI examples, private offline quickstart and pilot brief. This is not a deployed public website or hosted signup.
-- **Not launched:** public product website, authenticated private-release CI installation, hosted signup endpoint, public npm distribution, consumer-compatibility modes and real-service qualification.
+- **Not launched:** public product website, authenticated private-release CI installation, hosted signup endpoint, consumer-compatibility modes and real-service qualification. Waitlist code is merged but not deployed, and no `DATABASE_URL_POOLED` is configured. https://specgate.vercel.app is a separate pre-flight portal, not this product's landing.
 - **Not production approved:** begin with a controlled, observe-only pilot. Passing the synthetic suite is not customer-service qualification.
 
 See [adoption status and remaining acceptance gates](docs/ADOPTION.md). No customer repository is required to build the website or signup flow. A customer service is only needed for the separate real-service qualification gate.
@@ -56,7 +56,7 @@ Only committed source is scanned; `HEAD` is pinned once. Baselines and scenarios
 
 The supported adapter is a constrained JavaScript/Express literal-route subset, not all JavaScript, TypeScript or frameworks. Unsupported constructs are reported as non-green gaps. Independently reviewed requirements define expected behavior; code changes do not automatically rewrite assertions.
 
-See the [package guide](packages/specgate/README.md), [security model](packages/specgate/SECURITY.md) and [provenance](NOTICE.md). SpecGate is [MIT licensed](LICENSE). The npm package is prepared but not published yet.
+See the [package guide](packages/specgate/README.md), [security model](packages/specgate/SECURITY.md) and [provenance](NOTICE.md). SpecGate is [MIT licensed](LICENSE). `@qe-atlas/specgate@0.1.0-rc.1` is published on npm with dist-tags `latest` and `next`. This source repository remains private.
 
 ## Vercel and beta access
 

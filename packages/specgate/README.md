@@ -1,6 +1,6 @@
 # SpecGate — code-first release candidate
 
-**0.1.0-rc.1 · npm `next` prerelease · Pilot use only · No OpenAPI input · MIT**
+**0.1.0-rc.1 · npm `latest` and `next` prerelease · Pilot use only · No OpenAPI input · MIT**
 
 Scan service source, review changed behavior, and compile independently reviewed scenarios into Playwright API tests. This is a local CLI, not a hosted upload service or an autonomous test-writing agent. Production qualification is **not complete**: a representative real service, an independently approved correctness baseline and platform qualification are release gates.
 

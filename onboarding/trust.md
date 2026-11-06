@@ -10,7 +10,7 @@ The scanner's byte/time/worker bounds are defense in depth, not an OS sandbox. R
 
 ## Confidentiality
 
-Keep scanner code and builds private. Public dogfood may contain the authorized sample API/spec/demo PRs, not vendored scanner source. Obtain only an immutable private built artifact with a least-privilege read-only credential. Never publish the installed tooling, archive, source maps or private npm cache through public CI artifacts/logs/caches. Do not expose a private reader secret to fork or untrusted jobs.
+The source repository is private; the CLI package `@qe-atlas/specgate@0.1.0-rc.1` is public on npm under MIT. Public dogfood may contain the authorized sample API/spec/demo PRs, not vendored scanner source. If you use a private archive instead of the registry, obtain only an immutable private built artifact with a least-privilege read-only credential, and never publish that archive, source maps or private npm cache through public CI artifacts/logs/caches. Do not expose a private reader secret to fork or untrusted jobs.
 
 Reports exclude source snippets, literal constants, response bodies and enum values in this release candidate. Route paths, identifiers, source names and hashes remain and can be sensitive. This is not a complete secret scanner. Review and redact reports before sharing. No source upload is required to request a guided pilot.
 
