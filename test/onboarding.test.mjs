@@ -33,6 +33,7 @@ test('build exports only the onboarding allowlist and works without external scr
   assert.ok(!html.includes('<!-- ONBOARDING_'));assert.ok(!/<script[^>]+src=/i.test(html));assert.ok(!/type=["']file/i.test(html));
   assert.match(html,/<form id="waitlist-form" novalidate hidden>/);assert.match(html,/The waitlist is temporarily unavailable/);assert.ok(!/DATABASE_URL|postgres:/i.test(html));assert.equal(html.match(/<form/g).length,1);assert.match(html,/@qe-atlas\/specgate@0\.1\.0-rc\.2/);assert.ok(!/UNPUBLISHED|NO PUBLIC NPM/.test(html));assert.match(html,/free observe-only/);
   assert.ok(!html.includes('0.1.0-rc.1'));
+  assert.match(html,/<footer>[^]*<a href="https:\/\/github\.com\/DaveEliranAssistant\/specgate\/discussions\/categories\/ideas">Give feedback<\/a><\/footer>/);
   for(const name of ['quickstart.md','trust.md'])assert.ok(!readFileSync(join(output,name),'utf8').includes('0.1.0-rc.1'));
   assert.match(html,/Nothing is submitted/);assert.match(html,/not available/i);
   withVercelEnv(undefined,()=>assert.throws(()=>buildOnboarding(output),/exist/i));
