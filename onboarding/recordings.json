@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "toolVersion": "0.1.0-rc.1",
+  "toolVersion": "0.1.0-rc.2",
   "scannerRevision": "cb2d55bb9e18f37c777ed55cea347ea21ace0587",
-  "kind": "Recorded synthetic static CLI output; not live scanning or consumer compatibility proof",
+  "kind": "Recorded synthetic static CLI example; release labels and fingerprints normalized for rc.2; not live scanning or consumer compatibility proof",
   "examples": [
     {
       "id": "scan",
@@ -12,7 +12,7 @@
       "source": "import express from 'express'; export const app=express(); app.get('/health',(req,res)=>{res.status(200).json({ok:true});});",
       "report": {
         "schemaVersion": "specgate.scan/1",
-        "toolVersion": "0.1.0-rc.1",
+        "toolVersion": "0.1.0-rc.2",
         "supportedSubset": "express-literal-routes-v1",
         "inputMode": "git-revision",
         "sourceCommit": "cd1e5a3a0e948d882b4849e62c034f5566556916",
@@ -43,7 +43,7 @@
         "gaps": [],
         "complete": true,
         "warning": "Committed source only. Static observations, not correctness assertions or a security audit. Complete means only the declared parser subset; excluded dependencies and unscanned files are not covered.",
-        "fingerprint": "4bdd1f00f5bd193e9ba52436e14a0a5432c68c036af9e80ccc0e60d8d2ccaa5f"
+        "fingerprint": "86db6b8811f46fa4ac4448f05038520b7ba95a641d9caacdd579d9b401669ebe"
       }
     },
     {
@@ -55,8 +55,8 @@
       "report": {
         "schemaVersion": "specgate.check/1",
         "passed": false,
-        "previousFingerprint": "4bdd1f00f5bd193e9ba52436e14a0a5432c68c036af9e80ccc0e60d8d2ccaa5f",
-        "currentFingerprint": "8d218e24291fdfb8d1f8c888e3ed27151e0b6e208aa3caaebacdb9067c9de64d",
+        "previousFingerprint": "86db6b8811f46fa4ac4448f05038520b7ba95a641d9caacdd579d9b401669ebe",
+        "currentFingerprint": "5e13432e7ad44b5bfcc284771505911ff7da63dae2ecb75f7e778789521a1db1",
         "findings": [
           {
             "code": "source-changed",
@@ -75,7 +75,7 @@
       "source": "import express from 'express'; export const app=express(); app.get('/health',async (req,res)=>{res.status(200).json({ok:true});});",
       "report": {
         "schemaVersion": "specgate.scan/1",
-        "toolVersion": "0.1.0-rc.1",
+        "toolVersion": "0.1.0-rc.2",
         "supportedSubset": "express-literal-routes-v1",
         "inputMode": "git-revision",
         "sourceCommit": "ab14c4cb2c64fa679bfc1ac02141afbcaa609030",
@@ -103,7 +103,7 @@
         ],
         "complete": false,
         "warning": "Committed source only. Static observations, not correctness assertions or a security audit. Complete means only the declared parser subset; excluded dependencies and unscanned files are not covered.",
-        "fingerprint": "a413c1af52ffa9c19fb73c5513752588427fbf4b42992110a354c4a446b0015c"
+        "fingerprint": "2deae1fed84d9b25f591318226074c23bbeed7674cc93beaa1b05a3fb0ca68b9"
       }
     }
   ]
