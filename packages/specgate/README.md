@@ -1,6 +1,6 @@
 # SpecGate — code-first release candidate
 
-**0.1.0-rc.1 · npm `latest` and `next` prerelease · Pilot use only · No OpenAPI input · MIT**
+**0.1.0-rc.2 · npm `latest` and `next` prerelease · Pilot use only · No OpenAPI input · MIT**
 
 Scan service source, review changed behavior, and compile independently reviewed scenarios into Playwright API tests. This is a local CLI, not a hosted upload service or an autonomous test-writing agent. Production qualification is **not complete**: a representative real service, an independently approved correctness baseline and platform qualification are release gates.
 
@@ -9,7 +9,7 @@ Scan service source, review changed behavior, and compile independently reviewed
 Node 22 or 24 and Git, Linux/macOS. Windows is not qualified.
 
 ```sh
-npm exec --package=@qe-atlas/specgate@0.1.0-rc.1 -- specgate scan \
+npm exec --package=@qe-atlas/specgate@0.1.0-rc.2 -- specgate scan \
   --root ./my-service --source src --format markdown
 ```
 
