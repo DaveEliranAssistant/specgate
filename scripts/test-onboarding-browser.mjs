@@ -41,6 +41,7 @@ try{
  for(const href of await page.locator('a[href]').evaluateAll(nodes=>nodes.map(n=>n.getAttribute('href')))){
   if(href.startsWith('#'))assert.ok(await page.locator(href).count(),href);
   else if(href.startsWith('mailto:'))assert.match(href,/^mailto:[^@]+@[^@]+$/);
+  else if(/^https?:/.test(href))assert.equal(href,'https://github.com/DaveEliranAssistant/specgate/discussions/categories/ideas','Only the feedback link may leave the site');
   else{const response=await context.request.get(url+'/'+href);assert.equal(response.status(),200,href);}
  }
  for(const path of ['/packages/specgate/src/scan.mjs','/README.md','/.git/config'])assert.equal((await context.request.get(url+path)).status(),404);

@@ -2,14 +2,16 @@
 
 Code-first service discovery, reviewed regression tests and conservative CI change gates. **Service source code is the input; OpenAPI is not required.**
 
-This private repository is the dedicated SpecGate product home. It replaces the QE Atlas candidate branch as the working home for future SpecGate changes. QE Atlas remains a separate product; its site and production deployment are not changed by this migration.
+This public repository is the dedicated SpecGate product home. It replaces the QE Atlas candidate branch as the working home for future SpecGate changes. QE Atlas remains a separate product; its site and production deployment are not changed by this migration.
 
 ## Status
 
-- **Available:** MIT-licensed CLI release candidate `@qe-atlas/specgate@0.1.0-rc.1`, published on npm with dist-tags `latest` and `next`; bounded committed-source scanning, baseline checks, reviewed-scenario compilation and executable synthetic proofs.
-- **Reviewable onboarding preview:** [guided pilot page and verification instructions](onboarding/README.md), supported-scope fit check, recorded static CLI examples, private offline quickstart and pilot brief. This is not a deployed public website or hosted signup.
-- **Not launched:** public product website, authenticated private-release CI installation, hosted signup endpoint, consumer-compatibility modes and real-service qualification. Waitlist code is merged but not deployed, and no `DATABASE_URL_POOLED` is configured. https://specgate.vercel.app is a separate pre-flight portal, not this product's landing.
-- **Not production approved:** begin with a controlled, observe-only pilot. Passing the synthetic suite is not customer-service qualification.
+- **Available:** MIT-licensed CLI release candidate `@qe-atlas/specgate@0.1.0-rc.2`, published on npm with dist-tags `latest` and `next`; bounded committed-source scanning, baseline checks, reviewed-scenario compilation and executable synthetic proofs.
+- **Public landing:** <https://specgate-qe-atlas.vercel.app> is live with the guided observe-only pilot, supported-scope fit check, recorded static CLI examples, offline quickstart, pilot brief and consented waitlist. See [how it is built and verified](onboarding/README.md).
+- **Not in this build:** authenticated private-release CI installation, consumer-compatibility modes, code-versus-OpenAPI comparison and real-service qualification.
+- **Not production approved:** begin with a controlled, observe-only pilot. Passing the synthetic suite is not customer-service qualification. SpecGate makes no full compatibility or production qualification claim.
+
+**[Give feedback](https://github.com/DaveEliranAssistant/specgate/discussions/categories/ideas)** in the Ideas category of GitHub Discussions.
 
 See [adoption status and remaining acceptance gates](docs/ADOPTION.md). No customer repository is required to build the website or signup flow. A customer service is only needed for the separate real-service qualification gate.
 
@@ -22,7 +24,7 @@ See [adoption status and remaining acceptance gates](docs/ADOPTION.md). No custo
 | `docs/` | Product adoption, release evidence, migration provenance and security notes |
 | `.github/workflows/quality.yml` | Standalone Node 22/24 quality gates; no deployment or production secrets |
 
-The reviewable [onboarding preview](onboarding/README.md) now lives here. It is a static guided-pilot experience, not a public deployment or hosted signup. A public website and beta-access backend remain unlaunched.
+The [public landing](https://specgate-qe-atlas.vercel.app) is built from [`onboarding/`](onboarding/README.md): a static guided-pilot experience, with the consented waitlist served by `api/waitlist.mjs`.
 
 ## Development and verification
 
@@ -56,13 +58,13 @@ Only committed source is scanned; `HEAD` is pinned once. Baselines and scenarios
 
 The supported adapter is a constrained JavaScript/Express literal-route subset, not all JavaScript, TypeScript or frameworks. Unsupported constructs are reported as non-green gaps. Independently reviewed requirements define expected behavior; code changes do not automatically rewrite assertions.
 
-See the [package guide](packages/specgate/README.md), [security model](packages/specgate/SECURITY.md) and [provenance](NOTICE.md). SpecGate is [MIT licensed](LICENSE). `@qe-atlas/specgate@0.1.0-rc.1` is published on npm with dist-tags `latest` and `next`. This source repository remains private.
+See the [package guide](packages/specgate/README.md), [security model](packages/specgate/SECURITY.md) and [provenance](NOTICE.md). SpecGate is [MIT licensed](LICENSE). `@qe-atlas/specgate@0.1.0-rc.2` is published on npm with dist-tags `latest` and `next`. The source is public at <https://github.com/DaveEliranAssistant/specgate>.
 
-## Vercel and beta access
+## Vercel and waitlist
 
-The intended topology is one dedicated Vercel project backed by this GitHub repository, with an explicitly allowlisted website output and server-only beta credentials. Never publish the repository tree, CLI fixtures, private release reports or secrets as static files.
+The public landing is deployed on Vercel at <https://specgate-qe-atlas.vercel.app>, with an explicitly allowlisted website output and server-only waitlist credentials. Never publish the repository tree, CLI fixtures, release reports or secrets as static files.
 
-An existing dedicated free-tier `specgate-beta` database was provisioned before this repository existed. It is currently attached to QE Atlas, not this repository. It must be connected to the future dedicated SpecGate project and verified before any signup is described as live. No unrelated database should be reused, and no paid plan is authorized.
+`GET /api/waitlist` on the landing reports `{"available":true}` when the waitlist database is configured. No unrelated database should be reused, and no paid plan is authorized.
 
 ## Imported evidence
 
