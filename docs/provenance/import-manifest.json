@@ -14,17 +14,17 @@
     },
     {
       "path": "packages/specgate/package.json",
-      "sha256": "f466137d4db3eabe3d84622b5a94b9cb630b9e0d63152f923c7d337c6c749f06",
+      "sha256": "58f6e314a623fe02549a2daa5cda6e6d0f081c26148ac7b91736e83623d4a8e8",
       "reason": "Owner-approved MIT relicense on 2026-11-05: license metadata, notices and public-install docs; runtime unchanged."
     },
     {
       "path": "packages/specgate/README.md",
-      "sha256": "0734dec66d0c224c5f2c287333e6525a7a5fe799e4f8d8784472e62692a23c1d",
+      "sha256": "55eff816a1a9cc889d117a3c667e38c8df5d8c72948106c1bb6110ca423f81c4",
       "reason": "Owner-approved MIT relicense on 2026-11-05: license metadata, notices and public-install docs; runtime unchanged. 2026-11-06: dist-tag status line only."
     },
     {
       "path": "packages/specgate/package-lock.json",
-      "sha256": "b1108a2bf27dd6fad4958e5411e49e40bab0391098292acab26ef656c3a285ea",
+      "sha256": "6b9ff6f554ca6c44507a801be8148a6d95606bbb8a7d88780df964112005ea83",
       "reason": "Owner-approved MIT relicense on 2026-11-05: license metadata, notices and public-install docs; runtime unchanged."
     },
     {
