@@ -1,0 +1,11 @@
+{
+  "description": "The auth token constant changes; routes guarded by requireAuth need review (value never echoed).",
+  "verdict": "needs_review",
+  "exitCode": 1,
+  "findings": [
+    {
+      "classification": "needs_review",
+      "code": "referenced-constant-changed"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "description": "body.title maximum length drops from 80 to 40.",
+  "verdict": "breaking",
+  "exitCode": 1,
+  "findings": [
+    {
+      "classification": "breaking",
+      "code": "request-constraint-tightened"
+    }
+  ]
+}

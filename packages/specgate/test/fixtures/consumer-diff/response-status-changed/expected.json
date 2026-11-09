@@ -1,0 +1,11 @@
+{
+  "description": "POST /tickets success status changes from 201 to 200.",
+  "verdict": "breaking",
+  "exitCode": 1,
+  "findings": [
+    {
+      "classification": "breaking",
+      "code": "response-status-changed"
+    }
+  ]
+}

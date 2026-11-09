@@ -67,7 +67,7 @@ jobs:
           npm ci --prefix poc/code-first-service-tests --ignore-scripts
       - name: Preserve imported bytes and independent assertions; static tests only
         run: |
-          node --test test/*.test.mjs packages/specgate/test/cli.test.mjs packages/specgate/test/scan.test.mjs packages/specgate/test/git-source.test.mjs packages/specgate/test/hardening.test.mjs packages/specgate/test/generate.test.mjs packages/specgate/test/pilot*.test.mjs
+          node --test test/*.test.mjs packages/specgate/test/cli.test.mjs packages/specgate/test/scan.test.mjs packages/specgate/test/git-source.test.mjs packages/specgate/test/hardening.test.mjs packages/specgate/test/generate.test.mjs packages/specgate/test/diff.test.mjs packages/specgate/test/pilot*.test.mjs
           node --test poc/code-first-service-tests/test/oracle.test.mjs poc/code-first-service-tests/test/maintain.test.mjs
       - name: Actual archive, empty-cache offline install and observe-only recipe
         run: node scripts/verify-pilot-package.mjs "$RUNNER_TEMP/specgate-proof"

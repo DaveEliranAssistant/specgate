@@ -1,0 +1,11 @@
+{
+  "description": "A route with no other method on its path is deleted.",
+  "verdict": "breaking",
+  "exitCode": 1,
+  "findings": [
+    {
+      "classification": "breaking",
+      "code": "route-removed"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "description": "DELETE /tickets/:id becomes /tickets/:ticketId (handler does not read the parameter).",
+  "verdict": "breaking",
+  "exitCode": 1,
+  "findings": [
+    {
+      "classification": "breaking",
+      "code": "path-param-renamed"
+    }
+  ]
+}

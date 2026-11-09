@@ -53,6 +53,38 @@ node packages/specgate/bin/specgate.mjs check \
 
 JSON is the default; `--format markdown` is available for scan/check. Output files use exclusive creation (`0600`) and cannot overwrite a baseline or existing test. There is no auto-accept switch. Fingerprints detect drift, not authenticity: protect baseline review with branch protection/CODEOWNERS as appropriate. A changed source hash conservatively requires review even for comments; impact minimization remains experimental in the separate POC. Exit 1 means review, not a proven defect.
 
+## Consumer-break check (preview, unreleased)
+
+> **Preview. Not in the published `0.1.0-rc.2` npm package**; run it from a source checkout. Output schema, rules and finding codes may change.
+
+Answers "will this change break my API consumers?" by scanning two committed revisions with the same scanner as `scan` and comparing route-level contracts. No OpenAPI, no model and no network; the service is never started or imported.
+
+```sh
+git fetch origin main   # both refs must exist locally; nothing is fetched by SpecGate
+node packages/specgate/bin/specgate.mjs diff \
+  --root ./my-service --source src --base origin/main --head HEAD --format markdown
+```
+
+`--base`/`--head` accept branch, tag and remote-tracking names, `HEAD~N` or a commit SHA (no ranges, `:` paths or reflog syntax). By default the head is compared with `merge-base(base, head)`, like a pull-request diff, so routes added to `main` after you branched are not reported as removals; `--base-mode tip` compares with the base tip instead. CI checkouts need enough history for the merge base (`fetch-depth: 0`).
+
+| Classification | Codes |
+|---|---|
+| `breaking` | `route-removed`, `method-removed`, `path-param-renamed`, `path-param-added`, `required-request-field-added`, `request-field-became-required`, `request-field-type-changed`, `request-constraint-tightened`, `request-enum-value-removed`, `rejection-status-changed`, `response-status-changed`, `response-status-removed`, `response-field-removed`, `response-field-type-changed`, `auth-gate-added` |
+| `needs_review` | every `analysis-gap` (base or head); a removal while head has gaps (route may be hidden, not removed); `route-now-matched-by-parameterized-route`; `route-contract-not-analyzable`; `unmodeled-behavior-changed` (handler code changed and its response shape/types or imported calls are not statically visible); `handler-dependency-changed`; `referenced-constant-changed`; `response-literal-value-changed`; `response-status-added`; `optional-request-field-constrained`; `unattributed-validation-changed`; `auth-gate-removed` (security, not a consumer break) |
+| `non_breaking` | `route-added`, `method-added`, `response-field-added`, `request-constraint-relaxed`, `request-enum-value-added`, `request-field-became-optional`, `request-validation-removed` |
+
+"Required request field" means a body/header input guarded by a recognized `typeof`/length/enum/falsy check that rejects with a literal status. Response fields are compared only when the body is an object literal or a same-handler `const` object literal; field types are known for literals and for locals proven by a required `typeof` or enum check. `path-param-renamed` is classified as breaking because generated SDKs and OpenAPI consumers address parameters by name, even though raw URLs are unchanged.
+
+Comment-only edits, formatting, declaration/registration reordering and handler renames do not produce findings: routes are matched by method and path, and handler evidence is a normalized AST hash (comments, positions and the function's own name removed). Literal values (tokens, enum members, response values) appear only as short hashes and are never printed.
+
+Output is JSON (`specgate.diff/1`, default) or `--format markdown`. JSON is sealed with a SHA-256 `fingerprint` over its canonical form. Findings are ordered by classification, method, path and code, so identical inputs produce byte-identical reports. Each report records both commits, both scan fingerprints and the exit-code meanings.
+
+- `0`: no `breaking` and no `needs_review` finding **within the supported static subset**. **This is not a compatibility guarantee.** Runtime behavior, data, external packages, unscanned files and anything the scanner cannot model are not covered.
+- `1`: at least one `breaking` or `needs_review` finding. Any analysis gap in either revision yields 1.
+- `2`: unreadable input: unknown/unsafe ref, missing merge base, source scope missing from a revision, invalid arguments, unsafe path, resource limit or analysis failure. Arguments are not echoed.
+
+See [docs/CONSUMER_DIFF_CI.md](../../docs/CONSUMER_DIFF_CI.md) for a GitHub Actions example (documentation only) and [docs/research/consumer-break-mode-b.md](../../docs/research/consumer-break-mode-b.md) for limits and next steps. The optional `poc/agentic-triage` spike is unrelated to this verdict; no model is involved in `diff`.
+
 ## Generate executable API tests
 
 Prepare a trusted, reviewed JSON scenario file. Minimal example:

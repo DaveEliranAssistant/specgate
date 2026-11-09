@@ -1,11 +1,17 @@
 import { openSync, readFileSync, closeSync, writeFileSync, fstatSync, constants } from 'node:fs';
 import { scanRepository } from './scan.mjs';
 import { compareScans } from './gate.mjs';
+import { runDiff, diffMarkdown } from './diff.mjs';
 const HELP = `SpecGate 0.1.0-rc.1 — code-first local change gate (no OpenAPI input)
 scan --root REPOSITORY --source RELATIVE_PATH [--source RELATIVE_PATH] [--format json|markdown] [--output NEW_FILE]
 check --root REPOSITORY --source RELATIVE_PATH --baseline TRUSTED_SCAN.json [--format json|markdown] [--output NEW_FILE]
 generate --root REPOSITORY --source RELATIVE_PATH --scenarios REVIEWED.json --output NEW_SPEC.mjs
+diff --root REPOSITORY --source RELATIVE_PATH --base REF --head REF [--base-mode merge-base|tip] [--format json|markdown] [--output NEW_FILE]
+  (preview) Will this change break API consumers? Scans both committed revisions; compares head with
+  merge-base(base, head) by default. Never starts the service. Refs must exist locally (fetch first).
 Exit: 0 declared-subset success; 1 findings/partial analysis; 2 input/tool failure.
+diff exit: 0 no breaking/needs-review item found within the supported scope (NOT a compatibility guarantee);
+  1 breaking change or needs review (includes every analysis gap); 2 unreadable input or analysis failure.
 Only committed Git source is scanned. --revision HEAD|FULL_COMMIT_SHA selects the revision (default HEAD).
 Baseline and scenario files must come from a trusted reviewed revision, not an untrusted pull request.
 `;
@@ -15,11 +21,11 @@ export function readJson(path) {
 }
 function parse(args) {
  const [command,...rest]=args;
- if (!['scan','check','generate'].includes(command))throw new Error('Unknown command');
- const allowed=new Set(['--root','--source','--revision','--format','--output',...(command==='check'?['--baseline']:[]),...(command==='generate'?['--scenarios']:[])]);
+ if (!['scan','check','generate','diff'].includes(command))throw new Error('Unknown command');
+ const allowed=new Set(['--root','--source','--format','--output',...(command==='diff'?['--base','--head','--base-mode']:['--revision']),...(command==='check'?['--baseline']:[]),...(command==='generate'?['--scenarios']:[])]);
  const options={root:'.',sources:[],format:'json'},seen=new Set();
  for(let i=0;i<rest.length;i+=2){const key=rest[i],value=rest[i+1];if(!allowed.has(key)||typeof value!=='string'||!value||value.startsWith('--')||(key!=='--source'&&seen.has(key)))throw new Error('Invalid arguments'); seen.add(key); if(key==='--source')options.sources.push(value);else options[key.slice(2)]=value;}
- if(!['json','markdown'].includes(options.format)||!options.sources.length||(command==='check'&&!options.baseline)||(command==='generate'&&(!options.scenarios||!options.output||options.format!=='json')))throw new Error('Missing or invalid arguments');
+ if(!['json','markdown'].includes(options.format)||!options.sources.length||(command==='check'&&!options.baseline)||(command==='diff'&&(!options.base||!options.head))||(command==='generate'&&(!options.scenarios||!options.output||options.format!=='json')))throw new Error('Missing or invalid arguments');
  return {command,options};
 }
 const escape=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replace(/[\\`*_|\[\]]/g,'\\$&').replace(/[\r\n]/g,' ');
@@ -31,6 +37,13 @@ export async function main(args){
  try{
   if(args.length===1&&['--help','--version'].includes(args[0])){process.stdout.write(args[0]==='--help'?HELP:'0.1.0-rc.1\n');return;}
   const {command,options}=parse(args);
+  if(command==='diff'){
+   const report=await runDiff({root:options.root,sources:options.sources,base:options.base,head:options.head,baseMode:options['base-mode']});
+   const output=options.format==='markdown'?diffMarkdown(report):JSON.stringify(report,null,2)+'\n';
+   if(options.output)writeFileSync(options.output,output,{flag:'wx',mode:0o600});else process.stdout.write(output);
+   process.exitCode=report.verdict==='no_breaking_change_found_in_supported_scope'?0:1;
+   return;
+  }
   const baseline=command==='check'?readJson(options.baseline):null;
   const report=await scanRepository({root:options.root,sources:options.sources,revision:options.revision});
   let result=report,output;

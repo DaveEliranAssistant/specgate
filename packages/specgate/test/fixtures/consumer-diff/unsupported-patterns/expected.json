@@ -1,0 +1,11 @@
+{
+  "description": "Head adds patterns outside the supported subset (Router, async inline handler, template path, unknown middleware). Must be analysis-gap, never safe.",
+  "verdict": "needs_review",
+  "exitCode": 1,
+  "findings": [
+    {
+      "classification": "needs_review",
+      "code": "analysis-gap"
+    }
+  ]
+}

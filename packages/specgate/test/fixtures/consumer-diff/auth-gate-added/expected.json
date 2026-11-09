@@ -1,0 +1,11 @@
+{
+  "description": "GET /tickets now goes through requireAuth.",
+  "verdict": "breaking",
+  "exitCode": 1,
+  "findings": [
+    {
+      "classification": "breaking",
+      "code": "auth-gate-added"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "description": "False-positive guard: comments, formatting, function order, route registration order and handler names change; contract does not.",
+  "verdict": "no_breaking_change_found_in_supported_scope",
+  "exitCode": 0,
+  "findings": []
+}

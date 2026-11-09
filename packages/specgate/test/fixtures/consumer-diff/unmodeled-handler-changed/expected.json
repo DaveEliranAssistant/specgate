@@ -1,0 +1,15 @@
+{
+  "description": "GET /tickets/:id echoes a path parameter whose type is not statically visible. A changed handler cannot be claimed safe.",
+  "verdict": "needs_review",
+  "exitCode": 1,
+  "findings": [
+    {
+      "classification": "needs_review",
+      "code": "unmodeled-behavior-changed"
+    },
+    {
+      "classification": "non_breaking",
+      "code": "response-field-added"
+    }
+  ]
+}
