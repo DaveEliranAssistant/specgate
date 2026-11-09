@@ -6,9 +6,14 @@ const EXTENSIONS=new Set(['.js','.mjs','.cjs','.jsx','.ts','.tsx']);
 export function loadGitSources(root,scopes,revision,limits){
  if(revision!=='HEAD'&&!/^(?:[a-f0-9]{40}|[a-f0-9]{64})$/.test(revision))throw new Error('Revision must be HEAD or an exact commit identifier');
  const deadline=Date.now()+limits.acquisitionTimeoutMs;
+ // A caller may launch the CLI from a Git hook or another checkout. Git's
+ // environment overrides -C, so do not inherit repository, object, or config
+ // selectors. Keep ordinary runtime settings (PATH, locale, etc.).
+ const env=Object.fromEntries(Object.entries(process.env).filter(([key])=>!key.toUpperCase().startsWith('GIT_')));
+ Object.assign(env,{GIT_TERMINAL_PROMPT:'0',GIT_OPTIONAL_LOCKS:'0'});
  const command=(args,maxBuffer=4194304)=>{
   const remaining=deadline-Date.now();if(remaining<1)throw new Error('Git acquisition time limit exceeded');
-  try {return execFileSync('git',['--no-replace-objects','--literal-pathspecs','-C',root,...args],{maxBuffer,timeout:Math.min(10000,remaining),stdio:['ignore','pipe','pipe'],env:{...process.env,GIT_TERMINAL_PROMPT:'0',GIT_OPTIONAL_LOCKS:'0'}});}
+  try {return execFileSync('git',['--no-replace-objects','--literal-pathspecs','-C',root,...args],{maxBuffer,timeout:Math.min(10000,remaining),stdio:['ignore','pipe','pipe'],env});}
   catch(error){if(error.code==='ETIMEDOUT'||Date.now()>=deadline)throw new Error('Git acquisition time limit exceeded');throw error;}
  };
  const sourceCommit=command(['rev-parse','--verify',revision+'^{commit}'],200).toString('ascii').trim();

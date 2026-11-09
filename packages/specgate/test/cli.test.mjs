@@ -42,3 +42,17 @@ test('output files use exclusive creation and never overwrite an accepted baseli
  const root=repo(t), output=join(root,'scan.json'); const a=cli('scan','--root',root,'--source','src','--output',output); assert.equal(a.status,0,a.stderr);
  assert.equal(cli('scan','--root',root,'--source','src','--output',output).status,2); assert.equal(JSON.parse(readFileSync(output,'utf8')).complete,true);
 });
+test('scan CLI isolates Git configuration and repository environment', t=> {
+ const root=repo(t),other=repo(t);
+ writeFileSync(join(other,'src/app.mjs'),text.replace('/health','/substituted'));
+ commitFixture(root);commitFixture(other);
+ const clean=spawnSync(process.execPath,[bin,'scan','--root',root,'--source','src'],{encoding:'utf8'});
+ const inherited=spawnSync(process.execPath,[bin,'scan','--root',root,'--source','src'],{
+  encoding:'utf8',env:{...process.env,GIT_DIR:join(other,'.git'),GIT_WORK_TREE:other,
+   GIT_CONFIG_COUNT:'1',GIT_CONFIG_KEY_0:'core.repositoryformatversion',GIT_CONFIG_VALUE_0:'999',
+   GIT_LITERAL_PATHSPECS:'0',GIT_GLOB_PATHSPECS:'1',GIT_TRACE:'1'}
+ });
+ assert.equal(clean.status,0,clean.stderr);assert.equal(inherited.status,0,inherited.stderr);
+ assert.equal(inherited.stdout,clean.stdout);
+ assert.equal(inherited.stderr,'');
+});
