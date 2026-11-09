@@ -1,0 +1,13 @@
+{
+  "name": "specgate-agentic-triage-poc",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Optional, advisory triage on top of SpecGate check findings. No dependencies. Not published.",
+  "engines": { "node": ">=22 <25" },
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "demo": "node scripts/demo.mjs"
+  },
+  "license": "MIT"
+}
