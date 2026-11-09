@@ -52,7 +52,7 @@ Code and limitations: https://github.com/DaveEliranAssistant/specgate
 
 Title: Show HN: SpecGate – deterministic source scans for a small Express subset
 
-I’m building SpecGate, an observe-only pilot that scans committed service source
+We’re building SpecGate, an observe-only pilot that scans committed service source
 locally and reports observed routes and unsupported analysis. It currently
 supports a constrained JavaScript/Express literal-route subset, not general
 framework analysis. It needs no model and does not execute scanned code.
@@ -61,7 +61,7 @@ A proposed hardening change prevents inherited Git environment settings from
 redirecting acquisition to another checkout. The separate synthetic POC runs
 reviewed API scenarios and checks predicted seeded-defect failures.
 
-I’d value criticism of the provenance boundary and the distinction between an
+We’d value criticism of the provenance boundary and the distinction between an
 implementation observation and an independently approved assertion. There is
 no consumer-compatibility or code/OpenAPI comparison feature in this build.
 
@@ -96,7 +96,7 @@ Feedback welcome: https://github.com/DaveEliranAssistant/specgate
 
 Title: Showoff Saturday: a bounded, model-free Express source scanner
 
-I’m working on SpecGate, an observe-only pilot that inventories committed
+We’re working on SpecGate, an observe-only pilot that inventories committed
 JavaScript/Express literal routes and reports gaps. It parses source without
 running it or calling a model. Routers, dynamic routes and general framework
 coverage are outside the supported subset.
@@ -106,7 +106,7 @@ redirect a scan to another checkout. A separate synthetic POC runs reviewed
 API scenarios against good and deliberately changed fixtures.
 
 Would route/file references plus explicit unsupported-analysis gaps help your
-review workflow? I’m especially interested in where the report could create
+review workflow? We’re especially interested in where the report could create
 false confidence. Repo: https://github.com/DaveEliranAssistant/specgate
 
 Posting note: Check the current subreddit thread and rules manually before any
