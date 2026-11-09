@@ -26,3 +26,17 @@ test('revision must be HEAD or an exact commit identifier; missing scopes fail',
 });
 test('Git acquisition has a separate aggregate deadline',async t=>{const root=repo(t);await assert.rejects(()=>scanRepository({root,sources:['src'],limits:{acquisitionTimeoutMs:1}}),/acquisition time limit/);});
 test('Git mode retains the same source byte limits',async t=>{const root=repo(t);await assert.rejects(()=>scanRepository({root,sources:['src'],revision:'HEAD',limits:{maxFileBytes:10}}),/limit/i);});
+test('ambient Git repository and object settings cannot substitute scan provenance',async t=>{
+ const root=repo(t), other=repo(t), commit=git(root,'rev-parse','HEAD');
+ writeFileSync(join(other,'src/app.mjs'),code.replace('/health','/substituted'));
+ git(other,'add','.');git(other,'-c','user.name=SpecGate fixture','-c','user.email=fixture@example.invalid','commit','--quiet','-m','other');
+ const settings={GIT_DIR:join(other,'.git'),GIT_WORK_TREE:other,GIT_OBJECT_DIRECTORY:join(other,'.git/objects')};
+ const previous=Object.fromEntries(Object.keys(settings).map(key=>[key,process.env[key]]));
+ try {
+  Object.assign(process.env,settings);
+  const report=await scanRepository({root,sources:['src']});
+  assert.equal(report.sourceCommit,commit);assert.equal(report.routes[0].path,'/health');
+ } finally {
+  for(const [key,value] of Object.entries(previous))if(value===undefined)delete process.env[key];else process.env[key]=value;
+ }
+});

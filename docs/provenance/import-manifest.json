@@ -34,13 +34,28 @@
     },
     {
       "path": "packages/specgate/SECURITY.md",
-      "sha256": "e9ad911c4779765995d4b4c6f11687a042b68af5b6b9aee39fb690bf1bbc8472",
-      "reason": "Owner-approved MIT relicense on 2026-11-05: license metadata, notices and public-install docs; runtime unchanged."
+      "sha256": "a8ddfa788b06c672dd077428c39b36693f17f36619beeb9d6c95fc823f8c5b70",
+      "reason": "Owner-approved MIT relicense on 2026-11-05: license metadata, notices and public-install docs; runtime unchanged. 2026-11-08: isolate scan acquisition from inherited Git environment settings; verify repository provenance and deterministic CLI output."
     },
     {
       "path": "packages/specgate/test/pack-smoke.mjs",
       "sha256": "1b4436770bffef10965ef18b2d9a61a399377a81d246f7b4e2c6265086165ce1",
       "reason": "Owner-approved MIT relicense on 2026-11-05: license metadata, notices and public-install docs; runtime unchanged."
+    },
+    {
+      "path": "packages/specgate/src/git-source.mjs",
+      "sha256": "35aee46f77f118bc6871bc4b10303204f7cd45f3909c99023ec6d5a2dfce59de",
+      "reason": "2026-11-08: isolate scan acquisition from inherited Git environment settings; verify repository provenance and deterministic CLI output."
+    },
+    {
+      "path": "packages/specgate/test/cli.test.mjs",
+      "sha256": "785b5a114242fce6eba4e80d7cd001a2bc9af22a379cd35bfafce69d7cdfaac5",
+      "reason": "2026-11-08: isolate scan acquisition from inherited Git environment settings; verify repository provenance and deterministic CLI output."
+    },
+    {
+      "path": "packages/specgate/test/git-source.test.mjs",
+      "sha256": "c0cb7ad6b6db72a7d2519009d05f99e16bb518402aa1aea17643d87d5bc8658d",
+      "reason": "2026-11-08: isolate scan acquisition from inherited Git environment settings; verify repository provenance and deterministic CLI output."
     }
   ],
   "files": [
