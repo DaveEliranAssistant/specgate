@@ -8,7 +8,8 @@ This public repository is the dedicated SpecGate product home. It replaces the Q
 
 - **Available:** MIT-licensed CLI release candidate `@qe-atlas/specgate@0.1.0-rc.2`, published on npm with dist-tags `latest` and `next`; bounded committed-source scanning, baseline checks, reviewed-scenario compilation and executable synthetic proofs.
 - **Public landing:** <https://specgate-qe-atlas.vercel.app> is live with the guided observe-only pilot, supported-scope fit check, recorded static CLI examples, offline quickstart, pilot brief and consented waitlist. See [how it is built and verified](onboarding/README.md).
-- **Not in this build:** authenticated private-release CI installation, consumer-compatibility modes, code-versus-OpenAPI comparison and real-service qualification.
+- **Preview / unreleased in source:** `diff --base REF --head REF --source src` compares committed Express route observations without OpenAPI, a running service or a model. See [Mode B scope and limits](docs/research/mode-b-consumer-diff.md). Exit 0 is NOT a compatibility guarantee.
+- **Not in this build:** authenticated private-release CI installation, code-versus-OpenAPI comparison and real-service qualification.
 - **Not production approved:** begin with a controlled, observe-only pilot. Passing the synthetic suite is not customer-service qualification. SpecGate makes no full compatibility or production qualification claim.
 
 **[Give feedback](https://github.com/DaveEliranAssistant/specgate/discussions/categories/ideas)** in the Ideas category of GitHub Discussions.

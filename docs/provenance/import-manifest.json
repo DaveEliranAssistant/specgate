@@ -19,8 +19,8 @@
     },
     {
       "path": "packages/specgate/README.md",
-      "sha256": "55eff816a1a9cc889d117a3c667e38c8df5d8c72948106c1bb6110ca423f81c4",
-      "reason": "Owner-approved MIT relicense on 2026-11-05: license metadata, notices and public-install docs; runtime unchanged. 2026-11-06: dist-tag status line only."
+      "sha256": "34e14f87b681d62b665a9d8a83bd6fff98e8f71932fc9dc5e03285a07010d873",
+      "reason": "Owner-approved MIT relicense on 2026-11-05: license metadata, notices and public-install docs; runtime unchanged. 2026-11-06: dist-tag status line only. 2026-11-09: owner-approved Mode B preview; deterministic base/head consumer comparison, Git ref resolution, response-type observations and documentation."
     },
     {
       "path": "packages/specgate/package-lock.json",
@@ -44,8 +44,8 @@
     },
     {
       "path": "packages/specgate/src/git-source.mjs",
-      "sha256": "35aee46f77f118bc6871bc4b10303204f7cd45f3909c99023ec6d5a2dfce59de",
-      "reason": "2026-11-08: isolate scan acquisition from inherited Git environment settings; verify repository provenance and deterministic CLI output."
+      "sha256": "2c9234786fc3906bc47ddb1ca437ab2e77e4a71313401191ff2fc1b5fbe63fd1",
+      "reason": "2026-11-08: isolate scan acquisition from inherited Git environment settings; verify repository provenance and deterministic CLI output. 2026-11-09: owner-approved Mode B preview; deterministic base/head consumer comparison, Git ref resolution, response-type observations and documentation."
     },
     {
       "path": "packages/specgate/test/cli.test.mjs",
@@ -56,6 +56,16 @@
       "path": "packages/specgate/test/git-source.test.mjs",
       "sha256": "c0cb7ad6b6db72a7d2519009d05f99e16bb518402aa1aea17643d87d5bc8658d",
       "reason": "2026-11-08: isolate scan acquisition from inherited Git environment settings; verify repository provenance and deterministic CLI output."
+    },
+    {
+      "path": "packages/specgate/src/cli.mjs",
+      "sha256": "e56ab2c1e4212411d88cc1fe9a140769402065729ec2a721fc07cf42721e088e",
+      "reason": "2026-11-09: owner-approved Mode B preview; deterministic base/head consumer comparison, Git ref resolution, response-type observations and documentation."
+    },
+    {
+      "path": "packages/specgate/src/parser-worker.mjs",
+      "sha256": "c3c214a25a6b47fa32046e8a44ded9d35594135c8aaeec2f49f92d25be6f0be8",
+      "reason": "2026-11-09: owner-approved Mode B preview; deterministic base/head consumer comparison, Git ref resolution, response-type observations and documentation."
     }
   ],
   "files": [

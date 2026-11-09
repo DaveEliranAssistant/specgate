@@ -43,3 +43,12 @@ export function loadGitSources(root,scopes,revision,limits){
  files.sort((a,b)=>a.path<b.path?-1:a.path>b.path?1:0);
  return {files,sourceCommit};
 }
+
+// Resolve user refs once; the scanner continues accepting only immutable commits.
+export function resolveGitRef(root, ref) {
+ if (typeof ref !== 'string' || !ref || ref.startsWith('-') || ref.length > 1024 || /[\x00-\x20\x7f]/.test(ref)) throw new Error('Invalid ref');
+ const env=Object.fromEntries(Object.entries(process.env).filter(([key])=>!key.toUpperCase().startsWith('GIT_')));
+ const sha=execFileSync('git',['--no-replace-objects','-C',root,'rev-parse','--verify','--end-of-options',ref+'^{commit}'],{env,timeout:10000,maxBuffer:200,stdio:['ignore','pipe','pipe']}).toString('ascii').trim();
+ if (!/^(?:[a-f0-9]{40}|[a-f0-9]{64})$/.test(sha)) throw new Error('Invalid commit');
+ return sha;
+}

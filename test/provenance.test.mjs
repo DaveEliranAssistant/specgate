@@ -9,7 +9,7 @@ test('all imported source bytes match the pinned upstream snapshot',async()=>{
  assert.equal(manifest.sourceCommit,'b24b96daf16814b11b6d225d3b502f4acfb7a2c2');
  assert.equal(manifest.files.length,77);
  assert.equal(new Set(manifest.files.map(f=>f.path)).size,manifest.files.length);
- assert.deepEqual(manifest.adaptations.map(f=>f.path),['poc/code-first-service-tests/test/artifacts.test.mjs','packages/specgate/package.json','packages/specgate/README.md','packages/specgate/package-lock.json','packages/specgate/NOTICE.md','packages/specgate/SECURITY.md','packages/specgate/test/pack-smoke.mjs','packages/specgate/src/git-source.mjs','packages/specgate/test/cli.test.mjs','packages/specgate/test/git-source.test.mjs']);
+ assert.deepEqual(manifest.adaptations.map(f=>f.path),['poc/code-first-service-tests/test/artifacts.test.mjs','packages/specgate/package.json','packages/specgate/README.md','packages/specgate/package-lock.json','packages/specgate/NOTICE.md','packages/specgate/SECURITY.md','packages/specgate/test/pack-smoke.mjs','packages/specgate/src/git-source.mjs','packages/specgate/test/cli.test.mjs','packages/specgate/test/git-source.test.mjs','packages/specgate/src/cli.mjs','packages/specgate/src/parser-worker.mjs']);
  for(const file of manifest.files){
   const path=resolve(root,file.path);assert.ok(path.startsWith(root+sep));
   assert.match(file.path,/^(packages\/specgate\/|poc\/code-first-service-tests\/|docs\/(reports|plans)\/)/);

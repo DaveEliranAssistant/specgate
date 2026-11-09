@@ -117,3 +117,18 @@ npm pack --dry-run
 npm publish --dry-run --access public --tag next
 npm publish --access public --tag next
 ```
+
+## Base vs head consumer diff — preview / unreleased
+
+From this source checkout (not the published rc.2 package):
+
+```sh
+node packages/specgate/bin/specgate.mjs diff --root ./my-service --source src \
+  --base main --head HEAD --format markdown
+```
+
+Scans both resolved commits without starting the service or using OpenAPI/model input. JSON (default) includes commit SHAs, scan fingerprints, deterministically ordered findings and a SHA-256 report seal; Markdown provides a human summary. `--output NEW_FILE` uses exclusive creation. The seal detects drift, not authenticity.
+
+Exit **0** means no breaking change found within the supported static scope, **NOT a compatibility guarantee**; **1** means breaking findings or analysis gaps / needs review; **2** means unreadable input, invalid refs or analysis/resource failure. Non-breaking route/response-field additions can exit 0; changes to comments, line numbers, handler names and route/property ordering alone do not fail this diff. The older `check` command retains its conservative source-drift behavior.
+
+Route/method removal, parameter rename/addition, newly required body fields in supported type guards, response-field removal, primitive response-type changes (conservatively including narrowing) and observed status-set changes are breaking findings. Unsupported logic in either revision requires review, including opaque responses, imported calls and middleware. See [research and docs-only CI example](../../docs/research/mode-b-consumer-diff.md). Optional agentic triage remains advisory and is never imported by this path.
