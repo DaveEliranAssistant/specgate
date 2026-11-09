@@ -1,0 +1,121 @@
+{
+  "schema": "specgate.triage-request/1",
+  "labels": [
+    "consumer_break",
+    "approved_change",
+    "noise",
+    "needs_review"
+  ],
+  "findings": [
+    {
+      "id": "f1",
+      "code": "route-observation-changed",
+      "route": "POST route#1",
+      "deltas": [
+        {
+          "key": "validation.length.maxLength",
+          "field": "field#1",
+          "before": 80,
+          "after": 40,
+          "direction": "tightened"
+        },
+        {
+          "key": "location",
+          "field": null,
+          "before": "moved",
+          "after": "moved",
+          "direction": "cosmetic"
+        }
+      ],
+      "rulesLabel": "consumer_break"
+    },
+    {
+      "id": "f2",
+      "code": "route-removed",
+      "route": "DELETE route#2",
+      "deltas": [],
+      "rulesLabel": "approved_change"
+    },
+    {
+      "id": "f3",
+      "code": "route-observation-changed",
+      "route": "PATCH route#3",
+      "deltas": [
+        {
+          "key": "validation.optional",
+          "field": "field#1",
+          "before": false,
+          "after": true,
+          "direction": "loosened"
+        },
+        {
+          "key": "location",
+          "field": null,
+          "before": "moved",
+          "after": "moved",
+          "direction": "cosmetic"
+        }
+      ],
+      "rulesLabel": "needs_review"
+    },
+    {
+      "id": "f4",
+      "code": "route-observation-changed",
+      "route": "GET route#4",
+      "deltas": [
+        {
+          "key": "handler",
+          "field": null,
+          "before": "renamed",
+          "after": "renamed",
+          "direction": "cosmetic"
+        },
+        {
+          "key": "location",
+          "field": null,
+          "before": "moved",
+          "after": "moved",
+          "direction": "cosmetic"
+        }
+      ],
+      "rulesLabel": "noise"
+    },
+    {
+      "id": "f5",
+      "code": "route-observation-changed",
+      "route": "GET route#5",
+      "deltas": [
+        {
+          "key": "location",
+          "field": null,
+          "before": "moved",
+          "after": "moved",
+          "direction": "cosmetic"
+        }
+      ],
+      "rulesLabel": "noise"
+    },
+    {
+      "id": "f6",
+      "code": "route-added",
+      "route": "GET route#6",
+      "deltas": [],
+      "rulesLabel": "needs_review"
+    },
+    {
+      "id": "f7",
+      "code": "source-changed",
+      "route": null,
+      "deltas": [],
+      "rulesLabel": "noise"
+    },
+    {
+      "id": "f8",
+      "code": "source-changed",
+      "route": null,
+      "deltas": [],
+      "rulesLabel": "consumer_break"
+    }
+  ],
+  "changeIntent": "v2: remove DELETE /tickets/:id (use PATCH status=closed instead). Make PATCH title optional. Add /audit. Token: [redacted] (must be redacted)."
+}
