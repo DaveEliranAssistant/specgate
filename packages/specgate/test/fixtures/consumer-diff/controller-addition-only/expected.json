@@ -1,0 +1,11 @@
+{
+  "description": "False-positive guard: a new controller function, service function and route are added. Existing handlers and the members they use are byte-identical, so only the addition is reported.",
+  "verdict": "no_breaking_change_found_in_supported_scope",
+  "exitCode": 0,
+  "findings": [
+    {
+      "classification": "non_breaking",
+      "code": "route-added"
+    }
+  ]
+}

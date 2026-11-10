@@ -6,7 +6,7 @@ This public repository is the dedicated SpecGate product home. It replaces the Q
 
 ## Status
 
-- **Available:** MIT-licensed CLI release candidate `@qe-atlas/specgate@0.1.0-rc.2`, published on npm with dist-tags `latest` and `next`; bounded committed-source scanning, baseline checks, reviewed-scenario compilation and executable synthetic proofs.
+- **Available:** MIT-licensed CLI release candidate `@qe-atlas/specgate@0.1.0-rc.3`, published on npm with dist-tags `latest` and `next`; bounded committed-source scanning, baseline checks, reviewed-scenario compilation and executable synthetic proofs.
 - **Public landing:** <https://specgate-qe-atlas.vercel.app> is live with the guided observe-only pilot, supported-scope fit check, recorded static CLI examples, offline quickstart, pilot brief and consented waitlist. See [how it is built and verified](onboarding/README.md).
 - **Unreleased preview (source checkout only, not in the npm package):** `specgate diff --base REF --head REF`, a static base-vs-head consumer-break check for the supported Express subset. See [the package README](packages/specgate/README.md#consumer-break-check-preview-unreleased), the [CI example](docs/CONSUMER_DIFF_CI.md) and [its limits](docs/research/consumer-break-mode-b.md). Exit 0 is not a compatibility guarantee.
 - **Not in this build:** authenticated private-release CI installation, code-versus-OpenAPI comparison and real-service qualification.
@@ -59,7 +59,7 @@ Only committed source is scanned; `HEAD` is pinned once. Baselines and scenarios
 
 The supported adapter is a constrained JavaScript/Express literal-route subset, not all JavaScript, TypeScript or frameworks. Unsupported constructs are reported as non-green gaps. Independently reviewed requirements define expected behavior; code changes do not automatically rewrite assertions.
 
-See the [package guide](packages/specgate/README.md), [security model](packages/specgate/SECURITY.md) and [provenance](NOTICE.md). SpecGate is [MIT licensed](LICENSE). `@qe-atlas/specgate@0.1.0-rc.2` is published on npm with dist-tags `latest` and `next`. The source is public at <https://github.com/DaveEliranAssistant/specgate>.
+See the [package guide](packages/specgate/README.md), [security model](packages/specgate/SECURITY.md) and [provenance](NOTICE.md). SpecGate is [MIT licensed](LICENSE). `@qe-atlas/specgate@0.1.0-rc.3` is published on npm with dist-tags `latest` and `next`. The source is public at <https://github.com/DaveEliranAssistant/specgate>.
 
 ## Vercel and waitlist
 

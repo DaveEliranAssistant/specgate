@@ -1,0 +1,11 @@
+{
+  "description": "TypeScript: a service function behind GET /api/notes/:noteId changes. Only that route is flagged; GET /api/notes uses a different, unchanged member of the same module.",
+  "verdict": "needs_review",
+  "exitCode": 1,
+  "findings": [
+    {
+      "classification": "needs_review",
+      "code": "route-contract-not-analyzable"
+    }
+  ]
+}

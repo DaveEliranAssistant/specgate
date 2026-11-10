@@ -1,0 +1,11 @@
+{
+  "description": "A service function used (through a controller) by GET /api/items/:itemId changes. The route is flagged through its transitive dependency slice; routes using other members of the same service are not.",
+  "verdict": "needs_review",
+  "exitCode": 1,
+  "findings": [
+    {
+      "classification": "needs_review",
+      "code": "route-contract-not-analyzable"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "description": "TypeScript: the guard object used as route middleware changes (Token -> Bearer). Every route using guard.required or guard.optional depends on the guard module and needs review; GET / does not.",
+  "verdict": "needs_review",
+  "exitCode": 1,
+  "findings": [
+    {
+      "classification": "needs_review",
+      "code": "route-contract-not-analyzable"
+    }
+  ]
+}

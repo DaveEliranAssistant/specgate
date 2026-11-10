@@ -1,15 +1,6 @@
 {
-  "description": "GET /health moves into an Express Router (unsupported). Removal is not provable, so it is needs_review, not breaking.",
-  "verdict": "needs_review",
-  "exitCode": 1,
-  "findings": [
-    {
-      "classification": "needs_review",
-      "code": "analysis-gap"
-    },
-    {
-      "classification": "needs_review",
-      "code": "route-removed"
-    }
-  ]
+  "description": "GET /health moves from app.get into an express.Router() mounted with app.use(router). Router mounting is supported: same route, same handler and middleware chain, so there is nothing to report.",
+  "verdict": "no_breaking_change_found_in_supported_scope",
+  "exitCode": 0,
+  "findings": []
 }

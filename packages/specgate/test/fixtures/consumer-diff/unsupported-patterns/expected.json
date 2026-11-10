@@ -1,11 +1,15 @@
 {
-  "description": "Head adds patterns outside the supported subset (Router, async inline handler, template path, unknown middleware). Must be analysis-gap, never safe.",
+  "description": "Head adds patterns outside the supported subset (template path, unresolved middleware) plus an async inline handler route. Unsupported registrations must be analysis-gap, never safe; the async route is discovered as an addition and its opaque contract does not make it breaking.",
   "verdict": "needs_review",
   "exitCode": 1,
   "findings": [
     {
       "classification": "needs_review",
       "code": "analysis-gap"
+    },
+    {
+      "classification": "non_breaking",
+      "code": "route-added"
     }
   ]
 }

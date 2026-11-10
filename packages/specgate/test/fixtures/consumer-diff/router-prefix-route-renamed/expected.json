@@ -1,0 +1,15 @@
+{
+  "description": "CommonJS service: app.use('/api', routes) -> router.use('/accounts', ...) -> router.post('/sign-out'). Renaming the leaf path changes the full mounted path /api/accounts/sign-out: breaking removal plus an addition.",
+  "verdict": "breaking",
+  "exitCode": 1,
+  "findings": [
+    {
+      "classification": "breaking",
+      "code": "route-removed"
+    },
+    {
+      "classification": "non_breaking",
+      "code": "route-added"
+    }
+  ]
+}

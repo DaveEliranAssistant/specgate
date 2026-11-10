@@ -1,0 +1,11 @@
+{
+  "description": "An unsupported construct (middleware chosen by a computed member, app.use(require('./plugins')[name]())) exists, byte-identical with its dependencies, in both revisions. It is listed under coverage.persistentGaps and does not block an additive change.",
+  "verdict": "no_breaking_change_found_in_supported_scope",
+  "exitCode": 0,
+  "findings": [
+    {
+      "classification": "non_breaking",
+      "code": "route-added"
+    }
+  ]
+}

@@ -1,6 +1,8 @@
 # SpecGate — code-first release candidate
 
-**0.1.0-rc.2 · npm `latest` and `next` prerelease · Pilot use only · No OpenAPI input · MIT**
+**0.1.0-rc.3 · npm `latest` and `next` prerelease · Pilot use only · No OpenAPI input · MIT**
+
+> This source checkout contains an **unreleased** project-level Express engine (routers and mount prefixes, CommonJS, TypeScript, imported handlers/controllers, middleware chains). It is not in the published `0.1.0-rc.3` package; see [the real-service trial](../../docs/research/real-service-trial.md).
 
 Scan service source, review changed behavior, and compile independently reviewed scenarios into Playwright API tests. This is a local CLI, not a hosted upload service or an autonomous test-writing agent. Production qualification is **not complete**: a representative real service, an independently approved correctness baseline and platform qualification are release gates.
 
@@ -9,7 +11,7 @@ Scan service source, review changed behavior, and compile independently reviewed
 Node 22 or 24 and Git, Linux/macOS. Windows is not qualified.
 
 ```sh
-npm exec --package=@qe-atlas/specgate@0.1.0-rc.2 -- specgate scan \
+npm exec --package=@qe-atlas/specgate@0.1.0-rc.3 -- specgate scan \
   --root ./my-service --source src --format markdown
 ```
 
@@ -27,9 +29,16 @@ Reports contain route IDs, file/line references, content hashes, observed valida
 
 ### Supported adapter
 
-The first adapter is deliberately narrow: JavaScript ESM, Express default import named `express`, top-level `const app = express()`, literal GET/POST/PUT/PATCH/DELETE paths, same-file named handlers and block-bodied synchronous inline handlers. Handler analysis recognizes the documented prototype's `req`/`res`/`next` grammar: selected type/length/enum checks, bearer comparison, literal numeric status and JSON responses.
+The adapter is a static, project-level model of Express (`express-literal-routes-v1` scan schema). Nothing is imported or executed.
 
-TypeScript/JSX/CommonJS, routers/mount prefixes, aliases, async/expression-bodied inline handlers, decorators, dynamic registration, imported handlers, general control flow, database/outbound dependency analysis and arbitrary authentication schemes are **not supported**. Gaps and unknown middleware prevent green results. `auth: not_observed` does not mean unauthenticated. `complete: true` means only that the declared subset encountered no reported gaps, not full semantic coverage, safety or correct behavior.
+- **Languages:** JavaScript ESM and CommonJS (`require`, `module.exports`, `exports.x`), and TypeScript (`.ts/.mts/.cts`) via Node's built-in type stripping (Node ≥ 22.13; older Node reports TypeScript as `unsupported-language`). `.d.ts` files are ignored. TSX/JSX are not supported.
+- **Express objects:** `express()` apps and `express.Router()`/`Router()` instances created from the real `express` import (look-alikes are reported as `unverified-express-binding`).
+- **Registration:** literal GET/POST/PUT/PATCH/DELETE paths via `x.get(...)`, `x.route(path).get(...).post(...)`, `router.param(name, fn)`, and `use([path], ...)`, including chained `Router().use(a).use(b)` and `export default Router().use('/api', api)`.
+- **Mounting:** routers mounted with prefixes across files (`app.use('/api', require('./routes'))`, nested routers, the same router at several prefixes), route tables unrolled from literal arrays (`table.forEach((r) => router.use(r.path, r.route))`), registrations inside top-level `if` blocks (discovered, marked `conditional`, plus a `conditional-registration` gap).
+- **Handlers and middleware:** inline functions (sync/async), local functions, handlers imported from other scanned files (controllers, barrels, `module.exports = { ... }` objects), middleware factories (`validate(schema)`, `auth('role')`, `catchAsync(fn)`), external package middleware. Middleware order follows Express: `use` layers apply to routes registered after them; error/fall-through middleware registered later is tracked separately.
+- **Contract model:** request validation, bearer-auth and response shape are modeled only for handlers in the documented narrow `req`/`res`/`next` grammar (block-bodied synchronous functions, literal `res.status(n).json(...)`). Everything else is **opaque**: its route is still inventoried and its code and transitive dependency slice are fingerprinted, but no contract is inferred.
+
+Unsupported and reported as gaps: dynamic or template paths with expressions, wildcard/regex paths, `all`/`options`/`head`, routers passed into functions (`setup(app)`), registrations inside functions/loops/callbacks, middleware whose value cannot be resolved (could be a hidden router), routers never mounted, cross-module registration on another module's router, decorators/class controllers and other frameworks. Gaps prevent green scans. `auth: unknown` is reported whenever any middleware in the chain is opaque; `auth: not_observed` never means unauthenticated. `complete: true` means only that the declared subset encountered no reported gaps.
 
 ### Resource bounds
 
@@ -55,7 +64,7 @@ JSON is the default; `--format markdown` is available for scan/check. Output fil
 
 ## Consumer-break check (preview, unreleased)
 
-> **Preview. Not in the published `0.1.0-rc.2` npm package**; run it from a source checkout. Output schema, rules and finding codes may change.
+> **Preview.** Shipped as a preview in `0.1.0-rc.3`; the project-level engine and the persistent-gap policy described below are unreleased (source checkout only). Output schema, rules and finding codes may change.
 
 Answers "will this change break my API consumers?" by scanning two committed revisions with the same scanner as `scan` and comparing route-level contracts. No OpenAPI, no model and no network; the service is never started or imported.
 
@@ -70,17 +79,19 @@ node packages/specgate/bin/specgate.mjs diff \
 | Classification | Codes |
 |---|---|
 | `breaking` | `route-removed`, `method-removed`, `path-param-added` (route shape changed), `required-request-field-added`, `request-field-became-required`, `request-field-type-changed`, `request-constraint-tightened`, `request-enum-value-removed`, `rejection-status-changed`, `response-status-changed`, `response-status-removed`, `response-field-removed`, `response-field-type-changed`, `auth-gate-added` |
-| `needs_review` | every `analysis-gap` (base or head); `path-param-renamed` (same route shape, different parameter name); a removal while head has gaps (route may be hidden, not removed); `route-now-matched-by-parameterized-route`; `route-contract-not-analyzable`; `unmodeled-behavior-changed` (handler code changed and its response shape/types or imported calls are not statically visible); `handler-dependency-changed`; `referenced-constant-changed`; `response-literal-value-changed`; `response-status-added`; `optional-request-field-constrained`; `unattributed-validation-changed`; `auth-gate-removed` (security, not a consumer break) |
+| `needs_review` | every new or changed `analysis-gap` (base or head); `path-param-renamed` (same route shape, different parameter name); a removal while head has gaps (route may be hidden, not removed); `route-now-matched-by-parameterized-route`; `route-contract-not-analyzable`; `unmodeled-behavior-changed` (handler code changed and its response shape/types or imported calls are not statically visible); `handler-dependency-changed`; `referenced-constant-changed`; `response-literal-value-changed`; `response-status-added`; `optional-request-field-constrained`; `unattributed-validation-changed`; `auth-gate-removed` (security, not a consumer break); `route-chain-changed` (middleware added/removed on an opaque route); `route-became-conditional` / `route-no-longer-conditional`; `trailing-middleware-changed`; `added-route-overlaps-parameterized-route` |
 | `non_breaking` | `route-added`, `method-added`, `response-field-added`, `request-constraint-relaxed`, `request-enum-value-added`, `request-field-became-optional`, `request-validation-removed` |
 
 "Required request field" means a body/header input guarded by a recognized `typeof`/length/enum/falsy check that rejects with a literal status. Response fields are compared only when the body is an object literal or a same-handler `const` object literal; field types are known for literals and for locals proven by a required `typeof` or enum check. `path-param-renamed` (for example `/users/:id` → `/users/:userId`) is `needs_review`, not `breaking`: raw URLs still match, but generated SDKs and OpenAPI consumers that address parameters by name may need updating. Adding a parameter segment or otherwise changing the route shape stays `breaking` (`path-param-added`) or is reported as a removal plus an addition.
+
+**Opaque routes and persistent gaps (unreleased).** For a route whose handler or middleware is outside the contract model, `diff` compares fingerprints instead of contracts: the chain's own code, the transitive dependency slice (referenced top-level symbols, the specific members used from imported scanned modules, module-load side effects) and the error/fall-through middleware after it. If any of these changed, the route gets `route-contract-not-analyzable` with reasons (`route-code-changed`, `dependency-changed`, `trailing-middleware-changed`, …); if none changed, nothing is reported for it. An unsupported construct whose code **and** dependency slice are byte-identical in both revisions is a *persistent gap*: it is listed under `coverage.persistentGaps` and does not by itself fail the check, because the change under review cannot have altered it. Any new, removed or changed gap is still an `analysis-gap` (`needs_review`). Removals are `breaking` only when the head revision has no new or changed gaps.
 
 Comment-only edits, formatting, declaration/registration reordering and handler renames do not produce findings: routes are matched by method and path, and handler evidence is a normalized AST hash (comments, positions and the function's own name removed). Literal values (tokens, enum members, response values) appear only as short hashes and are never printed.
 
 Output is JSON (`specgate.diff/1`, default) or `--format markdown`. JSON is sealed with a SHA-256 `fingerprint` over its canonical form. Findings are ordered by classification, method, path and code, so identical inputs produce byte-identical reports. Each report records both commits, both scan fingerprints and the exit-code meanings.
 
 - `0`: no `breaking` and no `needs_review` finding **within the supported static subset**. **This is not a compatibility guarantee.** Runtime behavior, data, external packages, unscanned files and anything the scanner cannot model are not covered.
-- `1`: at least one `breaking` or `needs_review` finding. Any analysis gap in either revision yields 1.
+- `1`: at least one `breaking` or `needs_review` finding. Any new, removed or changed analysis gap yields 1; persistent (byte-identical) gaps are listed in coverage.
 - `2`: unreadable input: unknown/unsafe ref, missing merge base, source scope missing from a revision, invalid arguments, unsafe path, resource limit or analysis failure. Arguments are not echoed.
 
 See [docs/CONSUMER_DIFF_CI.md](../../docs/CONSUMER_DIFF_CI.md) for a GitHub Actions example (documentation only) and [docs/research/consumer-break-mode-b.md](../../docs/research/consumer-break-mode-b.md) for limits and next steps. The optional `poc/agentic-triage` spike is unrelated to this verdict; no model is involved in `diff`.

@@ -1,0 +1,15 @@
+{
+  "description": "A literal GET /api/items/recent is added next to the existing GET /api/items/:itemId. URLs that the parameterized route served before now reach a different handler.",
+  "verdict": "needs_review",
+  "exitCode": 1,
+  "findings": [
+    {
+      "classification": "non_breaking",
+      "code": "route-added"
+    },
+    {
+      "classification": "needs_review",
+      "code": "added-route-overlaps-parameterized-route"
+    }
+  ]
+}

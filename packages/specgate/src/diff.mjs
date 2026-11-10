@@ -9,7 +9,6 @@
 //                 every analysis gap, and security-relevant loosening
 //   non_breaking  additive changes (new route/method/response field, relaxed input)
 // The absence of findings is never a compatibility guarantee.
-import { posix } from 'node:path';
 import { canonical, hash, seal, analyzeRepository } from './scan.mjs';
 import { validateScan } from './gate.mjs';
 import { resolveCommit, mergeBase } from './git-source.mjs';
@@ -55,7 +54,12 @@ const MESSAGES = {
  'handler-dependency-changed': 'A scanned module this handler imports (directly or transitively) changed; effects on the response are not statically visible.',
  'referenced-constant-changed': 'A top-level constant this handler references changed (value not echoed).',
  'unmodeled-behavior-changed': 'Handler code changed and part of its behavior is outside the static model (see reasons).',
- 'route-contract-not-analyzable': 'Route handler or middleware is outside the supported subset; its contract was not compared.',
+ 'route-contract-not-analyzable': 'Route handler or middleware is outside the supported contract subset and its code or dependencies changed (see reasons); the contract could not be compared.',
+ 'route-chain-changed': 'Middleware was added to or removed from this route (labels shown; effects such as authentication are not modeled).',
+ 'route-became-conditional': 'Route is now registered only under a runtime condition (e.g. environment); it may be absent in some deployments.',
+ 'route-no-longer-conditional': 'Route was conditionally registered and is now always registered.',
+ 'trailing-middleware-changed': 'Error-handling or fall-through middleware registered after this route changed; error responses may differ.',
+ 'added-route-overlaps-parameterized-route': 'New literal route matches URLs that an existing parameterized route served before (e.g. /items/feed vs /items/:id). Requests to that URL now reach a different handler.',
  'analysis-gap': 'Source the scanner cannot model. Routes or behavior may be hidden here.',
 };
 
@@ -82,20 +86,10 @@ function addsParams(basePath, headPath) {
  return i === b.length;
 }
 
-function depDigest(route, contract, facts) {
- // Transitive closure over relative imports of the handler's imported calls, within scanned files only.
- const seen = new Set(), queue = [], unresolved = [];
- const resolveSpec = (from, spec) => {
-  const base = posix.normalize(posix.join(posix.dirname(from), spec));
-  for (const candidate of [base, base + '.mjs', base + '.js', base + '/index.mjs', base + '/index.js']) if (facts[candidate]) return candidate;
-  return null;
- };
- for (const spec of contract.calls) if (spec.startsWith('.')) { const r = resolveSpec(route.file, spec); r ? queue.push(r) : unresolved.push(spec); }
- while (queue.length) {
-  const file = queue.shift(); if (seen.has(file)) continue; seen.add(file);
-  for (const spec of facts[file].imports) if (spec.startsWith('.')) { const r = resolveSpec(file, spec); r ? queue.push(r) : unresolved.push(spec); }
- }
- return { files: [...seen].sort(), digest: hash(canonical({ asts: [...seen].map(f => facts[f].astHash).sort(), unresolved: unresolved.sort() })) };
+// Dependency slice computed by the project engine: referenced top-level symbols,
+// imported module members (transitively) and module side effects, within scanned files.
+function depDigest(_route, contract) {
+ return { files: contract.depFiles ?? [], digest: contract.depEvidence };
 }
 
 function modelGaps(contract) {
@@ -184,35 +178,80 @@ function compareResponses(b, h, route, evidenceChanged, out) {
  }
 }
 
+// Dependencies changed for a chain element (same own code on both sides) whose
+// dependency slice differs. Added/removed elements are reported through the
+// contract/chain comparison instead.
+function dependencyChanged(b, h) {
+ if (!b.depByElement || !h.depByElement) return b.depEvidence !== h.depEvidence;
+ return Object.keys(b.depByElement).some(k => k in h.depByElement && b.depByElement[k] !== h.depByElement[k]);
+}
+
+function changedConstants(base, head, b, h) {
+ const values = (side, c) => Object.fromEntries((c.constRefs ?? []).map(r => [`${r.file}#${r.name}`, side.fileFacts[r.file]?.constants[r.name] ?? null]));
+ const bc = values(base, b), hc = values(head, h);
+ return [...new Set(Object.keys(bc).filter(k => k in hc && bc[k] !== hc[k]).map(k => k.split('#').pop()))].sort();
+}
+
 function compareRoute(br, hr, base, head, out) {
  const b = base.contracts[br.id], h = head.contracts[hr.id];
  const route = { ...hr, id: hr.id, method: hr.method, path: hr.path };
  const locations = { base: locOf(br), head: locOf(hr) };
  const local = [];
- if (!b || !h || !b.analyzable || !h.analyzable) {
-  local.push(finding('needs_review', 'route-contract-not-analyzable', route, { sides: [...(!b?.analyzable ? ['base'] : []), ...(!h?.analyzable ? ['head'] : [])] }));
+ if (b && h && b.conditional !== h.conditional) local.push(finding('needs_review', h.conditional ? 'route-became-conditional' : 'route-no-longer-conditional', route));
+ if (b && h && (!b.analyzable || !h.analyzable)) {
+  // Opaque contract: compare only whether anything that runs for this route changed.
+  const reasons = [];
+  if (b.evidence !== h.evidence) reasons.push('route-code-changed');
+  if (dependencyChanged(b, h)) reasons.push('dependency-changed');
+  if (b.trailingEvidence !== h.trailingEvidence) reasons.push('trailing-middleware-changed');
+  if (changedConstants(base, head, b, h).length) reasons.push('referenced-constant-changed');
+  if (b.analyzable !== h.analyzable) reasons.push('analyzability-changed');
+  if ((b.middleware?.length ?? 0) !== (h.middleware?.length ?? 0)) local.push(finding('needs_review', 'route-chain-changed', route, { before: b.middleware, after: h.middleware }));
+  if (reasons.length) local.push(finding('needs_review', 'route-contract-not-analyzable', route, { sides: [...(!b.analyzable ? ['base'] : []), ...(!h.analyzable ? ['head'] : [])], reasons, files: [...new Set([...(b.depFiles ?? []), ...(h.depFiles ?? [])])].sort() }));
+  for (const f of local) out.push({ ...f, locations });
+  return;
  }
+ if (!b || !h) local.push(finding('needs_review', 'route-contract-not-analyzable', route, { sides: [...(!b ? ['base'] : []), ...(!h ? ['head'] : [])] }));
  if (b && h) {
   if (br.auth === 'not_observed' && hr.auth === 'gate_observed') local.push(finding('breaking', 'auth-gate-added', route));
   if (br.auth === 'gate_observed' && hr.auth === 'not_observed') local.push(finding('needs_review', 'auth-gate-removed', route));
   const evidenceChanged = b.evidence !== h.evidence;
   compareChecks(b, h, route, local);
   compareResponses(b, h, route, evidenceChanged, local);
-  const bd = depDigest(br, b, base.fileFacts), hd = depDigest(hr, h, head.fileFacts);
-  if (bd.digest !== hd.digest) local.push(finding('needs_review', 'handler-dependency-changed', route, { files: [...new Set([...bd.files, ...hd.files])].sort() }));
-  const constants = (side, r, c) => Object.fromEntries(c.constRefs.map(n => [n, side.fileFacts[r.file]?.constants[n] ?? null]));
-  const bc = constants(base, br, b), hc = constants(head, hr, h);
-  const changedConstants = [...new Set([...Object.keys(bc), ...Object.keys(hc)])].filter(n => n in bc && n in hc && bc[n] !== hc[n]).sort();
-  if (changedConstants.length) local.push(finding('needs_review', 'referenced-constant-changed', route, { constants: changedConstants }));
+  const bd = depDigest(br, b), hd = depDigest(hr, h);
+  if (dependencyChanged(b, h)) local.push(finding('needs_review', 'handler-dependency-changed', route, { files: [...new Set([...bd.files, ...hd.files])].sort() }));
+  if (b.trailingEvidence !== h.trailingEvidence) local.push(finding('needs_review', 'trailing-middleware-changed', route));
+  const constantsChanged = changedConstants(base, head, b, h);
+  if (constantsChanged.length) local.push(finding('needs_review', 'referenced-constant-changed', route, { constants: constantsChanged }));
   const reasons = [...new Set([...modelGaps(b), ...modelGaps(h)])].sort();
   if (evidenceChanged && reasons.length && b.analyzable && h.analyzable) local.push(finding('needs_review', 'unmodeled-behavior-changed', route, { reasons }));
  }
  for (const f of local) out.push({ ...f, locations });
 }
 
-function gapFindings(base, head) {
+// A gap is persistent when the same unsupported code, with byte-identical code
+// and dependency slice, exists in both revisions: this change cannot have
+// altered what it does. Contract gaps (handler bodies outside the model) are
+// covered per route: a route whose code or dependencies changed is flagged.
+// Every other gap (new, changed, or removed) needs review.
+const gapKey = g => `${g.file ?? ''}\u0000${g.code}\u0000${g.evidence ?? ''}`;
+function partitionGaps(base, head) {
+ const count = list => { const m = new Map(); for (const g of list) m.set(gapKey(g), (m.get(gapKey(g)) ?? 0) + 1); return m; };
+ const inv = scan => scan.gaps.filter(g => g.scope !== 'contract');
+ const bc = count(inv(base.scan)), hc = count(inv(head.scan));
+ const isStable = g => Boolean(g.evidence) && (bc.get(gapKey(g)) ?? 0) === (hc.get(gapKey(g)) ?? 0);
+ const unstable = { base: inv(base.scan).filter(g => !isStable(g)), head: inv(head.scan).filter(g => !isStable(g)) };
+ const persistent = new Map();
+ for (const g of inv(head.scan).filter(isStable)) {
+  const k = `${g.file ?? ''}\u0000${g.code}`;
+  persistent.set(k, { file: g.file, gap: g.code, count: (persistent.get(k)?.count ?? 0) + 1 });
+ }
+ return { unstable, persistent: [...persistent.values()].sort((a, b) => (a.file ?? '') < (b.file ?? '') ? -1 : (a.file ?? '') > (b.file ?? '') ? 1 : a.gap < b.gap ? -1 : 1) };
+}
+
+function gapFindings(gaps) {
  const groups = new Map();
- for (const [side, scan] of [['base', base.scan], ['head', head.scan]]) for (const g of scan.gaps) {
+ for (const [side, list] of [['base', gaps.unstable.base], ['head', gaps.unstable.head]]) for (const g of list) {
   const key = `${g.file ?? ''}\u0000${g.code}`;
   if (!groups.has(key)) groups.set(key, { file: g.file, gap: g.code, lines: { base: [], head: [] } });
   if (g.line != null) groups.get(key).lines[side].push(g.line);
@@ -240,6 +279,7 @@ export function classifyChanges(base, head) {
  const firstById = routes => { const m = new Map(); for (const r of routes) if (!m.has(r.id)) m.set(r.id, r); return m; };
  const B = firstById(base.scan.routes), H = firstById(head.scan.routes);
  const out = [];
+ const gaps = partitionGaps(base, head);
  const removed = [...B.values()].filter(r => !H.has(r.id)).sort((a, b) => a.id < b.id ? -1 : 1);
  const added = new Map([...H.values()].filter(r => !B.has(r.id)).sort((a, b) => a.id < b.id ? -1 : 1).map(r => [r.id, r]));
  for (const [id, br] of B) if (H.has(id)) compareRoute(br, H.get(id), base, head, out);
@@ -265,14 +305,17 @@ export function classifyChanges(base, head) {
   const code = captured ? 'route-now-matched-by-parameterized-route' : pathStillExists ? 'method-removed' : 'route-removed';
   // If head has analysis gaps, the route may have moved somewhere the scanner cannot see
   // (e.g. an Express Router). Absence is then not provable, so it is review, not breaking.
-  const hidden = !captured && head.scan.gaps.length > 0;
+  const hidden = !captured && gaps.unstable.head.length > 0;
   out.push({ ...finding(captured || hidden ? 'needs_review' : 'breaking', code, br, hidden ? { notProvable: 'head-scan-has-analysis-gaps' } : {}), locations: { base: locOf(br), head: null } });
  }
  for (const hr of added.values()) {
   const pathExisted = [...B.values()].some(b => b.path === hr.path);
   out.push({ ...finding('non_breaking', pathExisted ? 'method-added' : 'route-added', hr), locations: { base: null, head: locOf(hr) } });
+  // Did an existing parameterized route (still present) serve this URL before?
+  const overlapped = [...B.values()].find(b => b.method === hr.method && b.path !== hr.path && H.has(b.id) && patternCaptures(b.path, hr.path));
+  if (overlapped) out.push({ ...finding('needs_review', 'added-route-overlaps-parameterized-route', hr, { overlaps: overlapped.path }), locations: { base: locOf(overlapped), head: locOf(hr) } });
  }
- out.push(...gapFindings(base, head));
+ out.push(...gapFindings(gaps));
  out.sort(compareFindings);
  const findings = out.map((f, i) => ({ id: `F${String(i + 1).padStart(3, '0')}`, ...f }));
  const count = c => findings.filter(f => f.classification === c).length;
@@ -293,7 +336,8 @@ export function classifyChanges(base, head) {
    routesCompared: matched.length,
    routesWithUnmodeledBehaviorInHead: unmodeled.length,
    changedFilesOutsideRouteEvidence: changedOutside,
-   note: 'Routes with unmodeled behavior are flagged only when their code changed. Files outside route evidence are listed, not classified.',
+   persistentGaps: gaps.persistent,
+   note: 'Routes with unmodeled behavior are flagged only when their code or dependency slice changed. Persistent gaps are unsupported code that is byte-identical, including its dependencies, in both revisions; they are listed, not classified. Files outside route evidence are listed, not classified.',
   },
  };
 }
@@ -336,6 +380,7 @@ function describe(f) {
  if (f.files) bits.push(`files: ${f.files.map(esc).join(', ')}`);
  if (f.sides && f.code !== 'analysis-gap') bits.push(`side: ${f.sides.join('+')}`);
  if (f.notProvable) bits.push(`not provable: ${esc(f.notProvable)}`);
+ if (f.overlaps) bits.push(`overlaps ${esc(f.overlaps)}`);
  return bits.join('; ');
 }
 function where(f) {
@@ -360,6 +405,7 @@ export function diffMarkdown(report) {
   lines.push('');
  }
  lines.push('## Coverage', '', `- Routes compared: ${report.coverage.routesCompared}; with behavior outside the static model (head): ${report.coverage.routesWithUnmodeledBehaviorInHead}`);
+ if (report.coverage.persistentGaps?.length) lines.push(`- Unchanged unsupported code (persistent gaps, not classified): ${report.coverage.persistentGaps.map(g => `${esc(g.file ?? '(scan)')} ${esc(g.gap)}×${g.count}`).join(', ')}`);
  if (report.coverage.changedFilesOutsideRouteEvidence.length) lines.push(`- Changed files not linked to any route: ${report.coverage.changedFilesOutsideRouteEvidence.map(esc).join(', ')}`);
  lines.push('', `Exit codes: 0 = ${report.exitCodes[0]} 1 = ${report.exitCodes[1]} 2 = ${report.exitCodes[2]}`, '', report.warning, '', `Fingerprint: ${report.fingerprint}`, '');
  return lines.join('\n');

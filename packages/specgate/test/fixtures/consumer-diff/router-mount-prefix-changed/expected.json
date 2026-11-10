@@ -1,0 +1,15 @@
+{
+  "description": "The mount prefix changes in the root router (/items -> /products). Every route under it is removed at its old full path.",
+  "verdict": "breaking",
+  "exitCode": 1,
+  "findings": [
+    {
+      "classification": "breaking",
+      "code": "route-removed"
+    },
+    {
+      "classification": "non_breaking",
+      "code": "route-added"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "description": "Same unsupported construct, but the module it reaches changes. The gap is no longer byte-identical including dependencies, so it is an analysis-gap (needs review), and the routes behind it are flagged too.",
+  "verdict": "needs_review",
+  "exitCode": 1,
+  "findings": [
+    {
+      "classification": "needs_review",
+      "code": "analysis-gap"
+    },
+    {
+      "classification": "needs_review",
+      "code": "route-contract-not-analyzable"
+    }
+  ]
+}

@@ -46,8 +46,9 @@ test('enforces byte and file limits before parsing', async t => {
  writeFileSync(join(root, 'src/second.js'), source);
  await assert.rejects(() => scan({ root, sources: ['src'], limits: { maxFiles: 1 } }), /limit/i);
 });
-test('reports unsupported TypeScript and parse errors without echoing source', async t => {
- const root = repo(t); writeFileSync(join(root, 'src/typed.ts'), 'const secret: string = "DO_NOT_LEAK";');
+test('reports unsupported TSX and parse errors without echoing source', async t => {
+ // Plain .ts is supported (types are stripped); TSX/JSX remain unsupported.
+ const root = repo(t); writeFileSync(join(root, 'src/typed.tsx'), 'const secret: string = "DO_NOT_LEAK";');
  writeFileSync(join(root, 'src/broken.js'), 'const secret = "DO_NOT_LEAK" !');
  const report = await scan({ root, sources: ['src'] }); assert.equal(report.complete, false);
  assert(report.gaps.some(g => g.code === 'unsupported-language')); assert(report.gaps.some(g => g.code === 'parse-error'));

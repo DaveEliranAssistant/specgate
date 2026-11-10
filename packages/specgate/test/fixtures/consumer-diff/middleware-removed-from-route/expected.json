@@ -1,0 +1,15 @@
+{
+  "description": "requireRole(...) is removed from DELETE /api/items/:itemId. Authentication effects are not modeled, so it is a chain change that needs review, never silently safe.",
+  "verdict": "needs_review",
+  "exitCode": 1,
+  "findings": [
+    {
+      "classification": "needs_review",
+      "code": "route-chain-changed"
+    },
+    {
+      "classification": "needs_review",
+      "code": "route-contract-not-analyzable"
+    }
+  ]
+}

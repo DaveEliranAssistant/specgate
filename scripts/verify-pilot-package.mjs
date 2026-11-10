@@ -156,6 +156,14 @@ const cases = [
     1,
   ],
   [
+    "unsupported-hidden-registration",
+    base
+      .replace("app.post(", "function register(){app.post(")
+      .replace(";app.get('/health'", "}register();app.get('/health'"),
+    "INCOMPLETE",
+    1,
+  ],
+  [
     "unsupported-dynamic",
     base +
       "const verb='get';app[verb]('/dynamic',(req,res)=>{res.status(200).json({ok:true});});",
@@ -219,16 +227,54 @@ for (const [name, source, verdict, exit] of cases) {
     assert.ok(
       native.findings.every((f) => f.assessment === "unverified-change"),
     );
-  if (name === "unsupported-async")
+  if (name === "unsupported-async") {
+    // The async inline handler is discovered (route still observed), but its
+    // contract is outside the model: an unknown analysis gap, not a removal.
+    assert.equal(native.coverage.observedRoutes, 2, name);
+    assert.ok(native.findings.every((f) => f.code !== "route-not-observed"));
+    assert.ok(
+      native.findings.some(
+        (f) =>
+          f.code === "analysis-gap" &&
+          f.assessment === "unknown" &&
+          f.affectedEndpoints.some(
+            (e) => e.method === "POST" && e.path === "/tickets",
+          ),
+      ),
+      name,
+    );
+    assert.ok(
+      native.coverage.unsupportedConstructs.some(
+        (u) => u.code === "unsupported-handler-kind-or-bindings",
+      ),
+    );
+  }
+  if (name === "unsupported-hidden-registration")
+    // Registration inside a function the scanner does not evaluate: the route
+    // is not observed, and that must never become a confirmed removal.
     assert.ok(
       native.findings.some(
         (f) => f.code === "route-not-observed" && f.assessment === "unknown",
       ),
+      name,
+    );
+  if (name === "unsupported-dynamic")
+    // app[verb](...) must be reported, never silently dropped from inventory.
+    assert.ok(
+      native.coverage.unsupportedConstructs.some(
+        (u) => u.code === "computed-method",
+      ),
+      name,
     );
   if (name === "added-unreviewed-route")
     assert.equal(native.coverage.routesWithoutReviewedScenario, 1);
-  if (name.startsWith("unsupported"))
-    assert.ok(native.coverage.unsupportedConstructs.length > 0);
+  if (name.startsWith("unsupported")) {
+    assert.ok(native.coverage.unsupportedConstructs.length > 0, name);
+    assert.ok(
+      native.findings.every((f) => f.assessment !== "confirmed-defect"),
+      name,
+    );
+  }
   receipts.push({
     name,
     verdict,

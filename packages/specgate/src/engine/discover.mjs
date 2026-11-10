@@ -206,7 +206,7 @@ function recordFunction(fn, exported, result, imports, handled) {
   });
 }
 
-function analyzeFunction(fn, file, source, imports, handled, unsupported) {
+export function analyzeFunction(fn, file, source, imports, handled, unsupported) {
   const info = {
     name: fn.id?.name ?? '(anonymous)',
     line: fn.loc.start.line,
@@ -654,7 +654,7 @@ function isNextCall(node) {
   return node.type === 'CallExpression' && node.callee.type === 'Identifier' && node.callee.name === 'next' && node.arguments.length === 0;
 }
 
-function parseRoutePath(path) {
+export function parseRoutePath(path) {
   if (!path.startsWith('/')) return null;
   const params = [];
   for (const segment of path.split('/').slice(1)) {
@@ -700,7 +700,7 @@ function snippet(source, node) {
   return (source.split('\n')[line - 1] ?? '').trim().slice(0, 180);
 }
 
-function walk(node, visit) {
+export function walk(node, visit) {
   if (!node || typeof node.type !== 'string') return;
   visit(node);
   for (const value of Object.values(node)) {
@@ -778,7 +778,7 @@ function responseShape(response, handler) {
   return { known: true, fields };
 }
 
-function routeContract(handler, middleware, middlewareResolved, constants) {
+export function routeContract(handler, middleware, middlewareResolved, constants) {
   const chain = [...middleware.filter(Boolean), ...(handler ? [handler] : [])];
   const checks = chain.flatMap((fn) => fn.validation).map((v) => ({
     in: v.kind === 'auth_header' ? 'header' : v.target?.in ?? 'unknown',
