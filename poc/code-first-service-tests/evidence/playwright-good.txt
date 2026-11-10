@@ -24,7 +24,7 @@ Running 21 tests using 1 worker
 [19/21] generated/api.spec.mjs:308:1 › tickets.update.invalid-status
 [20/21] generated/api.spec.mjs:323:1 › tickets.update.positive
 [21/21] generated/api.spec.mjs:345:1 › tickets.update.not-found
-  21 passed (1.4s)
+  21 passed (709ms)
 
-(node:64214) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(node:4275) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
 (Use `node --trace-warnings ...` to show where the warning was created)
