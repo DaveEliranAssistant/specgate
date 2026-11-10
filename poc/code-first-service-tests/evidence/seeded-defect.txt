@@ -21,7 +21,7 @@ Running 21 tests using 1 worker
       52 |     expect(typeof responseBody.id, "tickets.create.positive id type").toBe('string');
       53 |     expect(responseBody.id.length, "tickets.create.positive id length").toBeGreaterThan(0);
       54 |     expect(responseBody, "tickets.create.positive bodyMatch").toMatchObject({"title":"Printer jam","priority":"normal","body":"Paper stuck","status":"open"});
-        at /workspace/poc/code-first-service-tests/.tmp-proof/seeded-defect/generated/api.spec.mjs:51:65
+        at /Users/a/.hermes/state/mission-control-trigger/poc-real-service-20261110/repo/poc/code-first-service-tests/.tmp-proof/seeded-defect/generated/api.spec.mjs:51:65
 
     Error Context: .tmp-proof/seeded-defect/output/api-tickets-create-positive/error-context.md
 
@@ -47,7 +47,7 @@ Running 21 tests using 1 worker
       70 |     expect(responseBody, "tickets.create.accepted-empty-body bodyMatch").toMatchObject({"title":"Printer jam","priority":"low","body":"","status":"open"});
       71 |   }
       72 | });
-        at /workspace/poc/code-first-service-tests/.tmp-proof/seeded-defect/generated/api.spec.mjs:69:76
+        at /Users/a/.hermes/state/mission-control-trigger/poc-real-service-20261110/repo/poc/code-first-service-tests/.tmp-proof/seeded-defect/generated/api.spec.mjs:69:76
 
     Error Context: .tmp-proof/seeded-defect/output/api-tickets-create-accepted-empty-body/error-context.md
 
@@ -77,7 +77,7 @@ Running 21 tests using 1 worker
       145 |     expect(responseBody, "tickets.create.boundary-title-min bodyMatch").toMatchObject({"title":"T","status":"open"});
       146 |   }
       147 | });
-        at /workspace/poc/code-first-service-tests/.tmp-proof/seeded-defect/generated/api.spec.mjs:144:75
+        at /Users/a/.hermes/state/mission-control-trigger/poc-real-service-20261110/repo/poc/code-first-service-tests/.tmp-proof/seeded-defect/generated/api.spec.mjs:144:75
 
     Error Context: .tmp-proof/seeded-defect/output/api-tickets-create-boundary-title-min/error-context.md
 
@@ -104,7 +104,7 @@ Running 21 tests using 1 worker
       175 |     expect(responseBody, "tickets.create.boundary-title-max bodyMatch").toMatchObject({"title":"TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT","status":"open"});
       176 |   }
       177 | });
-        at /workspace/poc/code-first-service-tests/.tmp-proof/seeded-defect/generated/api.spec.mjs:174:75
+        at /Users/a/.hermes/state/mission-control-trigger/poc-real-service-20261110/repo/poc/code-first-service-tests/.tmp-proof/seeded-defect/generated/api.spec.mjs:174:75
 
     Error Context: .tmp-proof/seeded-defect/output/api-tickets-create-boundary-title-max/error-context.md
 
@@ -131,7 +131,7 @@ Running 21 tests using 1 worker
       205 |     expect(responseBody, "tickets.create.boundary-body-max bodyMatch").toMatchObject({"body":"BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB","status":"open"});
       206 |   }
       207 | });
-        at /workspace/poc/code-first-service-tests/.tmp-proof/seeded-defect/generated/api.spec.mjs:204:74
+        at /Users/a/.hermes/state/mission-control-trigger/poc-real-service-20261110/repo/poc/code-first-service-tests/.tmp-proof/seeded-defect/generated/api.spec.mjs:204:74
 
     Error Context: .tmp-proof/seeded-defect/output/api-tickets-create-boundary-body-max/error-context.md
 
@@ -160,7 +160,7 @@ Running 21 tests using 1 worker
       265 |     vars.ticketId = responseBody.id;
       266 |   }
       267 |   {
-        at /workspace/poc/code-first-service-tests/.tmp-proof/seeded-defect/generated/api.spec.mjs:264:63
+        at /Users/a/.hermes/state/mission-control-trigger/poc-real-service-20261110/repo/poc/code-first-service-tests/.tmp-proof/seeded-defect/generated/api.spec.mjs:264:63
 
     Error Context: .tmp-proof/seeded-defect/output/api-tickets-read-positive/error-context.md
 
@@ -189,7 +189,7 @@ Running 21 tests using 1 worker
       332 |     vars.ticketId = responseBody.id;
       333 |   }
       334 |   {
-        at /workspace/poc/code-first-service-tests/.tmp-proof/seeded-defect/generated/api.spec.mjs:331:65
+        at /Users/a/.hermes/state/mission-control-trigger/poc-real-service-20261110/repo/poc/code-first-service-tests/.tmp-proof/seeded-defect/generated/api.spec.mjs:331:65
 
     Error Context: .tmp-proof/seeded-defect/output/api-tickets-update-positive/error-context.md
 
@@ -207,21 +207,21 @@ Running 21 tests using 1 worker
     .tmp-proof/seeded-defect/generated/api.spec.mjs:196:1 › tickets.create.boundary-body-max ───────
     .tmp-proof/seeded-defect/generated/api.spec.mjs:256:1 › tickets.read.positive ──────────────────
     .tmp-proof/seeded-defect/generated/api.spec.mjs:323:1 › tickets.update.positive ────────────────
-  14 passed (3.9s)
+  14 passed (8.3s)
 
-(node:4307) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(node:64229) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
 (Use `node --trace-warnings ...` to show where the warning was created)
-(node:4319) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(node:64231) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
 (Use `node --trace-warnings ...` to show where the warning was created)
-(node:4331) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(node:64234) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
 (Use `node --trace-warnings ...` to show where the warning was created)
-(node:4343) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(node:64236) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
 (Use `node --trace-warnings ...` to show where the warning was created)
-(node:4355) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(node:64239) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
 (Use `node --trace-warnings ...` to show where the warning was created)
-(node:4367) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(node:64241) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
 (Use `node --trace-warnings ...` to show where the warning was created)
-(node:4379) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(node:64244) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
 (Use `node --trace-warnings ...` to show where the warning was created)
-(node:4391) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(node:64246) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
 (Use `node --trace-warnings ...` to show where the warning was created)

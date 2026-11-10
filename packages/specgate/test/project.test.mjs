@@ -176,6 +176,22 @@ module.exports = app;
  for (const code of ['unmounted-router', 'express-object-escapes', 'unresolved-middleware-or-router', 'unresolved-registration', 'no-routes']) assert(codes(report).includes(code), code);
 });
 
+test('computed registration methods (app[verb]) are inventory gaps, never silently dropped', async t => {
+ const report = await scan(repo(t, {
+  'src/app.mjs': `import express from 'express';
+export const app = express();
+const verb = 'get';
+const handlers = [() => {}];
+app.get('/health', (req, res) => { res.status(200).json({ ok: true }); });
+app[verb]('/dynamic', (req, res) => { res.status(200).json({ ok: true }); });
+handlers[0]('/not-express');
+`,
+ }));
+ assert.deepEqual(inventory(report), ['GET /health']);
+ assert.equal(report.complete, false);
+ assert.equal(report.gaps.filter(g => g.code === 'computed-method').length, 1, 'only the Express object is flagged');
+});
+
 test('without an app in scope, routers are listed with a mount-not-in-scope gap', async t => {
  const report = await scan(repo(t, { 'src/routes.js': CJS['src/routes/users.js'], 'src/controllers/users.js': CJS['src/controllers/users.js'] }));
  assert.deepEqual(inventory(report), ['GET /user', 'POST /users/login']);

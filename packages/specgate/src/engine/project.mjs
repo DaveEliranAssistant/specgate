@@ -617,10 +617,7 @@ class Project {
   walkWithParent(mod.ast, (node) => {
    if (node.type !== 'CallExpression' || this.registered.has(node) || this.handledCalls.has(node) || this.modeledCalls.has(node)) return;
    const callee = node.callee;
-   if (callee.type !== 'MemberExpression' || callee.computed || callee.property.type !== 'Identifier') return;
-   const method = callee.property.name;
-   if (!ROUTE_METHODS.has(method) && !UNMODELED_ROUTE_METHODS.has(method) && !['use', 'route', 'param'].includes(method)) return;
-   if (method === 'get' && node.arguments.length < 2) return;
+   if (callee.type !== 'MemberExpression') return;
    const root = rootIdentifier(callee.object) ?? { name: '' };
    const bound = root.name && mod.bindings.get(root.name);
    let expressValue = false;
@@ -628,6 +625,16 @@ class Project {
     const v = this.identifierValue(mod, root.name, null);
     expressValue = v.k === 'app' || v.k === 'router';
    }
+   // app[verb](...): the registration method is not statically known, so any
+   // route it adds is invisible to the inventory. Report it, never drop it.
+   if (callee.computed) {
+    if (expressValue || EXPRESSISH_NAMES.has(root.name)) this.gap(mod, node, 'computed-method', 'inventory');
+    return;
+   }
+   if (callee.property.type !== 'Identifier') return;
+   const method = callee.property.name;
+   if (!ROUTE_METHODS.has(method) && !UNMODELED_ROUTE_METHODS.has(method) && !['use', 'route', 'param'].includes(method)) return;
+   if (method === 'get' && node.arguments.length < 2) return;
    const first = staticString(node.arguments[0]);
    const routeLike = first !== null && first.startsWith('/') && node.arguments.length >= 2;
    if (expressValue || EXPRESSISH_NAMES.has(root.name) || routeLike) this.gap(mod, node, 'unresolved-registration', 'inventory');

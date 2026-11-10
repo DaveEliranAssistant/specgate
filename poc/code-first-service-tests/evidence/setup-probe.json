@@ -1,10 +1,10 @@
 {
   "note": "Real loopback connection failure. The error text is the runtime message, and the classification is the maintenance function output.",
   "probe": {
-    "port": 34869,
+    "port": 57162,
     "message": "fetch failed",
     "code": "ECONNREFUSED",
-    "cause": "connect ECONNREFUSED 127.0.0.1:34869"
+    "cause": "connect ECONNREFUSED 127.0.0.1:57162"
   },
   "classification": {
     "scenarioId": "probe.closed-port",

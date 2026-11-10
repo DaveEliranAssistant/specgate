@@ -1,10 +1,10 @@
 {
   "slug": "seeded-defect",
-  "sourceCommit": "14842f909058ba990a38bc1bd58519cf40561b45",
+  "sourceCommit": "18584448082908892396e36f85c7d7064ca7fbd1",
   "playwrightStatus": 1,
   "playwrightStats": {
-    "startTime": "2026-10-31T20:49:21.713Z",
-    "duration": 3888.7230000000004,
+    "startTime": "2026-11-10T11:23:00.669Z",
+    "duration": 8267.007,
     "expected": 14,
     "skipped": 0,
     "unexpected": 7,

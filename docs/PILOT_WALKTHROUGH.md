@@ -26,7 +26,7 @@ A trailing comment still yields source-hash review, not a confirmed regression; 
 
 ## 6. Unsupported means unknown
 
-Switch the POST handler to async, or add dynamic registration. The actual report is `INCOMPLETE`, native exit 1, with unsupported construct/file/line and unassessed scope. A previous route omitted by this partial discovery is `route-not-observed`/unknown, not a confirmed removal or success. Reviewed definitions are retained as not executed. Malformed review input instead makes the collector exit 2, not successful observation.
+Switch the POST handler to async, hide its registration inside a helper function, or add dynamic registration (`app[verb](...)`). The actual report is `INCOMPLETE`, native exit 1, with unsupported construct/file/line and unassessed scope. An async inline handler is still discovered (the route stays observed), but its contract is outside the model, so it is an `analysis-gap`/unknown. A previous route omitted by partial discovery, such as a registration inside an unevaluated function, is `route-not-observed`/unknown, not a confirmed removal or success. Reviewed definitions are retained as not executed. Malformed review input instead makes the collector exit 2, not successful observation.
 
 ## 7. Decide whether a real pilot can start
 

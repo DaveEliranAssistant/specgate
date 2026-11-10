@@ -29,7 +29,7 @@ Running 21 tests using 1 worker
       175 |     expect(responseBody, "tickets.create.boundary-title-max bodyMatch").toMatchObject({"title":"TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT","status":"open"});
       176 |   }
       177 | });
-        at /workspace/poc/code-first-service-tests/.tmp-proof/maintenance/generated/api.spec.mjs:174:75
+        at /Users/a/.hermes/state/mission-control-trigger/poc-real-service-20261110/repo/poc/code-first-service-tests/.tmp-proof/maintenance/generated/api.spec.mjs:174:75
 
     Error Context: .tmp-proof/maintenance/output/api-tickets-create-boundary-title-max/error-context.md
 
@@ -51,9 +51,9 @@ Running 21 tests using 1 worker
 [21/21] .tmp-proof/maintenance/generated/api.spec.mjs:345:1 › tickets.update.not-found
   1 failed
     .tmp-proof/maintenance/generated/api.spec.mjs:166:1 › tickets.create.boundary-title-max ────────
-  20 passed (1.2s)
+  20 passed (2.5s)
 
-(node:4423) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(node:64266) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
 (Use `node --trace-warnings ...` to show where the warning was created)
-(node:4435) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(node:64268) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
 (Use `node --trace-warnings ...` to show where the warning was created)
