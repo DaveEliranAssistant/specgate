@@ -1,0 +1,15 @@
+{
+  "description": "A route table unrolled with forEach (supported). The /accounts entry moves into a table that is only mounted under a runtime condition: the routes still exist but now depend on configuration.",
+  "verdict": "needs_review",
+  "exitCode": 1,
+  "findings": [
+    {
+      "classification": "needs_review",
+      "code": "route-became-conditional"
+    },
+    {
+      "classification": "needs_review",
+      "code": "analysis-gap"
+    }
+  ]
+}

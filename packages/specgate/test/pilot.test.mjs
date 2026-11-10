@@ -82,9 +82,21 @@ test("seeded status drift explains endpoint, both source locations and unchanged
 });
 test("unsupported handler is incomplete and missing observations cannot become confirmed removed routes", async (t) => {
   const { baseline, scan } = await fixture(t);
-  const r = await report({
+  // An async handler is discovered, but its contract is outside the model.
+  const opaque = await report({
     baseline,
     current: await scan(source.replace("(req,res)=>", "async (req,res)=>")),
+    scenarios: reviewed,
+  });
+  assert.equal(opaque.verdict, "INCOMPLETE");
+  assert.equal(opaque.exitCode, 1);
+  assert.ok(opaque.coverage.unsupportedConstructs.length);
+  assert.ok(opaque.findings.every((x) => x.assessment !== "confirmed-defect"));
+  // Registration hidden inside a function the scanner does not evaluate: the
+  // route is not observed, which must never become a confirmed removal.
+  const r = await report({
+    baseline,
+    current: await scan(source.replace("app.post(", "function register(){app.post(").replace(/;$/, "}register();")),
     scenarios: reviewed,
   });
   assert.equal(r.verdict, "INCOMPLETE");

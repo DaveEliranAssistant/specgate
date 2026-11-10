@@ -1,0 +1,15 @@
+{
+  "description": "TypeScript service (types stripped deterministically): Router().use chains, a default-exported Router().use('/api', api) and async inline handlers. Renaming /api/user is a breaking removal.",
+  "verdict": "breaking",
+  "exitCode": 1,
+  "findings": [
+    {
+      "classification": "breaking",
+      "code": "route-removed"
+    },
+    {
+      "classification": "non_breaking",
+      "code": "route-added"
+    }
+  ]
+}

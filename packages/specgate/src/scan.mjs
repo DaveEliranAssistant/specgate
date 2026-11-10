@@ -31,7 +31,7 @@ export async function analyzeRepository({ root, sources, revision = 'HEAD', limi
  const result = await new Promise((resolveResult, reject) => {
   const worker = new Worker(new URL('./parser-worker.mjs', import.meta.url), { workerData: withContracts ? { files, withContracts: true } : files, resourceLimits: { maxOldGenerationSizeMb: 128, stackSizeMb: 4 }, execArgv: [] });
   const timer = setTimeout(() => { worker.terminate(); reject(new Error('Parser time limit exceeded')); }, limits.timeoutMs);
-  worker.once('message', message => { clearTimeout(timer); worker.terminate(); message.error ? reject(new Error('Parser failed safely')) : resolveResult(message); });
+  worker.once('message', message => { clearTimeout(timer); worker.terminate(); message.error ? reject(new Error('Parser failed safely' + (message.detail ? ': ' + message.detail : ''))) : resolveResult(message); });
   worker.once('error', () => { clearTimeout(timer); reject(new Error('Parser resource limit or internal failure')); });
   worker.once('exit', () => { clearTimeout(timer); reject(new Error('Parser stopped before completion')); });
  });

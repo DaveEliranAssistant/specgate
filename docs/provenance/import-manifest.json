@@ -14,18 +14,18 @@
     },
     {
       "path": "packages/specgate/package.json",
-      "sha256": "58f6e314a623fe02549a2daa5cda6e6d0f081c26148ac7b91736e83623d4a8e8",
-      "reason": "Owner-approved MIT relicense on 2026-11-05: license metadata, notices and public-install docs; runtime unchanged."
+      "sha256": "6c04a3af0abb3fcd99d329f7bc315983acd3908088d36a68ffa67d35a7acb878",
+      "reason": "Owner-approved MIT relicense on 2026-11-05: license metadata, notices and public-install docs; runtime unchanged. 2026-11-10: version 0.1.0-rc.3 to match the release published from 751f18c (draft PR, pending owner review)."
     },
     {
       "path": "packages/specgate/README.md",
-      "sha256": "7dce74f993482244900859591496d3c6a5d34a0eecf603a39cf4601caf96303c",
-      "reason": "Owner-approved MIT relicense on 2026-11-05: license metadata, notices and public-install docs; runtime unchanged. 2026-11-06: dist-tag status line only. 2026-11-09: owner-approved Mode B preview (`specgate diff`, unreleased): opt-in per-route contract facts and Git ref resolution; scan/check output unchanged. 2026-11-10: owner decision: `path-param-renamed` (same route shape) is needs_review, not breaking."
+      "sha256": "0e69d3444ed6f23588b666327cfb4e41b58f6df7f05867f05b93077c947a47a7",
+      "reason": "Owner-approved MIT relicense on 2026-11-05: license metadata, notices and public-install docs; runtime unchanged. 2026-11-06: dist-tag status line only. 2026-11-09: owner-approved Mode B preview (`specgate diff`, unreleased): opt-in per-route contract facts and Git ref resolution; scan/check output unchanged. 2026-11-10: owner decision: `path-param-renamed` (same route shape) is needs_review, not breaking. 2026-11-10: real-service trial (draft PR, pending owner review): project-level Express engine (routers/mount prefixes, CommonJS, TypeScript via built-in type stripping, imported handlers, middleware chains), persistent-gap diff policy; see docs/research/real-service-trial.md."
     },
     {
       "path": "packages/specgate/package-lock.json",
-      "sha256": "6b9ff6f554ca6c44507a801be8148a6d95606bbb8a7d88780df964112005ea83",
-      "reason": "Owner-approved MIT relicense on 2026-11-05: license metadata, notices and public-install docs; runtime unchanged."
+      "sha256": "c9e1dbef1beed5b8780b832c6c11f0d271a65a40942ede4709f4124c018b16ed",
+      "reason": "Owner-approved MIT relicense on 2026-11-05: license metadata, notices and public-install docs; runtime unchanged. 2026-11-10: version 0.1.0-rc.3 to match the release published from 751f18c (draft PR, pending owner review)."
     },
     {
       "path": "packages/specgate/NOTICE.md",
@@ -49,8 +49,8 @@
     },
     {
       "path": "packages/specgate/test/cli.test.mjs",
-      "sha256": "785b5a114242fce6eba4e80d7cd001a2bc9af22a379cd35bfafce69d7cdfaac5",
-      "reason": "2026-11-08: isolate scan acquisition from inherited Git environment settings; verify repository provenance and deterministic CLI output."
+      "sha256": "95ba6657b027e3e08ef318b866f37f4446e433ecf0de8cadc6c1b0c0ff0f3bc3",
+      "reason": "2026-11-08: isolate scan acquisition from inherited Git environment settings; verify repository provenance and deterministic CLI output. 2026-11-10: real-service trial (draft PR, pending owner review): project-level Express engine (routers/mount prefixes, CommonJS, TypeScript via built-in type stripping, imported handlers, middleware chains), persistent-gap diff policy; see docs/research/real-service-trial.md."
     },
     {
       "path": "packages/specgate/test/git-source.test.mjs",
@@ -64,18 +64,23 @@
     },
     {
       "path": "packages/specgate/src/engine/discover.mjs",
-      "sha256": "3b31b31237147128017a3252efec3b1e8abb76abf6c33aea2c9e68d8a7d7d4f0",
-      "reason": "2026-11-09: owner-approved Mode B preview (`specgate diff`, unreleased): opt-in per-route contract facts and Git ref resolution; scan/check output unchanged."
+      "sha256": "21f2bd24971a89793f7f2f9b3bf12a3ec1f691a88dbaabb71193341e1115b9f8",
+      "reason": "2026-11-09: owner-approved Mode B preview (`specgate diff`, unreleased): opt-in per-route contract facts and Git ref resolution; scan/check output unchanged. 2026-11-10: real-service trial (draft PR, pending owner review): project-level Express engine (routers/mount prefixes, CommonJS, TypeScript via built-in type stripping, imported handlers, middleware chains), persistent-gap diff policy; see docs/research/real-service-trial.md."
     },
     {
       "path": "packages/specgate/src/parser-worker.mjs",
-      "sha256": "4c1fc24bb759939f99bccb864f4d06093298138c3d931809010bdfb527322817",
-      "reason": "2026-11-09: owner-approved Mode B preview (`specgate diff`, unreleased): opt-in per-route contract facts and Git ref resolution; scan/check output unchanged."
+      "sha256": "e9f19e05958b6a0bf3245de46f1a8bdcbb2ec970cbb62b2f687e3d01ad5fa054",
+      "reason": "2026-11-09: owner-approved Mode B preview (`specgate diff`, unreleased): opt-in per-route contract facts and Git ref resolution; scan/check output unchanged. 2026-11-10: real-service trial (draft PR, pending owner review): project-level Express engine (routers/mount prefixes, CommonJS, TypeScript via built-in type stripping, imported handlers, middleware chains), persistent-gap diff policy; see docs/research/real-service-trial.md."
     },
     {
       "path": "packages/specgate/src/scan.mjs",
-      "sha256": "1be41d97c6493e109a3b6220a1c12e6cb6cb37095e0e93d0986cc4526733591e",
-      "reason": "2026-11-09: owner-approved Mode B preview (`specgate diff`, unreleased): opt-in per-route contract facts and Git ref resolution; scan/check output unchanged."
+      "sha256": "9e2a1bbc988cda75bc68c65c5cdef70e2b6e826a730df1296895c4d6f2722708",
+      "reason": "2026-11-09: owner-approved Mode B preview (`specgate diff`, unreleased): opt-in per-route contract facts and Git ref resolution; scan/check output unchanged. 2026-11-10: real-service trial (draft PR, pending owner review): project-level Express engine (routers/mount prefixes, CommonJS, TypeScript via built-in type stripping, imported handlers, middleware chains), persistent-gap diff policy; see docs/research/real-service-trial.md."
+    },
+    {
+      "path": "packages/specgate/test/scan.test.mjs",
+      "sha256": "633b415a553a4b135a5fd5b95dd4af7104f6d7f3b214d17dbddcdeb879505e92",
+      "reason": "2026-11-10: real-service trial (draft PR, pending owner review): project-level Express engine (routers/mount prefixes, CommonJS, TypeScript via built-in type stripping, imported handlers, middleware chains), persistent-gap diff policy; see docs/research/real-service-trial.md."
     }
   ],
   "files": [

@@ -1,0 +1,15 @@
+{
+  "description": "A registration moves into a helper function the scanner does not evaluate. The route disappears from the inventory, but the removal is not provable: analysis-gap and a needs_review removal, never breaking or safe.",
+  "verdict": "needs_review",
+  "exitCode": 1,
+  "findings": [
+    {
+      "classification": "needs_review",
+      "code": "analysis-gap"
+    },
+    {
+      "classification": "needs_review",
+      "code": "route-removed"
+    }
+  ]
+}

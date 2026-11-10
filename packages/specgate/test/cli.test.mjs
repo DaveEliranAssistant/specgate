@@ -19,7 +19,7 @@ test('unknown arguments and missing values exit 2, never echo private values', t
  const p=cli('scan','--root',root,'--source','src',...args); assert.equal(p.status,2); assert(!p.stderr.includes('SUPER_PRIVATE')); }
 });
 test('partial scan and empty scan exit 1 instead of green', t => {
- const root=repo(t); writeFileSync(join(root,'src/x.ts'),'const x: string = "x";'); assert.equal(cli('scan','--root',root,'--source','src').status,1);
+ const root=repo(t); writeFileSync(join(root,'src/x.tsx'),'const x: string = "x";'); assert.equal(cli('scan','--root',root,'--source','src').status,1);
  writeFileSync(join(root,'empty.js'),'const x=1;'); assert.equal(cli('scan','--root',root,'--source','empty.js').status,1);
 });
 test('check passes identical snapshots and detects removals without changing baseline', t => {

@@ -1,5 +1,7 @@
 # Mode B: base-vs-head consumer-break check — limits and next step
 
+> **Update 2026-11-10 (unreleased branch):** limits 1 and 7 and next step 1 below are addressed by the project-level engine (routers and mount prefixes, CommonJS, TypeScript, imported handlers, middleware chains) and the persistent-gap policy. See [real-service-trial.md](real-service-trial.md) for the trial on two public Express services and what remains.
+
 Status: preview, unreleased. Implemented in `packages/specgate/src/diff.mjs` (`specgate diff`). Approved by the owner on 2026-11-09.
 
 ## What it does

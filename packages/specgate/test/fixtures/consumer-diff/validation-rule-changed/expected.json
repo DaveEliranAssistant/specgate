@@ -1,0 +1,11 @@
+{
+  "description": "A validation schema in an imported rules module is tightened (middleware factory argument). The route using that rule needs review.",
+  "verdict": "needs_review",
+  "exitCode": 1,
+  "findings": [
+    {
+      "classification": "needs_review",
+      "code": "route-contract-not-analyzable"
+    }
+  ]
+}
