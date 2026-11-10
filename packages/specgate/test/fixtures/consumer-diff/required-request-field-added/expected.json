@@ -1,0 +1,11 @@
+{
+  "description": "POST /tickets now requires body.assignee.",
+  "verdict": "breaking",
+  "exitCode": 1,
+  "findings": [
+    {
+      "classification": "breaking",
+      "code": "required-request-field-added"
+    }
+  ]
+}

@@ -55,6 +55,7 @@ export function discoverSource(file, source) {
     return empty;
   }
 
+  empty.astHash = astHash(ast);
   const handled = new WeakSet();
   const functions = new Map();
   const imports = new Map();
@@ -121,6 +122,7 @@ export function discoverSource(file, source) {
       terminalResponses: handler?.terminalResponses ?? [],
       dependencies: handler?.calls ?? [],
       handlerUnsupported: handler ? handler.unsupportedCount : null,
+      contract: routeContract(handler, middleware, unresolved.length === 0, empty.constants),
     });
   }
 
@@ -215,6 +217,8 @@ function analyzeFunction(fn, file, source, imports, handled, unsupported) {
     authGate: false,
     callsNext: false,
     unsupportedCount: 0,
+    astHash: astHash({ ...fn, id: null }),
+    identifiers: referencedIdentifiers(fn.body),
   };
   if (!fn.id || fn.params.some((param) => param.type !== 'Identifier')) {
     unsupported.push(item(file, source, fn, 'destructured-parameter', info.name));
@@ -311,6 +315,7 @@ function parseIf(statement, bindings, ctx) {
   if (!response || response.bodyKind !== 'literal') return false;
   ctx.info.validation.push({
     ...condition,
+    target: targetOf(bindings, condition.local),
     optional: condition.optional === true,
     file: ctx.file,
     line: statement.loc.start.line,
@@ -703,4 +708,97 @@ function walk(node, visit) {
       for (const child of value) walk(child, visit);
     } else walk(value, visit);
   }
+}
+
+// ---------------------------------------------------------------------------
+// Consumer-contract facts (used only by `specgate diff`). These are derived from
+// the same analyzed subset as the scan; nothing here widens what is "supported".
+// Literal values are reduced to short hashes so reports do not echo constants.
+
+const AST_DROP = new Set(['loc', 'start', 'end', 'range', 'raw']);
+
+function normalizeAst(node) {
+  if (Array.isArray(node)) return node.map(normalizeAst);
+  if (typeof node === 'bigint') return `bigint:${node}`;
+  if (node instanceof RegExp) return `regexp:${node}`;
+  if (!node || typeof node !== 'object') return node;
+  const out = {};
+  for (const key of Object.keys(node).sort()) if (!AST_DROP.has(key)) out[key] = normalizeAst(node[key]);
+  return out;
+}
+
+export function astHash(node) {
+  return sha256(JSON.stringify(normalizeAst(node)));
+}
+
+export function valueHash(value) {
+  return sha256(JSON.stringify(typeof value === 'bigint' ? `bigint:${value}` : value ?? null)).slice(0, 16);
+}
+
+function referencedIdentifiers(node) {
+  const names = new Set();
+  walk(node, (child) => { if (child.type === 'Identifier') names.add(child.name); });
+  return names;
+}
+
+function targetOf(bindings, local) {
+  const binding = local ? bindings.get(local) : null;
+  if (binding?.field) return { in: 'body', name: binding.field };
+  if (binding?.param) return { in: 'param', name: binding.param };
+  if (binding?.header) return { in: 'header', name: binding.header };
+  return { in: 'unknown', name: null };
+}
+
+function literalType(value) {
+  if (value === null) return 'null';
+  return typeof value;
+}
+
+function responseShape(response, handler) {
+  if (response.bodyKind === 'literal') {
+    const fields = {};
+    for (const [name, value] of Object.entries(response.literal)) fields[name] = { type: literalType(value), valueHash: valueHash(value) };
+    return { known: true, fields };
+  }
+  const dto = handler.dto.find((entry) => entry.local === response.name);
+  if (!dto) return { known: false, fields: {} };
+  // A required check that passed proves the local's type: typeof checks directly,
+  // enum checks because every accepted member is a string literal.
+  const typed = new Map(handler.validation
+    .filter((v) => !v.optional && v.local && ((v.kind === 'type' && v.expectedType) || v.kind === 'enum'))
+    .map((v) => [v.local, v.kind === 'enum' ? 'string' : v.expectedType]));
+  const fields = {};
+  for (const key of dto.keys) {
+    if (key.kind === 'literal') fields[key.name] = { type: literalType(key.literal), valueHash: valueHash(key.literal) };
+    else {
+      const local = key.kind === 'shorthand' ? key.name : key.kind === 'identifier' ? key.identifier : null;
+      fields[key.name] = { type: (local && typed.get(local)) || 'unknown', valueHash: null };
+    }
+  }
+  return { known: true, fields };
+}
+
+function routeContract(handler, middleware, middlewareResolved, constants) {
+  const chain = [...middleware.filter(Boolean), ...(handler ? [handler] : [])];
+  const checks = chain.flatMap((fn) => fn.validation).map((v) => ({
+    in: v.kind === 'auth_header' ? 'header' : v.target?.in ?? 'unknown',
+    name: v.kind === 'auth_header' ? 'authorization' : v.target?.name ?? null,
+    kind: v.kind,
+    optional: v.optional === true,
+    expectedType: v.expectedType ?? null,
+    minLength: v.minLength ?? null,
+    maxLength: v.maxLength ?? null,
+    enumHashes: Array.isArray(v.values) ? [...new Set(v.values.map(valueHash))].sort() : null,
+    rejectStatus: v.observedRejection?.status ?? null,
+  }));
+  const constantNames = new Set(constants.map((c) => c.name));
+  const constRefs = [...new Set(chain.flatMap((fn) => [...fn.identifiers].filter((n) => constantNames.has(n))))].sort();
+  return {
+    analyzable: Boolean(handler) && middlewareResolved && chain.every((fn) => fn.unsupportedCount === 0),
+    checks,
+    responses: handler ? handler.terminalResponses.map((r) => ({ status: r.status, ...responseShape(r, handler) })) : [],
+    calls: [...new Set(chain.flatMap((fn) => fn.calls.map((c) => c.module)))].sort(),
+    evidence: sha256(JSON.stringify(chain.map((fn) => fn.astHash))),
+    constRefs,
+  };
 }

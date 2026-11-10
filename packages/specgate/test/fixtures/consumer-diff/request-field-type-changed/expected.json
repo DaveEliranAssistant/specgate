@@ -1,0 +1,11 @@
+{
+  "description": "Optional body.note must now be a number instead of a string.",
+  "verdict": "breaking",
+  "exitCode": 1,
+  "findings": [
+    {
+      "classification": "breaking",
+      "code": "request-field-type-changed"
+    }
+  ]
+}

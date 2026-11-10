@@ -1,0 +1,15 @@
+{
+  "description": "GET /tickets/:id builds its body via an imported scanned module that changes. The module itself is outside the subset (pre-existing gap).",
+  "verdict": "needs_review",
+  "exitCode": 1,
+  "findings": [
+    {
+      "classification": "needs_review",
+      "code": "analysis-gap"
+    },
+    {
+      "classification": "needs_review",
+      "code": "handler-dependency-changed"
+    }
+  ]
+}

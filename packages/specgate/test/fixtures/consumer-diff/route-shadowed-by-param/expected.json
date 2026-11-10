@@ -1,0 +1,11 @@
+{
+  "description": "Literal GET /tickets/open is removed but /tickets/:id now captures that URL. Not provable either way.",
+  "verdict": "needs_review",
+  "exitCode": 1,
+  "findings": [
+    {
+      "classification": "needs_review",
+      "code": "route-now-matched-by-parameterized-route"
+    }
+  ]
+}

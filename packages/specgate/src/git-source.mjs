@@ -3,19 +3,41 @@ import { createHash } from 'node:crypto';
 import { extname, relative, resolve } from 'node:path';
 const SKIP=new Set(['node_modules','.git','dist','build','coverage','.next']);
 const EXTENSIONS=new Set(['.js','.mjs','.cjs','.jsx','.ts','.tsx']);
-export function loadGitSources(root,scopes,revision,limits){
- if(revision!=='HEAD'&&!/^(?:[a-f0-9]{40}|[a-f0-9]{64})$/.test(revision))throw new Error('Revision must be HEAD or an exact commit identifier');
- const deadline=Date.now()+limits.acquisitionTimeoutMs;
+const COMMIT=/^(?:[a-f0-9]{40}|[a-f0-9]{64})$/;
+function gitRunner(root,timeoutMs){
+ const deadline=Date.now()+timeoutMs;
  // A caller may launch the CLI from a Git hook or another checkout. Git's
  // environment overrides -C, so do not inherit repository, object, or config
  // selectors. Keep ordinary runtime settings (PATH, locale, etc.).
  const env=Object.fromEntries(Object.entries(process.env).filter(([key])=>!key.toUpperCase().startsWith('GIT_')));
  Object.assign(env,{GIT_TERMINAL_PROMPT:'0',GIT_OPTIONAL_LOCKS:'0'});
- const command=(args,maxBuffer=4194304)=>{
+ return (args,maxBuffer=4194304)=>{
   const remaining=deadline-Date.now();if(remaining<1)throw new Error('Git acquisition time limit exceeded');
   try {return execFileSync('git',['--no-replace-objects','--literal-pathspecs','-C',root,...args],{maxBuffer,timeout:Math.min(10000,remaining),stdio:['ignore','pipe','pipe'],env});}
   catch(error){if(error.code==='ETIMEDOUT'||Date.now()>=deadline)throw new Error('Git acquisition time limit exceeded');throw error;}
  };
+}
+// Ref names accepted by `diff`: branch/tag names, remote-tracking refs, HEAD~N, or
+// a full/abbreviated SHA. No option-like, range, path (`:`), reflog-time or
+// whitespace syntax. Resolution is local only; nothing is fetched.
+const REF=/^(?!-)(?!.*\.\.)(?!.*@\{)[A-Za-z0-9._\/~^+-]{1,200}$/;
+export function isSafeRef(ref){return typeof ref==='string'&&REF.test(ref)&&!ref.endsWith('/')&&!ref.endsWith('.lock');}
+export function resolveCommit(root,ref,{timeoutMs=10000}={}){
+ if(!isSafeRef(ref))throw new Error('Unsupported Git ref syntax');
+ const command=gitRunner(root,timeoutMs);
+ const commit=command(['rev-parse','--verify','--quiet','--end-of-options',ref+'^{commit}'],200).toString('ascii').trim();
+ if(!COMMIT.test(commit))throw new Error('Invalid resolved revision');
+ return commit;
+}
+export function mergeBase(root,left,right,{timeoutMs=10000}={}){
+ if(!COMMIT.test(left)||!COMMIT.test(right))throw new Error('Merge base requires exact commits');
+ const out=gitRunner(root,timeoutMs)(['merge-base','--end-of-options',left,right],400).toString('ascii').trim();
+ if(!COMMIT.test(out))throw new Error('No unique merge base');
+ return out;
+}
+export function loadGitSources(root,scopes,revision,limits){
+ if(revision!=='HEAD'&&!/^(?:[a-f0-9]{40}|[a-f0-9]{64})$/.test(revision))throw new Error('Revision must be HEAD or an exact commit identifier');
+ const command=gitRunner(root,limits.acquisitionTimeoutMs);
  const sourceCommit=command(['rev-parse','--verify',revision+'^{commit}'],200).toString('ascii').trim();
  if(!/^(?:[a-f0-9]{40}|[a-f0-9]{64})$/.test(sourceCommit))throw new Error('Invalid resolved revision');
  const selected=scopes.map(s=>relative(root,resolve(root,s)).split('\\').join('/')||'.');

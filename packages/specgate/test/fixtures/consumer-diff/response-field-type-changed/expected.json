@@ -1,0 +1,11 @@
+{
+  "description": "POST /tickets response field version changes from number to string.",
+  "verdict": "breaking",
+  "exitCode": 1,
+  "findings": [
+    {
+      "classification": "breaking",
+      "code": "response-field-type-changed"
+    }
+  ]
+}

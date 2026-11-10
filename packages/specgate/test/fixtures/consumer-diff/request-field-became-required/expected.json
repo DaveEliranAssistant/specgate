@@ -1,0 +1,11 @@
+{
+  "description": "Optional body.note becomes required.",
+  "verdict": "breaking",
+  "exitCode": 1,
+  "findings": [
+    {
+      "classification": "breaking",
+      "code": "request-field-became-required"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "description": "GET /health gains a :probe segment.",
+  "verdict": "breaking",
+  "exitCode": 1,
+  "findings": [
+    {
+      "classification": "breaking",
+      "code": "path-param-added"
+    }
+  ]
+}

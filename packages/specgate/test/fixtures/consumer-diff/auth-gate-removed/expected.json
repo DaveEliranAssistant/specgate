@@ -1,0 +1,11 @@
+{
+  "description": "DELETE /tickets/:id no longer goes through requireAuth. Not a consumer break; flagged for security review.",
+  "verdict": "needs_review",
+  "exitCode": 1,
+  "findings": [
+    {
+      "classification": "needs_review",
+      "code": "auth-gate-removed"
+    }
+  ]
+}

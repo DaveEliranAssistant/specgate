@@ -1,0 +1,11 @@
+{
+  "description": "body.priority no longer accepts one of its values.",
+  "verdict": "breaking",
+  "exitCode": 1,
+  "findings": [
+    {
+      "classification": "breaking",
+      "code": "request-enum-value-removed"
+    }
+  ]
+}

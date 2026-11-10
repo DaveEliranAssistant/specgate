@@ -1,0 +1,11 @@
+{
+  "description": "GET /tickets is deleted while POST /tickets remains.",
+  "verdict": "breaking",
+  "exitCode": 1,
+  "findings": [
+    {
+      "classification": "breaking",
+      "code": "method-removed"
+    }
+  ]
+}

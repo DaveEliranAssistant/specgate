@@ -1,0 +1,15 @@
+{
+  "description": "DELETE /tickets/:id moves to /tickets/:id/archive. The route shape changed, so this is not a parameter rename: DELETE on the old path is gone (breaking; GET /tickets/:id still exists, hence method-removed) and the new route is added.",
+  "verdict": "breaking",
+  "exitCode": 1,
+  "findings": [
+    {
+      "classification": "breaking",
+      "code": "method-removed"
+    },
+    {
+      "classification": "non_breaking",
+      "code": "route-added"
+    }
+  ]
+}

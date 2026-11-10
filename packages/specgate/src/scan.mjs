@@ -14,7 +14,12 @@ function sort(value) {
  return value;
 }
 export function seal(report) { return { ...report, fingerprint: hash(canonical(report)) }; }
-export async function scanRepository({ root, sources, revision = 'HEAD', limits: requested = {} } = {}) {
+export async function scanRepository(options = {}) {
+ return (await analyzeRepository(options)).scan;
+}
+// Shared by `scan` and `diff`. With withContracts, also returns per-route contract
+// facts and per-file facts; the sealed scan itself is identical either way.
+export async function analyzeRepository({ root, sources, revision = 'HEAD', limits: requested = {}, withContracts = false } = {}) {
  if (!Array.isArray(sources) || sources.length === 0 || sources.length > 100) throw new Error('Explicit source scopes are required (maximum 100)');
  const limits = { ...DEFAULT_LIMITS, ...requested };
  for (const [name, value] of Object.entries(limits)) if (!(name in DEFAULT_LIMITS) || !Number.isInteger(value) || value < 1 || value > DEFAULT_LIMITS[name]) throw new Error('Invalid resource limit');
@@ -24,11 +29,13 @@ export async function scanRepository({ root, sources, revision = 'HEAD', limits:
  for (const scope of scopes) if (typeof scope !== 'string' || !scope || isAbsolute(scope) || scope.includes('\\') || scope.split('/').some(s => s === '..' || SKIP.has(s)) || /[\u0000-\u001f\u007f]/.test(scope)) throw new Error('Unsafe source scope');
  const { files, sourceCommit } = loadGitSources(base, scopes, revision, limits);
  const result = await new Promise((resolveResult, reject) => {
-  const worker = new Worker(new URL('./parser-worker.mjs', import.meta.url), { workerData: files, resourceLimits: { maxOldGenerationSizeMb: 128, stackSizeMb: 4 }, execArgv: [] });
+  const worker = new Worker(new URL('./parser-worker.mjs', import.meta.url), { workerData: withContracts ? { files, withContracts: true } : files, resourceLimits: { maxOldGenerationSizeMb: 128, stackSizeMb: 4 }, execArgv: [] });
   const timer = setTimeout(() => { worker.terminate(); reject(new Error('Parser time limit exceeded')); }, limits.timeoutMs);
   worker.once('message', message => { clearTimeout(timer); worker.terminate(); message.error ? reject(new Error('Parser failed safely')) : resolveResult(message); });
   worker.once('error', () => { clearTimeout(timer); reject(new Error('Parser resource limit or internal failure')); });
   worker.once('exit', () => { clearTimeout(timer); reject(new Error('Parser stopped before completion')); });
  });
- return seal({ schemaVersion: 'specgate.scan/1', toolVersion: '0.1.0-rc.1', supportedSubset: 'express-literal-routes-v1', inputMode: 'git-revision', sourceCommit, scopes, files: files.map(f => ({ path: f.path, sha256: hash(f.source) })), ...result, warning: 'Committed source only. Static observations, not correctness assertions or a security audit. Complete means only the declared parser subset; excluded dependencies and unscanned files are not covered.' });
+ const scanResult = withContracts ? result.scan : result;
+ const scan = seal({ schemaVersion: 'specgate.scan/1', toolVersion: '0.1.0-rc.1', supportedSubset: 'express-literal-routes-v1', inputMode: 'git-revision', sourceCommit, scopes, files: files.map(f => ({ path: f.path, sha256: hash(f.source) })), ...scanResult, warning: 'Committed source only. Static observations, not correctness assertions or a security audit. Complete means only the declared parser subset; excluded dependencies and unscanned files are not covered.' });
+ return withContracts ? { scan, contracts: result.contracts, fileFacts: result.fileFacts } : { scan };
 }

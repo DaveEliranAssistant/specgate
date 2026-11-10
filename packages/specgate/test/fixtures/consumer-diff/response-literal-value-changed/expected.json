@@ -1,0 +1,11 @@
+{
+  "description": "GET /health returns ok: false instead of ok: true (same type).",
+  "verdict": "needs_review",
+  "exitCode": 1,
+  "findings": [
+    {
+      "classification": "needs_review",
+      "code": "response-literal-value-changed"
+    }
+  ]
+}

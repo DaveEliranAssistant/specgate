@@ -19,8 +19,8 @@
     },
     {
       "path": "packages/specgate/README.md",
-      "sha256": "55eff816a1a9cc889d117a3c667e38c8df5d8c72948106c1bb6110ca423f81c4",
-      "reason": "Owner-approved MIT relicense on 2026-11-05: license metadata, notices and public-install docs; runtime unchanged. 2026-11-06: dist-tag status line only."
+      "sha256": "7dce74f993482244900859591496d3c6a5d34a0eecf603a39cf4601caf96303c",
+      "reason": "Owner-approved MIT relicense on 2026-11-05: license metadata, notices and public-install docs; runtime unchanged. 2026-11-06: dist-tag status line only. 2026-11-09: owner-approved Mode B preview (`specgate diff`, unreleased): opt-in per-route contract facts and Git ref resolution; scan/check output unchanged. 2026-11-10: owner decision: `path-param-renamed` (same route shape) is needs_review, not breaking."
     },
     {
       "path": "packages/specgate/package-lock.json",
@@ -44,8 +44,8 @@
     },
     {
       "path": "packages/specgate/src/git-source.mjs",
-      "sha256": "35aee46f77f118bc6871bc4b10303204f7cd45f3909c99023ec6d5a2dfce59de",
-      "reason": "2026-11-08: isolate scan acquisition from inherited Git environment settings; verify repository provenance and deterministic CLI output."
+      "sha256": "30e3e59e58c75a6525b3996ffc3dbfa7f777f786c391c52fa43334d3aa13fa6b",
+      "reason": "2026-11-08: isolate scan acquisition from inherited Git environment settings; verify repository provenance and deterministic CLI output. 2026-11-09: owner-approved Mode B preview (`specgate diff`, unreleased): opt-in per-route contract facts and Git ref resolution; scan/check output unchanged."
     },
     {
       "path": "packages/specgate/test/cli.test.mjs",
@@ -56,6 +56,26 @@
       "path": "packages/specgate/test/git-source.test.mjs",
       "sha256": "c0cb7ad6b6db72a7d2519009d05f99e16bb518402aa1aea17643d87d5bc8658d",
       "reason": "2026-11-08: isolate scan acquisition from inherited Git environment settings; verify repository provenance and deterministic CLI output."
+    },
+    {
+      "path": "packages/specgate/src/cli.mjs",
+      "sha256": "5d22e3ccfe3aaaf29eef44d8ccd14af78f00f949ca550f59562b2bbc0581c7cc",
+      "reason": "2026-11-09: owner-approved Mode B preview (`specgate diff`, unreleased): opt-in per-route contract facts and Git ref resolution; scan/check output unchanged."
+    },
+    {
+      "path": "packages/specgate/src/engine/discover.mjs",
+      "sha256": "3b31b31237147128017a3252efec3b1e8abb76abf6c33aea2c9e68d8a7d7d4f0",
+      "reason": "2026-11-09: owner-approved Mode B preview (`specgate diff`, unreleased): opt-in per-route contract facts and Git ref resolution; scan/check output unchanged."
+    },
+    {
+      "path": "packages/specgate/src/parser-worker.mjs",
+      "sha256": "4c1fc24bb759939f99bccb864f4d06093298138c3d931809010bdfb527322817",
+      "reason": "2026-11-09: owner-approved Mode B preview (`specgate diff`, unreleased): opt-in per-route contract facts and Git ref resolution; scan/check output unchanged."
+    },
+    {
+      "path": "packages/specgate/src/scan.mjs",
+      "sha256": "1be41d97c6493e109a3b6220a1c12e6cb6cb37095e0e93d0986cc4526733591e",
+      "reason": "2026-11-09: owner-approved Mode B preview (`specgate diff`, unreleased): opt-in per-route contract facts and Git ref resolution; scan/check output unchanged."
     }
   ],
   "files": [

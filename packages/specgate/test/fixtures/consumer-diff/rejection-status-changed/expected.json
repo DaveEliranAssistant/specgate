@@ -1,0 +1,11 @@
+{
+  "description": "Invalid title is rejected with 422 instead of 400.",
+  "verdict": "breaking",
+  "exitCode": 1,
+  "findings": [
+    {
+      "classification": "breaking",
+      "code": "rejection-status-changed"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "description": "New route, new method, new response field, relaxed length and a new enum value. All additive.",
+  "verdict": "no_breaking_change_found_in_supported_scope",
+  "exitCode": 0,
+  "findings": [
+    {
+      "classification": "non_breaking",
+      "code": "method-added"
+    },
+    {
+      "classification": "non_breaking",
+      "code": "request-constraint-relaxed"
+    },
+    {
+      "classification": "non_breaking",
+      "code": "request-enum-value-added"
+    },
+    {
+      "classification": "non_breaking",
+      "code": "response-field-added"
+    },
+    {
+      "classification": "non_breaking",
+      "code": "route-added"
+    }
+  ]
+}

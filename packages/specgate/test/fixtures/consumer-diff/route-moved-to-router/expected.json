@@ -1,0 +1,15 @@
+{
+  "description": "GET /health moves into an Express Router (unsupported). Removal is not provable, so it is needs_review, not breaking.",
+  "verdict": "needs_review",
+  "exitCode": 1,
+  "findings": [
+    {
+      "classification": "needs_review",
+      "code": "analysis-gap"
+    },
+    {
+      "classification": "needs_review",
+      "code": "route-removed"
+    }
+  ]
+}
