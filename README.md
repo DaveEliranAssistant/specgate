@@ -6,10 +6,10 @@ This public repository is the dedicated SpecGate product home. It replaces the Q
 
 ## Status
 
-- **Available:** MIT-licensed CLI release candidate `@qe-atlas/specgate@0.1.0-rc.3`, published on npm with dist-tags `latest` and `next`; bounded committed-source scanning, baseline checks, reviewed-scenario compilation and executable synthetic proofs.
+- **Available:** MIT-licensed CLI release candidate `@qe-atlas/specgate` on npm (dist-tags `latest` and `next`); bounded committed-source scanning, baseline checks, the `specgate diff` consumer-break preview, reviewed-scenario compilation and executable synthetic proofs. `0.1.0-rc.3` is the current published version; this source is `0.1.0-rc.4`, which adds the project-level Express engine (Router mounts and prefixes, CommonJS, TypeScript, imported handlers) validated in the [real-service trial](docs/research/real-service-trial.md). Publishing rc.4 is a separate owner step.
 - **Public landing:** <https://specgate-qe-atlas.vercel.app> is live with the guided observe-only pilot, supported-scope fit check, recorded static CLI examples, offline quickstart, pilot brief and consented waitlist. See [how it is built and verified](onboarding/README.md).
-- **Unreleased preview (source checkout only, not in the npm package):** `specgate diff --base REF --head REF`, a static base-vs-head consumer-break check for the supported Express subset. See [the package README](packages/specgate/README.md#consumer-break-check-preview-unreleased), the [CI example](docs/CONSUMER_DIFF_CI.md) and [its limits](docs/research/consumer-break-mode-b.md). Exit 0 is not a compatibility guarantee.
-- **Not in this build:** authenticated private-release CI installation, code-versus-OpenAPI comparison and real-service qualification.
+- **Preview, in the npm package:** `specgate diff --base REF --head REF`, a static base-vs-head consumer-break check for the supported Express subset. See [the package README](packages/specgate/README.md#consumer-break-check-specgate-diff-preview), the [CI example](docs/CONSUMER_DIFF_CI.md) and [its limits](docs/research/consumer-break-mode-b.md). Exit 0 is not a compatibility guarantee.
+- **Not in this build:** authenticated private-release CI installation, code-versus-OpenAPI comparison, contract checking on real handlers (request validation, response shapes and auth are modeled only for a narrow synchronous handler grammar; real async/controller handlers are fingerprinted and reported for review instead) and production real-service qualification.
 - **Not production approved:** begin with a controlled, observe-only pilot. Passing the synthetic suite is not customer-service qualification. SpecGate makes no full compatibility or production qualification claim.
 
 **[Give feedback](https://github.com/DaveEliranAssistant/specgate/discussions/categories/ideas)** in the Ideas category of GitHub Discussions.
@@ -57,9 +57,9 @@ node packages/specgate/bin/specgate.mjs generate \
 
 Only committed source is scanned; `HEAD` is pinned once. Baselines and scenarios must come from trusted, reviewed revisions, not be silently accepted from an untrusted pull request. Exit codes: `0` declared-subset success, `1` findings or incomplete coverage requiring review, `2` input/tool failure.
 
-The supported adapter is a constrained JavaScript/Express literal-route subset, not all JavaScript, TypeScript or frameworks. Unsupported constructs are reported as non-green gaps. Independently reviewed requirements define expected behavior; code changes do not automatically rewrite assertions.
+The supported adapter is a static, project-level model of Express: JavaScript ESM and CommonJS, TypeScript (`.ts/.mts/.cts`), `express.Router()` mounts with prefixes across files, and handlers imported from other scanned files. It is not all JavaScript or other frameworks, and contract checking does not yet cover real-world handlers (see the [real-service trial](docs/research/real-service-trial.md)). Unsupported constructs are reported as non-green gaps. Independently reviewed requirements define expected behavior; code changes do not automatically rewrite assertions.
 
-See the [package guide](packages/specgate/README.md), [security model](packages/specgate/SECURITY.md) and [provenance](NOTICE.md). SpecGate is [MIT licensed](LICENSE). `@qe-atlas/specgate@0.1.0-rc.3` is published on npm with dist-tags `latest` and `next`. The source is public at <https://github.com/DaveEliranAssistant/specgate>.
+See the [package guide](packages/specgate/README.md), [security model](packages/specgate/SECURITY.md) and [provenance](NOTICE.md). SpecGate is [MIT licensed](LICENSE). `@qe-atlas/specgate@0.1.0-rc.3` is the current npm release (dist-tags `latest` and `next`); this source is `0.1.0-rc.4`. The source is public at <https://github.com/DaveEliranAssistant/specgate>.
 
 ## Vercel and waitlist
 

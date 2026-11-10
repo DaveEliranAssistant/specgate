@@ -1,6 +1,6 @@
 # Customer onboarding preview
 
-A static guided-pilot experience for the EXISTING scan/check candidate, published on npm as `@qe-atlas/specgate@0.1.0-rc.2`. It is not a hosted signup or a claim that unreleased API-compatibility modes work.
+A static guided-pilot experience for the EXISTING scan/check candidate, published on npm as `@qe-atlas/specgate@0.1.0-rc.4`. It is not a hosted signup or a claim that unreleased API-compatibility modes work.
 
 ## Build and preview
 

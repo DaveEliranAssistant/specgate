@@ -14,18 +14,18 @@
     },
     {
       "path": "packages/specgate/package.json",
-      "sha256": "6c04a3af0abb3fcd99d329f7bc315983acd3908088d36a68ffa67d35a7acb878",
-      "reason": "Owner-approved MIT relicense on 2026-11-05: license metadata, notices and public-install docs; runtime unchanged. 2026-11-10: version 0.1.0-rc.3 to match the release published from 751f18c (draft PR, pending owner review)."
+      "sha256": "fa1063bac6b212909af07cf8a911799836ea173f93a6ccdae4fc587ef7c7391f",
+      "reason": "Owner-approved MIT relicense on 2026-11-05: license metadata, notices and public-install docs; runtime unchanged. 2026-11-10: version 0.1.0-rc.3 to match the release published from 751f18c (draft PR, pending owner review). 2026-11-10: version 0.1.0-rc.4 (release prep, draft PR, pending owner review; not published)."
     },
     {
       "path": "packages/specgate/README.md",
-      "sha256": "0e69d3444ed6f23588b666327cfb4e41b58f6df7f05867f05b93077c947a47a7",
-      "reason": "Owner-approved MIT relicense on 2026-11-05: license metadata, notices and public-install docs; runtime unchanged. 2026-11-06: dist-tag status line only. 2026-11-09: owner-approved Mode B preview (`specgate diff`, unreleased): opt-in per-route contract facts and Git ref resolution; scan/check output unchanged. 2026-11-10: owner decision: `path-param-renamed` (same route shape) is needs_review, not breaking. 2026-11-10: real-service trial (draft PR, pending owner review): project-level Express engine (routers/mount prefixes, CommonJS, TypeScript via built-in type stripping, imported handlers, middleware chains), persistent-gap diff policy; see docs/research/real-service-trial.md."
+      "sha256": "2651bd75187c93fd0cdfbabcb0b362cdcae64e08f8c57eba20f611a3bdf846f8",
+      "reason": "Owner-approved MIT relicense on 2026-11-05: license metadata, notices and public-install docs; runtime unchanged. 2026-11-06: dist-tag status line only. 2026-11-09: owner-approved Mode B preview (`specgate diff`, unreleased): opt-in per-route contract facts and Git ref resolution; scan/check output unchanged. 2026-11-10: owner decision: `path-param-renamed` (same route shape) is needs_review, not breaking. 2026-11-10: real-service trial (draft PR, pending owner review): project-level Express engine (routers/mount prefixes, CommonJS, TypeScript via built-in type stripping, imported handlers, middleware chains), persistent-gap diff policy; see docs/research/real-service-trial.md. 2026-11-10: 0.1.0-rc.4 release notes: Router mounts/prefixes, CommonJS, TypeScript, imported handlers; contract checking does not yet cover real handlers; `specgate diff` ships in the package (draft PR, pending owner review)."
     },
     {
       "path": "packages/specgate/package-lock.json",
-      "sha256": "c9e1dbef1beed5b8780b832c6c11f0d271a65a40942ede4709f4124c018b16ed",
-      "reason": "Owner-approved MIT relicense on 2026-11-05: license metadata, notices and public-install docs; runtime unchanged. 2026-11-10: version 0.1.0-rc.3 to match the release published from 751f18c (draft PR, pending owner review)."
+      "sha256": "a520c10ff5a8447f2c72945d47529ae635738467743a99026972df16aa8f1621",
+      "reason": "Owner-approved MIT relicense on 2026-11-05: license metadata, notices and public-install docs; runtime unchanged. 2026-11-10: version 0.1.0-rc.3 to match the release published from 751f18c (draft PR, pending owner review). 2026-11-10: version 0.1.0-rc.4 (release prep, draft PR, pending owner review; not published)."
     },
     {
       "path": "packages/specgate/NOTICE.md",
@@ -59,8 +59,8 @@
     },
     {
       "path": "packages/specgate/src/cli.mjs",
-      "sha256": "5d22e3ccfe3aaaf29eef44d8ccd14af78f00f949ca550f59562b2bbc0581c7cc",
-      "reason": "2026-11-09: owner-approved Mode B preview (`specgate diff`, unreleased): opt-in per-route contract facts and Git ref resolution; scan/check output unchanged."
+      "sha256": "95d31b21421f263868faffcbe87a6364a9f60d915fd990ca3ed862ff17d99d25",
+      "reason": "2026-11-09: owner-approved Mode B preview (`specgate diff`, unreleased): opt-in per-route contract facts and Git ref resolution; scan/check output unchanged. 2026-11-10: `--help`/`--version` read the version from package.json instead of a hardcoded 0.1.0-rc.1; scan/check/diff output unchanged (draft PR, pending owner review)."
     },
     {
       "path": "packages/specgate/src/engine/discover.mjs",
