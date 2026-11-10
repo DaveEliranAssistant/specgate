@@ -1,6 +1,6 @@
 export function assessFit(input={}){
  const reasons=[];
- if(input.framework!=='literal')reasons.push('Use JavaScript ESM with literal app routes. Router mounts, TypeScript and other frameworks need unsupported-coverage review.');
+ if(!['literal','router','typescript'].includes(input.framework))reasons.push('Use Express with JavaScript (ESM or CommonJS) or TypeScript. Other frameworks, class/decorator controllers and TSX need unsupported-coverage review.');
  if(input.committed!=='yes')reasons.push('Commit the intended source first. Uncommitted and untracked files are not scanned.');
  if(!['22','24'].includes(input.node))reasons.push('Use qualified Node 22 or 24, plus Git and npm.');
  if(!['linux','macos'].includes(input.platform))reasons.push('Use Linux or macOS. Windows is not qualified.');
@@ -22,7 +22,7 @@ if(typeof document!=='undefined'){
   const example=data.examples.find(item=>item.id===id);
   document.getElementById('example-state').textContent=example.exitCode===0?'DECLARED SUBSET ANALYZED':'REVIEW REQUIRED';
   document.getElementById('example-state').dataset.state=example.exitCode===0?'ready':'review';
-  const descriptions={scan:'The scanner found GET /health in committed source. Exit 0 covers the declared subset; it is not a compatibility guarantee.',change:'The response literal changed from true to false. Existing check reports source-changed, not a proven consumer break. Exit 1 means human review.',unsupported:'An async handler cannot be resolved by this release candidate. Coverage is incomplete. Exit 1 means review—not PASS.'};
+  const descriptions={scan:'The scanner found GET /health in committed source. Exit 0 covers the declared subset; it is not a compatibility guarantee.',change:'The response literal changed from true to false. Existing check reports source-changed, not a proven consumer break. Exit 1 means human review.',unsupported:'Recorded with rc.2, where this async handler could not be resolved. Since rc.4 such routes are inventoried, but their contract is still not checked. Coverage is incomplete. Exit 1 means review—not PASS.'};
   document.getElementById('example-explanation').textContent=descriptions[id];
   document.getElementById('example-source').textContent=example.source;
   document.getElementById('example-report').textContent=JSON.stringify(example.report,null,2);

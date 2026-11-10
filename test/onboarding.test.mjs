@@ -16,7 +16,8 @@ test('fit check distinguishes supported, unsupported and uncommitted source',asy
  const {assessFit}=await import('../onboarding/app.mjs');
  assert.equal(assessFit({framework:'literal',committed:'yes',node:'22',platform:'linux'}).ready,true);
  assert.equal(assessFit({framework:'literal',committed:'yes',node:'24',platform:'macos'}).ready,true);
- for(const changes of [{framework:'router'},{framework:'typescript'},{node:'20'},{platform:'windows'},{committed:'no'},{}]){
+ for(const framework of ['router','typescript'])assert.equal(assessFit({framework,committed:'yes',node:'22',platform:'linux'}).ready,true);
+ for(const changes of [{framework:'other'},{framework:''},{node:'20'},{platform:'windows'},{committed:'no'},{}]){
   const input=Object.keys(changes).length?{framework:'literal',committed:'yes',node:'22',platform:'linux',...changes}:{};
   const result=assessFit(input);assert.equal(result.ready,false);assert.ok(result.reasons.length>0);
  }
@@ -31,7 +32,7 @@ test('build exports only the onboarding allowlist and works without external scr
   const html=readFileSync(join(output,'index.html'),'utf8');
   assert.match(html,/Guided pilot/);assert.match(html,/not.*compatibility guarantee/i);assert.match(html,/recorded/i);
   assert.ok(!html.includes('<!-- ONBOARDING_'));assert.ok(!/<script[^>]+src=/i.test(html));assert.ok(!/type=["']file/i.test(html));
-  assert.match(html,/<form id="waitlist-form" novalidate hidden>/);assert.match(html,/The waitlist is temporarily unavailable/);assert.ok(!/DATABASE_URL|postgres:/i.test(html));assert.equal(html.match(/<form/g).length,1);assert.match(html,/@qe-atlas\/specgate@0\.1\.0-rc\.2/);assert.ok(!/UNPUBLISHED|NO PUBLIC NPM/.test(html));assert.match(html,/free observe-only/);
+  assert.match(html,/<form id="waitlist-form" novalidate hidden>/);assert.match(html,/The waitlist is temporarily unavailable/);assert.ok(!/DATABASE_URL|postgres:/i.test(html));assert.equal(html.match(/<form/g).length,1);assert.match(html,/@qe-atlas\/specgate@0\.1\.0-rc\.4/);assert.ok(!/Router mounts[^<]*unsupported|TypeScript are unsupported|unreleased preview/i.test(html));assert.match(html,/15 of 16/);assert.match(html,/does not yet cover real handlers/);assert.ok(!/UNPUBLISHED|NO PUBLIC NPM/.test(html));assert.match(html,/free observe-only/);
   assert.ok(!html.includes('0.1.0-rc.1'));
   assert.match(html,/<footer>[^]*<a href="https:\/\/github\.com\/DaveEliranAssistant\/specgate\/discussions\/categories\/ideas">Give feedback<\/a><\/footer>/);
   for(const name of ['quickstart.md','trust.md'])assert.ok(!readFileSync(join(output,name),'utf8').includes('0.1.0-rc.1'));

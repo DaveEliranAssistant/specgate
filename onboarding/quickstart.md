@@ -1,13 +1,13 @@
 # Your first private SpecGate report
 
-Status: guided pilot, CLI 0.1.0-rc.2. This guide covers existing `scan/check`, not unreleased `conform/diff` compatibility modes. A successful scan is not API compatibility or production approval.
+Status: guided pilot, CLI 0.1.0-rc.4. This guide covers `scan/check`. The `specgate diff` consumer-break check ships in the package as a preview; code-versus-OpenAPI `conform` is not available. A successful scan is not API compatibility or production approval.
 
 ## Before you start
 
 - Obtain permission to analyze one service. Use isolated Git metadata and a trusted host Git executable.
 - Use Node 22 or 24, npm, Git and Bash on Linux/macOS. Windows is not qualified.
-- Current scope: JavaScript ESM, literal Express app routes and same-file synchronous handlers. Routers, imported/async handlers and TypeScript require unsupported-coverage review.
-- Receive the private npm-pack archive and its independently trusted SHA-256 from your pilot coordinator. `@qe-atlas/specgate@0.1.0-rc.2` is also on npm (dist-tags `latest` and `next`), but this helper does not install from the registry. No live private release URL is advertised here. Do not paste credentials into chat or send source to this page.
+- Current scope: Express in JavaScript (ESM or CommonJS) or TypeScript (`.ts`, Node 22.13 or later; not TSX), literal routes on apps and `express.Router()` mounts with prefixes, and handlers imported from other scanned files. Contract checking (validation, response shapes, auth) does not yet cover real-world async/controller handlers: they are inventoried and fingerprinted, and changes are reported for review.
+- Receive the private npm-pack archive and its independently trusted SHA-256 from your pilot coordinator. `@qe-atlas/specgate@0.1.0-rc.4` is also on npm (dist-tags `latest` and `next`), but this helper does not install from the registry. No live private release URL is advertised here. Do not paste credentials into chat or send source to this page.
 - Review quickstart.sh before running it. Select a NEW private pilot directory OUTSIDE your service repository, with an existing parent directory. It must not be reused or symlinked. Do not publish its contents or npm cache.
 
 ## Configure the helper

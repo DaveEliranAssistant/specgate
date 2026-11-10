@@ -2,7 +2,8 @@ import { openSync, readFileSync, closeSync, writeFileSync, fstatSync, constants 
 import { scanRepository } from './scan.mjs';
 import { compareScans } from './gate.mjs';
 import { runDiff, diffMarkdown } from './diff.mjs';
-const HELP = `SpecGate 0.1.0-rc.1 — code-first local change gate (no OpenAPI input)
+const VERSION = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8')).version;
+const HELP = `SpecGate ${VERSION} — code-first local change gate (no OpenAPI input)
 scan --root REPOSITORY --source RELATIVE_PATH [--source RELATIVE_PATH] [--format json|markdown] [--output NEW_FILE]
 check --root REPOSITORY --source RELATIVE_PATH --baseline TRUSTED_SCAN.json [--format json|markdown] [--output NEW_FILE]
 generate --root REPOSITORY --source RELATIVE_PATH --scenarios REVIEWED.json --output NEW_SPEC.mjs
@@ -35,7 +36,7 @@ function markdown(report){
 }
 export async function main(args){
  try{
-  if(args.length===1&&['--help','--version'].includes(args[0])){process.stdout.write(args[0]==='--help'?HELP:'0.1.0-rc.1\n');return;}
+  if(args.length===1&&['--help','--version'].includes(args[0])){process.stdout.write(args[0]==='--help'?HELP:`${VERSION}\n`);return;}
   const {command,options}=parse(args);
   if(command==='diff'){
    const report=await runDiff({root:options.root,sources:options.sources,base:options.base,head:options.head,baseMode:options['base-mode']});

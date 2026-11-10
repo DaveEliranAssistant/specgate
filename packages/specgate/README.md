@@ -1,8 +1,10 @@
 # SpecGate — code-first release candidate
 
-**0.1.0-rc.3 · npm `latest` and `next` prerelease · Pilot use only · No OpenAPI input · MIT**
+**0.1.0-rc.4 · npm prerelease · Pilot use only · No OpenAPI input · MIT**
 
-> This source checkout contains an **unreleased** project-level Express engine (routers and mount prefixes, CommonJS, TypeScript, imported handlers/controllers, middleware chains). It is not in the published `0.1.0-rc.3` package; see [the real-service trial](../../docs/research/real-service-trial.md).
+> **New in 0.1.0-rc.4: a project-level Express engine.** SpecGate now follows `express.Router()` mounts and their prefixes across files (nested routers, `router.route()`, `router.param`, literal route tables), reads **CommonJS** (`require`, `module.exports`) as well as ESM, scans **TypeScript** (`.ts/.mts/.cts`, via Node's built-in type stripping, no new dependency), and resolves **imported handlers**, controllers and middleware factories to the files that define them. In a [real-service trial](https://github.com/DaveEliranAssistant/specgate/blob/main/docs/research/real-service-trial.md) on two public Express services (one CommonJS, one TypeScript) it found 53 of 53 routes at their full mounted paths, matched the expected verdict on 15 of 16 real commit pairs (the 16th was stricter, for a correct reason) and flagged both real breaking route renames as `breaking`.
+>
+> **Honest limit:** contract checking (request validation, response shapes and status codes, auth) does **not** yet cover real handlers. It still applies only to the narrow synchronous `res.status(<literal>).json(...)` grammar, and 0 of the 53 real routes in the trial fit it. Real handlers (async, `res.send`, status constants, Joi/`validate()` middleware, passport/`express-jwt`) are inventoried and fingerprinted, so a changed one is reported as `needs_review` with reasons, but never classified as breaking or passed. `breaking` is provable only for route-level changes (a route, method or path shape removed).
 
 Scan service source, review changed behavior, and compile independently reviewed scenarios into Playwright API tests. This is a local CLI, not a hosted upload service or an autonomous test-writing agent. Production qualification is **not complete**: a representative real service, an independently approved correctness baseline and platform qualification are release gates.
 
@@ -11,7 +13,7 @@ Scan service source, review changed behavior, and compile independently reviewed
 Node 22 or 24 and Git, Linux/macOS. Windows is not qualified.
 
 ```sh
-npm exec --package=@qe-atlas/specgate@0.1.0-rc.3 -- specgate scan \
+npm exec --package=@qe-atlas/specgate@0.1.0-rc.4 -- specgate scan \
   --root ./my-service --source src --format markdown
 ```
 
@@ -62,15 +64,15 @@ node packages/specgate/bin/specgate.mjs check \
 
 JSON is the default; `--format markdown` is available for scan/check. Output files use exclusive creation (`0600`) and cannot overwrite a baseline or existing test. There is no auto-accept switch. Fingerprints detect drift, not authenticity: protect baseline review with branch protection/CODEOWNERS as appropriate. A changed source hash conservatively requires review even for comments; impact minimization remains experimental in the separate POC. Exit 1 means review, not a proven defect.
 
-## Consumer-break check (preview, unreleased)
+## Consumer-break check (`specgate diff`, preview)
 
-> **Preview.** Shipped as a preview in `0.1.0-rc.3`; the project-level engine and the persistent-gap policy described below are unreleased (source checkout only). Output schema, rules and finding codes may change.
+> **Preview.** `specgate diff` ships in the npm package (since `0.1.0-rc.3`); `0.1.0-rc.4` adds the project-level engine and the persistent-gap policy described below. Output schema, rules and finding codes may change.
 
 Answers "will this change break my API consumers?" by scanning two committed revisions with the same scanner as `scan` and comparing route-level contracts. No OpenAPI, no model and no network; the service is never started or imported.
 
 ```sh
 git fetch origin main   # both refs must exist locally; nothing is fetched by SpecGate
-node packages/specgate/bin/specgate.mjs diff \
+npm exec --package=@qe-atlas/specgate@0.1.0-rc.4 -- specgate diff \
   --root ./my-service --source src --base origin/main --head HEAD --format markdown
 ```
 
@@ -84,7 +86,7 @@ node packages/specgate/bin/specgate.mjs diff \
 
 "Required request field" means a body/header input guarded by a recognized `typeof`/length/enum/falsy check that rejects with a literal status. Response fields are compared only when the body is an object literal or a same-handler `const` object literal; field types are known for literals and for locals proven by a required `typeof` or enum check. `path-param-renamed` (for example `/users/:id` → `/users/:userId`) is `needs_review`, not `breaking`: raw URLs still match, but generated SDKs and OpenAPI consumers that address parameters by name may need updating. Adding a parameter segment or otherwise changing the route shape stays `breaking` (`path-param-added`) or is reported as a removal plus an addition.
 
-**Opaque routes and persistent gaps (unreleased).** For a route whose handler or middleware is outside the contract model, `diff` compares fingerprints instead of contracts: the chain's own code, the transitive dependency slice (referenced top-level symbols, the specific members used from imported scanned modules, module-load side effects) and the error/fall-through middleware after it. If any of these changed, the route gets `route-contract-not-analyzable` with reasons (`route-code-changed`, `dependency-changed`, `trailing-middleware-changed`, …); if none changed, nothing is reported for it. An unsupported construct whose code **and** dependency slice are byte-identical in both revisions is a *persistent gap*: it is listed under `coverage.persistentGaps` and does not by itself fail the check, because the change under review cannot have altered it. Any new, removed or changed gap is still an `analysis-gap` (`needs_review`). Removals are `breaking` only when the head revision has no new or changed gaps.
+**Opaque routes and persistent gaps.** For a route whose handler or middleware is outside the contract model, `diff` compares fingerprints instead of contracts: the chain's own code, the transitive dependency slice (referenced top-level symbols, the specific members used from imported scanned modules, module-load side effects) and the error/fall-through middleware after it. If any of these changed, the route gets `route-contract-not-analyzable` with reasons (`route-code-changed`, `dependency-changed`, `trailing-middleware-changed`, …); if none changed, nothing is reported for it. An unsupported construct whose code **and** dependency slice are byte-identical in both revisions is a *persistent gap*: it is listed under `coverage.persistentGaps` and does not by itself fail the check, because the change under review cannot have altered it. Any new, removed or changed gap is still an `analysis-gap` (`needs_review`). Removals are `breaking` only when the head revision has no new or changed gaps.
 
 Comment-only edits, formatting, declaration/registration reordering and handler renames do not produce findings: routes are matched by method and path, and handler evidence is a normalized AST hash (comments, positions and the function's own name removed). Literal values (tokens, enum members, response values) appear only as short hashes and are never printed.
 
