@@ -27,7 +27,7 @@ const MESSAGES = {
  'route-removed': 'Route no longer registered; existing calls will get 404 or fall through to other handlers.',
  'method-removed': 'Path still exists but this HTTP method is no longer registered.',
  'route-now-matched-by-parameterized-route': 'Literal route removed, but its URL is now captured by a parameterized route with a different handler. Behavior for existing calls is not statically provable.',
- 'path-param-renamed': 'Path parameter renamed. URL shape is unchanged, but clients/SDKs that address parameters by name (generated clients, OpenAPI consumers) break.',
+ 'path-param-renamed': 'Path parameter renamed. URL shape is unchanged on the wire, but clients/SDKs that address parameters by name (generated clients, OpenAPI consumers) may need updating.',
  'path-param-added': 'Path gained a parameter segment; the previous URL no longer matches this route.',
  'route-added': 'New route.',
  'method-added': 'New HTTP method on an existing path.',
@@ -251,8 +251,10 @@ export function classifyChanges(base, head) {
   const pair = renamed ?? extended;
   if (pair) {
    added.delete(pair.id);
+   // Owner policy: a renamed parameter with the same route shape is not provably
+   // breaking (raw URLs still match), so it needs review. A changed shape is breaking.
    const code = renamed ? 'path-param-renamed' : 'path-param-added';
-   out.push({ ...finding('breaking', code, br, { headPath: pair.path, headRouteId: pair.id }), locations: { base: locOf(br), head: locOf(pair) } });
+   out.push({ ...finding(renamed ? 'needs_review' : 'breaking', code, br, { headPath: pair.path, headRouteId: pair.id }), locations: { base: locOf(br), head: locOf(pair) } });
    compareRoute(br, pair, base, head, out);
   } else unpaired.push(br);
  }

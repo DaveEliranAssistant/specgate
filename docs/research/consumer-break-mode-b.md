@@ -6,7 +6,7 @@ Status: preview, unreleased. Implemented in `packages/specgate/src/diff.mjs` (`s
 
 It scans the base and head revisions from Git with the existing bounded, non-executing scanner (`git-source.mjs` → parser worker), extracts a per-route contract and classifies the differences:
 
-- **Route identity:** method + literal path. Unmatched routes are paired when their path shape is the same with renamed parameters (`path-param-renamed`), or when head adds parameter segments (`path-param-added`). The rest are classified as removed or added. A removed literal route whose URL a head `:param` route now captures is `needs_review`.
+- **Route identity:** method + literal path. Unmatched routes are paired when their path shape is the same with renamed parameters (`path-param-renamed`, `needs_review`), or when head adds parameter segments (`path-param-added`, `breaking`). The rest are classified as removed or added. A removed literal route whose URL a head `:param` route now captures is `needs_review`.
 - **Request contract:** recognized checks on `req.body.*`, `req.params.*` and `req.headers.*` (typeof, length bounds, string enums, falsy, bearer comparison), whether each check is optional, and the literal rejection status.
 - **Response contract:** literal success statuses, plus field names and types when the body is an object literal or a same-handler `const` object literal. Types come from literals or from locals proven by a required typeof/enum check.
 - **Change evidence:** a normalized AST hash of the handler and middleware chain, the AST hashes of relative imports reachable from the handler's imported calls (within scanned scopes), and hashes of referenced top-level constants.
@@ -26,7 +26,7 @@ The existing `scan` and `check` output is unchanged. Contract facts are an opt-i
 7. **Middleware is opaque unless it is a same-file named function.** `app.use(...)` other than `express.json()` is a gap. Global auth, CORS, rate limits and body-size limits are not modeled.
 8. **Headers other than bearer `authorization`, query strings, content types and response headers are not modeled.** Status codes set via `res.sendStatus`, `res.send` or `res.end` are gaps.
 9. **Semantics are not modeled.** Same shape and different meaning (a renamed enum's meaning, changed units, different ordering, changed pagination) is invisible unless a literal value hash changes.
-10. **The policy behind `path-param-renamed` is debatable.** It is breaking for SDK/OpenAPI consumers but invisible on the wire. It is classified as breaking per the mission spec; teams may want it downgraded.
+10. **`path-param-renamed` is `needs_review`, not `breaking`** (owner decision, 2026-11-10). A renamed parameter with the same route shape (`/users/:id` → `/users/:userId`) is invisible on the wire, but generated SDKs and OpenAPI consumers that address parameters by name may need updating, so a human decides. Adding a parameter segment or changing the route shape stays `breaking`.
 11. **No allowlist or "intended break" mechanism.** Deliberate, versioned breaks still exit 1. The optional `poc/agentic-triage` intent file is not wired into `diff`, by design, to keep the verdict deterministic and model-free.
 12. **Git preconditions.** Refs must exist locally, and the default merge-base mode needs history (`fetch-depth: 0`). Ranges, `:` paths and reflog syntax are refused.
 

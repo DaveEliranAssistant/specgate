@@ -1,0 +1,15 @@
+{
+  "description": "GET /tickets/:id becomes /tickets/:ticketId and the handler reads the renamed parameter. Same route shape: needs_review, never breaking. The changed handler echoes a value whose type is not statically visible, so it is also flagged for review.",
+  "verdict": "needs_review",
+  "exitCode": 1,
+  "findings": [
+    {
+      "classification": "needs_review",
+      "code": "path-param-renamed"
+    },
+    {
+      "classification": "needs_review",
+      "code": "unmodeled-behavior-changed"
+    }
+  ]
+}

@@ -1,10 +1,10 @@
 {
-  "description": "DELETE /tickets/:id becomes /tickets/:ticketId (handler does not read the parameter).",
-  "verdict": "breaking",
+  "description": "DELETE /tickets/:id becomes /tickets/:ticketId (handler does not read the parameter). Same route shape, renamed parameter: needs_review, not breaking.",
+  "verdict": "needs_review",
   "exitCode": 1,
   "findings": [
     {
-      "classification": "breaking",
+      "classification": "needs_review",
       "code": "path-param-renamed"
     }
   ]

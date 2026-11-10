@@ -19,8 +19,8 @@
     },
     {
       "path": "packages/specgate/README.md",
-      "sha256": "aa103ea86a143cce51f3a60521b4f6de5e210f7bdad32f2923b44cd205da523e",
-      "reason": "Owner-approved MIT relicense on 2026-11-05: license metadata, notices and public-install docs; runtime unchanged. 2026-11-06: dist-tag status line only. 2026-11-09: owner-approved Mode B preview (`specgate diff`, unreleased): opt-in per-route contract facts and Git ref resolution; scan/check output unchanged."
+      "sha256": "7dce74f993482244900859591496d3c6a5d34a0eecf603a39cf4601caf96303c",
+      "reason": "Owner-approved MIT relicense on 2026-11-05: license metadata, notices and public-install docs; runtime unchanged. 2026-11-06: dist-tag status line only. 2026-11-09: owner-approved Mode B preview (`specgate diff`, unreleased): opt-in per-route contract facts and Git ref resolution; scan/check output unchanged. 2026-11-10: owner decision: `path-param-renamed` (same route shape) is needs_review, not breaking."
     },
     {
       "path": "packages/specgate/package-lock.json",
